@@ -41,7 +41,7 @@ quick-react-admin 是一款免费开源快速搭建中后台系统框架。本�
 
 ## 开发文档
 
--   [quick-react-admin](https://react.doc.ainiteam.com/) - quick-react-admin 开发文档
+-   [quick-react-admin](https://doc.quick.ainiteam.com/react) - quick-react-admin 开发文档
 
 ## 接口文档
 
@@ -98,7 +98,7 @@ pnpm install
 pnpm run dev
 ```
 
-运行命令执行服务启动后，浏览器输入：http://localhost:3102/
+运行命令执行服务启动后，浏览器输入：http://localhost:3100/
 
 -   eslint 检测
 
