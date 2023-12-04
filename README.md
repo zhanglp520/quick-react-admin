@@ -3,15 +3,15 @@
 
 **中文** | [英文](./README.en.md)
 
-# quick-vue3-admin
+# quick-react-admin
 
 ## 简介
 
-quick-vue3-admin 是一款免费开源快速搭建中后台系统框架。本框架基于 vite4、vue3.2 语法糖模式、element-plus、pinia 等最新主流技术并封装了通用的组件方便开发者提高工作效率。后期也会通过版本升级的方式来维护并更新，使开发者拥有一款长期并且稳定的脚手架。本团队还提供了基于 quick 框架开发的各类业务项目，比如： 订单管理系统、调度管理系统、聊天系统、音视系统 、监控系统、商城系统、物联网平台、外卖系统、ERP 系统、CMR 系统、OA 系统、物流管理系统、CRM 管理系统等等常用的业务系统，如有相关需求联系管理员。
+quick-react-admin 是一款免费开源快速搭建中后台系统框架。本框架基于 vite5、react、antd、@reduxjs/toolkit以及react-router-dom等最新主流技术并封装了通用的组件方便开发者提高工作效率。后期也会通过版本升级的方式来维护并更新，使开发者拥有一款长期并且稳定的脚手架。本团队还提供了基于 quick 框架开发的各类业务项目，比如： 订单管理系统、调度管理系统、聊天系统、音视系统 、监控系统、商城系统、物联网平台、外卖系统、ERP 系统、CMR 系统、OA 系统、物流管理系统、CRM 管理系统等等常用的业务系统，如有相关需求联系管理员。
 
 ## 软件特色
 
-- 使用 vite4、vue3.2 语法糖、VUex、vue-router4.x、element-plus、pinia 和 typescript 等前言技术
+- 使用 vite5、react8、redux、@reduxjs/toolkit、react-router-dom、antd和 typescript 等前言技术
 - 封装了通用的组件
 - 提供了系统管理常用功能模块
 - 提供权限管理模块
@@ -35,14 +35,13 @@ quick-vue3-admin 是一款免费开源快速搭建中后台系统框架。本框
 
 ## 预览
 
--   [quick-vue3-admin](https://quick.ainiteam.com/) - 框架演示 2.0 版本
--   [quick-vue3-admin](https://v1.quick.ainiteam.com/) - 框架演示 1.0 版本
+-   [quick-react-admin](https://react.quick.ainiteam.com/) - 框架演示 1.0 版本
 
 演示账号密码：admin/123456
 
 ## 开发文档
 
--   [quick-vue3-admin](https://doc.ainiteam.com/) - quick-vue3-admin 开发文档
+-   [quick-react-admin](https://react.doc.ainiteam.com/) - quick-react-admin 开发文档
 
 ## 接口文档
 
@@ -54,9 +53,9 @@ quick-vue3-admin 是一款免费开源快速搭建中后台系统框架。本框
 -   克隆项目
 
 ```bash
-github： git clone https://github.com/zhanglp520/quick-vue3-admin.git
+github： git clone https://gitee.com/zhanglp520/quick-react-admin.git
 
-gitee：git clone https://gitee.com/zhanglp520/quick-vue3-admin.git
+gitee：git clone https://gitee.com/zhanglp520/quick-react-admin.git
 
 ```
 
@@ -130,13 +129,13 @@ pnpm run preview
 2. 发起 Issue
 3. 加 quick 框架 QQ 群：
 
--   群 1：528166164
--   群 2：485013155
--   群 3：558795174
+-   群 1：528166164(vue)
+-   群 2：485013155(react)
+-   群 3：558795174(electron)
 
 ## License
 
-[MIT © quick-vue3-admin](./LICENSE)
+[MIT © quick-react-admin](./LICENSE)
 
 ## 参与贡献
 
