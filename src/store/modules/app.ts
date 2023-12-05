@@ -4,7 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 interface IAppState {
     language: string;
-    isCollapse: boolean;
+    collapsed: boolean;
 }
 
 export const appSlice = createSlice({
@@ -12,7 +12,7 @@ export const appSlice = createSlice({
     initialState: (): IAppState => {
         return {
             language: "zh",
-            isCollapse: false
+            collapsed: false
         };
     },
     reducers: {
@@ -21,8 +21,8 @@ export const appSlice = createSlice({
             state.language = language;
         },
         setCollapse: (state, action: PayloadAction<boolean>) => {
-            const { payload: isCollapse } = action
-            state.isCollapse = isCollapse;
+            const { payload: collapsed } = action
+            state.collapsed = collapsed;
         },
     }
 })

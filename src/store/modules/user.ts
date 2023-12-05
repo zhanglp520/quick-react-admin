@@ -72,7 +72,7 @@ export const userSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(getPermission1.fulfilled, (state, { payload }) => {
+            .addCase(getPermission1.fulfilled, (state, { payload }) => {                
                 const { data: userPermissionMenuList } = payload;
                 state.permissionMenuList = userPermissionMenuList;
                 const dt = JSON.parse(

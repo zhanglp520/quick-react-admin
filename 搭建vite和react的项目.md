@@ -23,6 +23,12 @@ pnpm i react-router-dom -D
 pnpm i @reduxjs/toolkit react-redux -D
 ```
 
+### 持久化：
+``` bash
+pnpm i redux-persist -D
+```
+
+
 ## css
 ``` bash
 pnpm i less -D
