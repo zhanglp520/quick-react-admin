@@ -27,7 +27,7 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
   const { collapsed } = props;
   const dispatch: AppDispatch = useDispatch();
   const { tabList } = useSelector((state: RootState) => state.tab);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // const menuClick = (menu: IMenubar) => {
   //   const { id, menuName, path } = menu;
   //   const tab: ITab = {

@@ -1,20 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Tabs } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
-import "./index.less";
-import AiniSidebar from "./components/AiniSidebar";
 import { useDispatch, useSelector } from "react-redux";
+import { Layout, Tabs, theme } from "antd";
+
+import AiniSidebar from "./components/AiniSidebar";
+import AiniTop from "./components/AiniTop";
 import { RootState } from "@/store";
 import { ITab } from "@/types";
 import { deleteTab, setActiveTab } from "@/store/modules/tab";
 import { setActiveMenuId } from "@/store/modules/menu";
+import "./index.less";
 
 const { Header, Sider, Content } = Layout;
 
@@ -29,7 +24,10 @@ const Layout1: React.FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { tabList, activeTab } = useSelector((state: RootState) => state.tab);
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed } = useSelector((state: RootState) => state.app);
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   // const [activeKey, setActiveKey] = useState(
   //   activeTab.id ? activeTab.id : "home"
   // );
@@ -85,7 +83,9 @@ const Layout1: React.FC = () => {
           <AiniSidebar></AiniSidebar>
         </Sider>
         <Layout>
-          <Header>{/* <aini-top></aini-top> */}</Header>
+          <Header style={{ padding: 0, background: colorBgContainer }}>
+            <AiniTop></AiniTop>
+          </Header>
           <Content
             style={{
               margin: "24px 16px",
@@ -93,16 +93,6 @@ const Layout1: React.FC = () => {
               minHeight: 280,
             }}
           >
-            <Button
-              type="text"
-              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
-              style={{
-                fontSize: "16px",
-                width: 64,
-                height: 64,
-              }}
-            />
             <Tabs
               hideAdd
               type="editable-card"

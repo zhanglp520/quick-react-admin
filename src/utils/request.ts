@@ -134,9 +134,9 @@ quickRequest.interceptors.response.use(
     if (status === 401) {
       if (!errFlag) {
         confirm({
-          title: "Do you Want to delete these items?",
+          title: "警告",
           // icon: <ExclamationCircleFilled />,
-          content: "Some descriptions",
+          content: "登录过期，请重新登录",
           onOk() {
             errFlag = true;
             localStorage.clear();
