@@ -78,7 +78,7 @@ const Layout1: React.FC = () => {
   }, [activeTab]);
   return (
     <div className="aini-layout">
-      <Layout>
+      <Layout style={{ minHeight: '100vh' }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <AiniSidebar></AiniSidebar>
         </Sider>

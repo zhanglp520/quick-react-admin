@@ -1,19 +1,29 @@
 import { useRoutes } from "react-router-dom";
+// import { RouterProvider } from "react-router-dom";
 // import { Route, Routes, useRoutes } from "react-router-dom";
 // import Home from "./views/home";
 // import User from "./views/system/user";
 // import NotFound from "./pages/404";
 // import Layout1 from "./layout";
-import staticRouter from "./router/staticRouter";
-// import {addRoutes} from "./router/dynamicRouter";
-import { Suspense } from "react";
-import './App.css'
+import { router } from "@/router";
+// import { Suspense } from "react";
+import "./App.css";
+import staticRouter from "@/router/staticRouter";
 
 function App() {
-  const element = useRoutes(staticRouter);
-  // const element = useRoutes(addRoutes());
-  return <Suspense fallback={<div>Loadding...</div>}>{element}</Suspense>;
+    const element = useRoutes(staticRouter);
+    return  [element];
+    console.log("App-router", router);
 }
+
+// function App() {
+//   console.log('staticRouter11',router);
+//   return (
+//     <div className="app">
+//       <RouterProvider router={router}></RouterProvider>
+//     </div>
+//   );
+// }
 
 // function App() {
 //   return (
