@@ -1,17 +1,22 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { configureStore } from "@reduxjs/toolkit";
+// import { combineReducers, configureStore } from "@reduxjs/toolkit";
+// import { persistReducer, persistStore } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
 import * as reducerObj from "./modules";
 
-const persistConfig = { key: "root", storage, blacklist: [] };
-const reducer = combineReducers({ ...reducerObj });
-const persistedReducer = persistReducer(persistConfig, reducer);
+// const persistConfig = { key: "root", storage, blacklist: [] };
+// const reducer = combineReducers({ ...reducerObj });
+// const persistedReducer = persistReducer(persistConfig, reducer);
+
+// const store = configureStore({
+//   reducer: persistedReducer,
+// });
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: { ...reducerObj },
 });
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 
 export default store;
 

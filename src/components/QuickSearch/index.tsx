@@ -1,11 +1,11 @@
 import { IFormItem } from "@ainiteam/quick-vue3-ui";
 import { Button, Form } from "antd";
-import AiniFormItem from "../AiniFormItem";
+import AiniFormItem from "../QuickFormItem";
 import "./index.less";
-import AiniForm from "../AiniForm";
+import AiniForm from "../QuickForm";
 
 type PropType = {
-  model?: IFormItem;
+  model?: object;
   items?: IFormItem[];
   searchButtonName?: string;
   resetButtonName?: string;

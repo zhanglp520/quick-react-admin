@@ -1,13 +1,14 @@
 import { IFormItem } from "@ainiteam/quick-vue3-ui";
 import { Button, Form, Space } from "antd";
-import AiniFormItem from "../AiniFormItem";
+import AiniFormItem from "../QuickFormItem";
 import "./index.less";
 // import { useState } from "react";
 
 export type FormType = "search" | "add" | "edit" | "detail" | "form";
 export type FormLayout = "horizontal" | "inline" | "vertical";
 type PropType = {
-  model?: IFormItem;
+  form:any;
+  model?: object;
   formItems?: IFormItem[];
   formType?: FormType;
   layout?: FormLayout;
@@ -21,6 +22,7 @@ type PropType = {
 
 const AiniForm: React.FC<PropType> = (props: PropType) => {
   const {
+    form,
     model,
     formItems,
     formType,
@@ -33,7 +35,7 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
     onReset,
   } = props;
   // const [formLayout, setFormLayout] = useState<LayoutType>("horizontal");
-  const [form] = Form.useForm();
+  
   const formItemLayout =
     layout === "horizontal"
       ? { labelCol: { span: 4 }, wrapperCol: { span: 14 } }
@@ -41,6 +43,7 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
 
   const buttonItemLayout =
     layout === "horizontal" ? { wrapperCol: { span: 14, offset: 4 } } : null;
+
   return (
     <div>
       <Form
@@ -51,14 +54,16 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
         layout={layout}
         form={form}
         style={{ maxWidth: layout === "inline" ? "none" : 600 }}
-        initialValues={{ layout: layout }}
+        // initialValues={{ layout: layout }}
+        initialValues={{...model}}
+
         //   onFinish={onFinish}
         //   onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         {formItems &&
           formItems.map((item: IFormItem) => {
-            return <AiniFormItem formItem={item}></AiniFormItem>;
+            return <AiniFormItem model={model} formItem={item}></AiniFormItem>;
           })}
         {!hiddenAction && (
           <Form.Item {...buttonItemLayout}>
@@ -70,12 +75,12 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
             </Space>
           </Form.Item>
         )}
-      </Form>
-      {hiddenAction && (
+         {hiddenAction && (
         <Form.Item {...buttonItemLayout}>
           <Space>{actionSlot}</Space>
         </Form.Item>
       )}
+      </Form>
     </div>
   );
 };

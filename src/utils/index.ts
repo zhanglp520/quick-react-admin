@@ -21,7 +21,7 @@ export const selectFormat = (data: any, options: IOptions = {}) => {
     const label =
         options && options.label ? options.label : defaultOptions.label;
     const value =
-        options && options.value ? options.value : defaultOptions.value;
+        options && options ? options : defaultOptions;
     data.forEach((element: any) => {
         arr.push({
             label: element[label],
@@ -42,7 +42,7 @@ export const selectTreeFormat = (data: any, options?: ISelectTreeOptions) => {
     const label =
         options && options.label ? options.label : defaultOptions.label;
     const value =
-        options && options.value ? options.value : defaultOptions.value;
+        options && options ? options : defaultOptions;
     const children =
         options && options.children
             ? options.children
@@ -98,7 +98,7 @@ export const listToSelectTree = (data: any, pId: any, options?: any) => {
         sort: "sort"
     };
     const value =
-        options && options.value ? options.value : defaultOptions.value;
+        options && options ? options : defaultOptions;
     const label =
         options && options.label ? options.label : defaultOptions.label;
     const parentId = options && options.pId ? options.pId : defaultOptions.pId;

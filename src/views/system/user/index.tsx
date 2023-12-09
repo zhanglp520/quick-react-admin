@@ -1,6 +1,13 @@
-import AiniCrud, { Title } from "@/components/AiniCrud";
-import { ISearchUser, IUser } from "@/types";
-import { IColumn, IFormItem, IPage } from "@ainiteam/quick-vue3-ui";
+import AiniCrud, { Title } from "@/components/QuickCrud";
+// import { ISearchUser, IUser } from "@/types";
+import { ISearchUser, IUser, IUserPermissionButton } from "@/types";
+import {
+  IActionbar,
+  IColumn,
+  IFormItem,
+  IPage,
+  IToolbar,
+} from "@ainiteam/quick-vue3-ui";
 import { useState } from "react";
 import {
   exportUser,
@@ -14,10 +21,18 @@ import {
   disableUser,
   downloadFileStream,
 } from "@/api/system/user";
+import { downloadExcel, exportExcel } from "@/utils/download";
 import { Modal, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { validatePermission } from "@/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { getPermissionBtns } from "@/store/modules/user";
 
 const User: React.FC = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const dispatch: AppDispatch = useDispatch();
+  const { activeTab } = useSelector((state: RootState) => state.tab);
   const { confirm } = Modal;
 
   /**
@@ -68,6 +83,9 @@ const User: React.FC = () => {
       remark: "管理员（请误删）",
     },
   ]);
+  const permissionBtn = dispatch(
+    getPermissionBtns(activeTab)
+  ) as IUserPermissionButton;
 
   /**
    * 分页
@@ -96,9 +114,9 @@ const User: React.FC = () => {
   /**
    * 导入
    */
-  // const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const handleImport = () => {
-    // setDialogVisible(true);
+    setDialogVisible(true);
   };
 
   /**
@@ -106,7 +124,7 @@ const User: React.FC = () => {
    */
   const handleExport = () => {
     exportUser().then((res) => {
-      // downloadExcel(res, "用户列表");
+      downloadExcel(res, "用户列表");
     });
   };
   const handlePrint = () => {
@@ -125,6 +143,93 @@ const User: React.FC = () => {
         });
       },
     });
+  };
+  const tableToolbar: IToolbar = {
+    importButtonName: "导入（默认后端方式）",
+    exportButtonName: "导出（默认后端方式）",
+    // hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
+    // hiddenImportButton: !validatePermission(permissionBtn?.import),
+    // hiddenExportButton: !validatePermission(permissionBtn?.export),
+    // hiddenAddButton: !validatePermission(permissionBtn?.add),
+    // hiddenPrintButton: !validatePermission(permissionBtn?.print),
+    position: "right",
+    leftToolbarSlot:<div>lll</div>,
+    rightToolbarSlot:<div>rrr</div>,
+    btns: [
+      {
+        name: "下载模板(浏览器下载方式)",
+        position: "left",
+        type: "primary",
+        hidden:false,
+        // hidden: !validatePermission(permissionBtn?.download),
+        click() {
+          window.location.href = `${
+            import.meta.env.VITE_APP_BASE_URL
+          }/api/v2/downloads?filePath=templates/用户模板.xlsx`;
+        },
+      },
+      {
+        name: "下载模板(流文件方式)",
+        position: "left",
+        type: "primary",
+        // hidden: !validatePermission(permissionBtn?.download),
+        click() {
+          downloadFileStream("templates/用户模板.xlsx").then((res) => {
+            downloadExcel(res, "用户导入模板");
+          });
+        },
+      },
+      {
+        name: "导入(前端方式)",
+        position: "left",
+        type: "warning",
+        hidden: !validatePermission(permissionBtn?.import),
+        click() {
+          // const fileBtn = uploadRef as HTMLInputElement;
+          // fileBtn.click();
+        },
+      },
+      {
+        name: "导出(前端方式)",
+        position: "left",
+        type: "danger",
+        hidden: !validatePermission(permissionBtn?.export),
+        click() {
+          // 导出的字段映射
+          const columns = [
+            {
+              label: "编号",
+              value: "id",
+            },
+            {
+              label: "用户编号",
+              value: "userId",
+            },
+            {
+              label: "用户名",
+              value: "userName",
+            },
+            {
+              label: "姓名",
+              value: "fullName",
+            },
+            {
+              label: "手机号",
+              value: "phone",
+            },
+            {
+              label: "邮箱",
+              value: "email",
+            },
+            {
+              label: "地址",
+              value: "address",
+            },
+          ];
+          exportExcel(tableDataList, "用户列表", columns);
+        },
+      },
+    ],
   };
 
   /**
@@ -257,6 +362,109 @@ const User: React.FC = () => {
   };
 
   /**
+   * 操作栏
+   */
+  const handleDelete = (item: IUser, done: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `你真的删除【${item.userName}】的用户吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        deleteUser(item.id).then(() => {
+          message.success("用户删除成功");
+          done();
+        });
+      },
+    });
+  };
+  const handleResetPassword = (item: IUser, done: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `你真的重置【${item.userName}】用户的密码吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        resetUserPassword(item.id).then(() => {
+          message.success("置用户密码重成功");
+          done();
+        });
+      },
+    });
+  };
+  const handleEnable = (item: IUser, done: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `你真的启用【${item.userName}】的用户吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        enableUser(item.id).then(() => {
+          message.success("用户启用成功");
+          done();
+        });
+      },
+    });
+  };
+  const handleDisable = (item: IUser, done: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `你真的禁用【${item.userName}】的用户吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        disableUser(item.id).then(() => {
+          message.success("用户启用成功");
+          done();
+        });
+      },
+    });
+  };
+  const tableActionbar: IActionbar = {
+    width: 300,
+    // hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+    btns: [
+      {
+        name: "重置密码",
+        // hidden: !validatePermission(permissionBtn?.resetPassword),
+        click(item: IUser, done: any) {
+          handleResetPassword(item, done);
+        },
+      },
+      {
+        name: "启用",
+        // hidden: !validatePermission(permissionBtn?.enabled),
+        click(item: IUser, done: any) {
+          handleEnable(item, done);
+        },
+        render(row: IUser) {
+          return row.enabled === 0;
+        },
+      },
+      {
+        name: "禁用",
+        // hidden: !validatePermission(permissionBtn?.disabled),
+        click(item: IUser, done: any) {
+          handleDisable(item, done);
+        },
+        render(row: IUser) {
+          return row.enabled !== 0;
+        },
+      },
+    ],
+  };
+
+  /**
    * 表格
    */
   const tableColumns: IColumn[] = [
@@ -331,6 +539,7 @@ const User: React.FC = () => {
         if (userList) {
           tableDataList.length = 0;
           tableDataList.push(...userList);
+          setTableDataList(tableDataList);
         }
         page.total = total;
       })
@@ -347,15 +556,15 @@ const User: React.FC = () => {
         formItems={formItems}
         tableData={tableDataList}
         tableColumns={tableColumns}
-        tableActionbar={false}
-        tableToolbar={false}
+        tableActionbar={tableActionbar}
+        tableToolbar={tableToolbar}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
-        page={page}
-        loading={false}
+        pagebar={page}
+        loading={loading}
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
-        // @on-delete="handleDelete"
+        onDelete={handleDelete}
         onBatchDelete={handleBatchDelete}
         onImport={handleImport}
         onExport={handleExport}

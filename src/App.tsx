@@ -9,11 +9,24 @@ import { router } from "@/router";
 // import { Suspense } from "react";
 import "./App.css";
 import staticRouter from "@/router/staticRouter";
+import { Suspense } from "react";
+// import { Spin } from "antd";
 
 function App() {
-    const element = useRoutes(staticRouter);
-    return  [element];
-    console.log("App-router", router);
+  const element = useRoutes(staticRouter);
+  return (
+    <Suspense
+      fallback={
+        <div className="loadding">
+          loadding
+          {/* <Spin  /> */}
+        </div>
+      }
+    >
+      {[element]}
+    </Suspense>
+  );
+  console.log("App-router", router);
 }
 
 // function App() {

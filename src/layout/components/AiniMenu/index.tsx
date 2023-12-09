@@ -27,6 +27,13 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
   const { collapsed } = props;
   const dispatch: AppDispatch = useDispatch();
   const { tabList } = useSelector((state: RootState) => state.tab);
+  // const { menuList } = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user);
+  let menuList: IMenubar = [];
+  if (user) {
+    menuList = user.menuList;
+  }
+
   // const navigate = useNavigate();
   // const menuClick = (menu: IMenubar) => {
   //   const { id, menuName, path } = menu;
@@ -72,7 +79,6 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
     menuClick(menu);
   };
   const items: ItemType[] = [];
-  const { menuList } = store.getState().user;
   items.push({
     key: "home",
     icon: <HomeOutlined />,

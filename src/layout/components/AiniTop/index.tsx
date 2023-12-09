@@ -87,8 +87,8 @@ const AiniTop: React.FC = () => {
     }
   };
   const handleSetting = () => {
-    // themeVisible.value = true;
-    // testInput.value = "11111111";
+    // themeVisible = true;
+    // testInput = "11111111";
   };
   const handleCollapse = () => {
     dispatch(setCollapse(!collapsed));

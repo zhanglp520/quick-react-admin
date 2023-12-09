@@ -11,20 +11,30 @@ import {
   TreeSelect,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import './index.less'
+import "./index.less";
 
 type PropType = {
+  model: object;
   formItem: IFormItem;
 };
 const AiniFormItem: React.FC<PropType> = (props: PropType) => {
   const { formItem } = props;
   const getFormItem = (item: IFormItem) => {
     if (item.type === "password") {
-      return <Input.Password placeholder="请输入密码" />;
+      return (
+        <Input.Password name={item.vModel} placeholder={item.placeholder} />
+      );
     } else if (item.type === "radio") {
       return <Radio value="apple"> Apple </Radio>;
+    } else if (item.type === "radioGroup") {
+      return (
+        <Radio.Group>
+          <Radio value="public">Public</Radio>
+          <Radio value="private">Private</Radio>
+        </Radio.Group>
+      );
     } else if (item.type === "number") {
-      return <InputNumber />;
+      return <InputNumber name={item.vModel} />;
     } else if (item.type === "checkbox") {
       return (
         <Checkbox
@@ -57,9 +67,12 @@ const AiniFormItem: React.FC<PropType> = (props: PropType) => {
         />
       );
     } else if (item.type === "textarea") {
-      return <TextArea rows={4} />;
+      return <TextArea name={item.vModel} rows={4} />;
     } else {
-      return <Input placeholder="请输入用户编号" />;
+      return (
+        // {model[item.vModel]}
+        <Input name={item.vModel} placeholder={item.placeholder} />
+      );
     }
   };
 

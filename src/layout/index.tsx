@@ -62,7 +62,7 @@ const Layout1: React.FC = () => {
   // const closeAll = () => {
   //   tabStore.clear();
   //   menuStore.clear();
-  //   editableTabsValue.value = "home";
+  //   editableTabsValue = "home";
   // };
 
   useEffect(() => {

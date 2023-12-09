@@ -66,7 +66,6 @@ quickRequest.interceptors.request.use(
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { dispatch } = store;
     // token过期
-
     if (isTokenExpire() && config.url !== refreshTokenApi) {
       if (!isRefreshing) {
         isRefreshing = true;

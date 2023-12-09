@@ -1,15 +1,13 @@
 import { Button, Space } from "antd";
 import "./index.less";
+import { IBtns, IToolbar } from "@ainiteam/quick-vue3-ui";
 
 type PropType = {
-  position?: string;
-  leftToolbarSlot?: any;
-  rightToolbarSlot?: any;
   addButtonName?: string;
   batchDeleteButtonName?: string;
   importButtonName?: string;
   exportButtonName?: string;
-  printtButtonName?: string;
+  printButtonName?: string;
   refreshButtonName?: string;
   hiddenAddButton?: boolean;
   hiddenBatchDeleteButton?: boolean;
@@ -17,6 +15,10 @@ type PropType = {
   hiddenExportButton?: boolean;
   hiddenPrintButton?: boolean;
   hiddenRefreshButton?: boolean;
+  position?: string;
+  btns?: IBtns[];
+  leftToolbarSlot?: any;
+  rightToolbarSlot?: any;
   onImport?: any;
   onExport?: any;
   onAdd?: any;
@@ -26,14 +28,11 @@ type PropType = {
 };
 const AiniToolbar: React.FC<PropType> = (props: PropType) => {
   const {
-    position,
-    leftToolbarSlot,
-    rightToolbarSlot,
     addButtonName = "新增",
     batchDeleteButtonName = "批量删除",
     importButtonName = "导入",
     exportButtonName = "导出",
-    printtButtonName = "打印",
+    printButtonName = "打印",
     refreshButtonName = "刷新",
     hiddenAddButton,
     hiddenBatchDeleteButton,
@@ -41,6 +40,10 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
     hiddenExportButton,
     hiddenPrintButton,
     hiddenRefreshButton,
+    position = "left",
+    btns = [],
+    leftToolbarSlot,
+    rightToolbarSlot,
     onImport,
     onExport,
     onAdd,
@@ -52,11 +55,24 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
     <div
       style={{
         marginBottom: 16,
+        display: "flex",
       }}
       className={position === "right" ? "right" : "left"}
     >
       <Space>
         {leftToolbarSlot}
+        {btns.map((item: IBtns) => {
+          if (item.position !== "right" && !item.hidden) {
+            return (
+              <Button
+                type={item.type ? item.type : "primary"}
+                onClick={item.click}
+              >
+                {item.name}
+              </Button>
+            );
+          }
+        })}
         {!hiddenImportButton && (
           <Button type="primary" onClick={onImport}>
             {importButtonName}
@@ -79,7 +95,7 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
         )}
         {!hiddenPrintButton && (
           <Button type="primary" onClick={onPrint}>
-            {printtButtonName}
+            {printButtonName}
           </Button>
         )}
         {!hiddenRefreshButton && (
@@ -87,6 +103,18 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
             {refreshButtonName}
           </Button>
         )}
+        {btns.map((item: IBtns) => {
+          if (item.position === "right" && !item.hidden) {
+            return (
+              <Button
+                type={item.type ? item.type : "primary"}
+                onClick={item.click}
+              >
+                {item.name}
+              </Button>
+            );
+          }
+        })}
         {rightToolbarSlot}
       </Space>
     </div>

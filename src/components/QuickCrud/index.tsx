@@ -1,6 +1,14 @@
-import { IColumn, IFormItem, IPage, ILeftTree } from "@ainiteam/quick-vue3-ui";
+import {
+  IColumn,
+  IFormItem,
+  IPage,
+  ILeftTree,
+  IActionbar,
+  IToolbar,
+} from "@ainiteam/quick-vue3-ui";
 import {
   Col,
+  Form,
   Modal,
   Pagination,
   PaginationProps,
@@ -9,11 +17,11 @@ import {
   message,
 } from "antd";
 import "./index.less";
-import AiniTable from "../AiniTable";
-import AiniForm from "../AiniForm";
+import AiniTable from "../QuickTable";
+import AiniForm from "../QuickForm";
 import { useState } from "react";
-import AiniToolbar from "../AiniToolbar";
-import AiniSearch from "../AiniSearch";
+import AiniToolbar from "../QuickToolbar";
+import AiniSearch from "../QuickSearch";
 
 export type FormType = "search" | "add" | "edit" | "detail" | "form";
 export type FormLayout = "horizontal" | "inline" | "vertical";
@@ -30,9 +38,9 @@ type PropType = {
   leftTreeRefresh?: boolean;
   tableData?: unknown[];
   tableColumns?: IColumn[];
-  tableActionbar?: boolean;
-  tableToolbar?: boolean;
-  page?: boolean | IPage;
+  tableActionbar?: boolean | IActionbar;
+  tableToolbar?: boolean | IToolbar;
+  pagebar?: boolean | IPage;
   dialogTitle?: Title;
   formModel?: object;
   formItems?: IFormItem[];
@@ -64,18 +72,18 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
   const {
     searchFormModel,
     searchFormItems,
-    leftTree,
+    leftTree = false,
     leftTreeRefresh,
     tableData,
     tableColumns,
-    tableActionbar,
-    tableToolbar,
-    page,
+    tableActionbar = true,
+    tableToolbar = true,
+    pagebar,
     dialogTitle,
     formModel,
     formItems,
     formLayout,
-    loading,
+    loading = false,
     height,
     onTreeClick,
     onLoad,
@@ -99,18 +107,24 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     onTableRef,
   } = props;
 
+  /**
+   * 类型转换
+   */
+  const page = pagebar as IPage;
+  const toolbar = tableToolbar as IToolbar;
+  const actionbar = tableActionbar as IActionbar;
   const tree = leftTree as ILeftTree;
   const treeSpan = tree.treeSpan ? tree.treeSpan : 4;
 
   /**
    * 属性
    */
+  const [form] = Form.useForm();
   const [selectTree, setSelectTree] = useState<Tree>();
   const [checkDataList, setCheckDataList] = useState<any>();
   const [formTitle, setFormTitle] = useState<Title>({
     add: "添加",
     edit: "编辑",
-    delete: "删除",
     detail: "详情",
   });
   const [dialogFormType, setDialogFormType] = useState<FormType>("form");
@@ -118,22 +132,68 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
   // const [loading, setLoading] = useState(false);
 
   /**
+   * 操作栏
+   */
+  const handleEdit = (row: any) => {
+    debugger;
+    Object.keys(formModel).forEach((key) => {
+      formModel[key] = row[key];
+    });
+    // onEdit(formModel, (data: any) => {
+    //   Object.keys(formModel).forEach((key) => {
+    //     formModel[key] = data[key];
+    //   });
+    //   setIsModalOpen(true);
+    // });
+    setDialogFormType("edit");
+    formTitle.edit = dialogTitle ? dialogTitle.edit : formTitle.edit;
+    setTitle(formTitle.edit);
+    setIsModalOpen(true);
+  };
+  const handleDelete = (row: any) => {
+    onDelete(row, () => {
+      refresh();
+    });
+  };
+  const handleDetail = (row: any) => {
+    Object.keys(formModel).forEach((key) => {
+      formModel[key] = row[key];
+    });
+    // onDetail(formModel, (data: any) => {
+    //   Object.keys(formModel).forEach((key) => {
+    //     formModel[key] = data[key];
+    //   });
+    //   setIsModalOpen(true);
+    // });
+    setDialogFormType("detail");
+    formTitle.detail = dialogTitle ? dialogTitle.detail : formTitle.detail;
+    setTitle(formTitle.detail);
+    setIsModalOpen(true);
+  };
+
+  /**
    * 表单
    */
   const handleOk = () => {
-    // quickFormRef.value?.handleSubmit()
+    handleFormSubmit();
   };
   const handleCancel = () => {
     Object.keys(formModel).forEach((key) => {
-      formModel.value[key] = "";
+      formModel[key] = "";
     });
     // quickFormRef.value?.handleClear()
     setIsModalOpen(false);
   };
   const handleFormSubmit = () => {
-    onFormSubmit(formModel, () => {
-      setIsModalOpen(false);
-      refresh();
+    form.validateFields().then((values) => {
+      form.resetFields();
+      Object.keys(values).forEach((key) => {
+        formModel[key] = values[key];
+      });
+      onFormSubmit(formModel, () => {
+        setIsModalOpen(false);
+        refresh();
+      });
     });
   };
 
@@ -145,12 +205,12 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
       message.warning("请选择节点");
       return;
     }
-    onAdd(formModel, (data: any) => {
-      Object.keys(formModel).forEach((key) => {
-        formModel[key] = data[key];
-      });
-      setIsModalOpen(true);
-    });
+    // onAdd(formModel, (data: any) => {
+    //   Object.keys(formModel).forEach((key) => {
+    //     formModel[key] = data[key];
+    //   });
+    //   setIsModalOpen(true);
+    // });
     setDialogFormType("add");
     formTitle.add = dialogTitle ? dialogTitle.add : formTitle.add;
     setFormTitle(formTitle);
@@ -210,10 +270,12 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
    * 加载数据
    */
   const load = () => {
-    onLoad();
+    const { current, size } = page;
+    const params = { ...searchFormModel, current, size };
+    onLoad(params);
   };
   const handleTreeNodeClick = (data: Tree) => {
-    selectTree.value = data;
+    selectTree = data;
     onTreeClick(data, () => {
       load();
     });
@@ -238,8 +300,15 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     setCheckDataList(newSelectedRowKeys);
   };
 
-  const onChange: PaginationProps["onChange"] = (pageNumber: number) => {
-    console.log("Page: ", pageNumber);
+  const handleSizeChange: PaginationProps["onChange"] = (val: number) => {
+    page.size = val;
+    // onSizeChange(val);
+    load();
+  };
+  const handleCurrentChange: PaginationProps["onChange"] = (val: number) => {
+    page.current = val;
+    // onCurrentChange(val);
+    load();
   };
   const [title, setTitle] = useState("");
   const handleRowSelection = {
@@ -248,11 +317,21 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
   };
   const handleSearchSubmit = () => {
     onSearchFormSubmit(searchFormModel);
+    load();
   };
 
   const handleSearchClear = () => {
+    Object.keys(searchFormModel).forEach((key) => {
+      searchFormModel[key] = "";
+    });
     onSearchFormClear(searchFormModel);
+    load();
   };
+
+  const handleDone = () => {
+    load();
+  };
+
   return (
     <div className="quick-crud">
       <Row gutter={40}>
@@ -267,27 +346,62 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
                 onClear={handleSearchClear}
               ></AiniSearch>
             )}
-            <AiniToolbar
-              onAdd={handleAdd}
-              onBatchDelete={handleBatchDelete}
-              onImport={handleImport}
-              onExport={handleExport}
-              onPrint={handlePrint}
-              onRefresh={handleRefresh}
-            ></AiniToolbar>
+            {tableToolbar && (
+              <AiniToolbar
+                addButtonName={toolbar.addButtonName}
+                batchDeleteButtonName={toolbar.batchDeleteButtonName}
+                importButtonName={toolbar.importButtonName}
+                exportButtonName={toolbar.exportButtonName}
+                printButtonName={toolbar.printButtonName}
+                refreshButtonName={toolbar.refreshButtonName}
+                hiddenAddButton={toolbar.hiddenAddButton}
+                hiddenBatchDeleteButton={toolbar.hiddenBatchDeleteButton}
+                hiddenImportButton={toolbar.hiddenImportButton}
+                hiddenExportButton={toolbar.hiddenExportButton}
+                hiddenPrintButton={toolbar.hiddenPrintButton}
+                hiddenRefreshButton={toolbar.hiddenRefreshButton}
+                position={toolbar.position}
+                btns={toolbar.btns}
+                leftToolbarSlot={toolbar.leftToolbarSlot}
+                rightToolbarSlot={toolbar.rightToolbarSlot}
+                onAdd={handleAdd}
+                onBatchDelete={handleBatchDelete}
+                onImport={handleImport}
+                onExport={handleExport}
+                onPrint={handlePrint}
+                onRefresh={handleRefresh}
+              ></AiniToolbar>
+            )}
             <AiniTable
               data={tableData}
-              columns={tableColumns}
-              onRowSelection={handleRowSelection}
+              tableColumns={tableColumns}
+              btns={actionbar.btns}
+              editButtonName={actionbar.editButtonName}
+              deleteButtonName={actionbar.deleteButtonName}
+              detailButtonName={actionbar.detailButtonName}
+              hiddenEditButton={actionbar.hiddenEditButton}
+              hiddenDeleteButton={actionbar.hiddenDeleteButton}
+              hiddenDetailButton={actionbar.hiddenDetailButton}
+              onRowEdit={handleEdit}
+              onRowDelete={handleDelete}
+              onRowDetail={handleDetail}
+              onSelectionChange={handleRowSelection}
+              onDone={handleDone}
             ></AiniTable>
-            <div style={{ marginTop: 10 }}>
-              <Pagination
-                showQuickJumper
-                defaultCurrent={2}
-                total={500}
-                onChange={onChange}
-              />
-            </div>
+            {pagebar && (
+              <div style={{ marginTop: 10 }}>
+                <Pagination
+                  showQuickJumper
+                  defaultCurrent={1}
+                  current={page.current}
+                  pageSize={page.size}
+                  total={page.total}
+                  // hideOnSinglePage={true}
+                  onChange={handleCurrentChange}
+                  onShowSizeChange={handleSizeChange}
+                />
+              </div>
+            )}
             <Modal
               title={title}
               open={isModalOpen}
@@ -295,6 +409,7 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
               onCancel={handleCancel}
             >
               <AiniForm
+                form={form}
                 model={formModel}
                 formItems={formItems}
                 layout={formLayout}
