@@ -120,7 +120,7 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
   /**
    * 属性
    */
-  const [form] = Form.useForm();
+  const form = Form.useFormInstance();
   const [selectTree, setSelectTree] = useState<Tree>();
   const [checkDataList, setCheckDataList] = useState<any>();
   const [formTitle, setFormTitle] = useState<Title>({
@@ -405,11 +405,11 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
             <Modal
               title={title}
               open={isModalOpen}
+              destroyOnClose={true}
               onOk={handleOk}
               onCancel={handleCancel}
             >
               <AiniForm
-                form={form}
                 model={formModel}
                 formItems={formItems}
                 layout={formLayout}

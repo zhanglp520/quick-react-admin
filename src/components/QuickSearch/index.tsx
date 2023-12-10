@@ -1,5 +1,5 @@
 import { IFormItem } from "@ainiteam/quick-vue3-ui";
-import { Button, Form } from "antd";
+import { Button, Form, Space } from "antd";
 import AiniFormItem from "../QuickFormItem";
 import "./index.less";
 import AiniForm from "../QuickForm";
@@ -31,14 +31,14 @@ const AiniSearch: React.FC<PropType> = (props: PropType) => {
       layout='inline'
       hiddenAction={true}
       actionSlot={
-        <div>
+        <Space>
           <Button type="primary" onClick={onSearch}>
             {searchButtonName}
           </Button>
           {!hiddenResetButton && (
             <Button onClick={onClear}>{resetButtonName}</Button>
           )}
-        </div>
+        </Space>
       }
     ></AiniForm>
   );

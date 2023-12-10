@@ -1,6 +1,7 @@
 import { IFormItem } from "@ainiteam/quick-vue3-ui";
 import {
   Checkbox,
+  ColorPicker,
   DatePicker,
   Form,
   Input,
@@ -13,50 +14,75 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import "./index.less";
 
+export type FormType = "search" | "add" | "edit" | "detail" | "form";
 type PropType = {
   model: object;
   formItem: IFormItem;
+  formType: FormType;
 };
 const AiniFormItem: React.FC<PropType> = (props: PropType) => {
-  const { formItem } = props;
+  const { model, formItem, formType } = props;
+  const isDisable = (item: IFormItem) => {
+    if (
+      (formType === "add" && item.addDisabled) ||
+      (formType === "edit" && (item.editDisabled || item.editReadonly)) ||
+      formType === "detail"
+    ) {
+      return true;
+    }
+  };
   const getFormItem = (item: IFormItem) => {
     if (item.type === "password") {
       return (
-        <Input.Password name={item.vModel} placeholder={item.placeholder} />
+        <Input.Password
+          placeholder={item.placeholder}
+          disabled={isDisable(item)}
+        />
       );
     } else if (item.type === "radio") {
       return <Radio value="apple"> Apple </Radio>;
     } else if (item.type === "radioGroup") {
       return (
-        <Radio.Group>
-          <Radio value="public">Public</Radio>
-          <Radio value="private">Private</Radio>
+        <Radio.Group disabled={isDisable(item)}>
+          return (
+          {item.options?.map((option: any) => {
+            return <Radio value={option.value}>{option.label}</Radio>;
+          })}
+          );
         </Radio.Group>
       );
     } else if (item.type === "number") {
-      return <InputNumber name={item.vModel} />;
+      return <InputNumber disabled={isDisable(item)} />;
     } else if (item.type === "checkbox") {
       return (
         <Checkbox
-        // checked={componentDisabled}
-        // onChange={(e) => setComponentDisabled(e.target.checked)}
+          disabled={isDisable(item)}
+          // checked={componentDisabled}
+          // onChange={(e) => setComponentDisabled(e.target.checked)}
         >
           Form disabled
         </Checkbox>
       );
     } else if (item.type === "select") {
       return (
-        <Select>
-          <Select.Option value="demo">Demo</Select.Option>
+        <Select disabled={isDisable(item)}>
+          {item.options?.map((option: any) => {
+            return (
+              <Select.Option value={option.value}>{option.label}</Select.Option>
+            );
+          })}
         </Select>
       );
+    } else if (item.type === "color") {
+      return <ColorPicker showText disabled={isDisable(item)} />;
     } else if (item.type === "switch") {
-      return <Switch />;
+      return <Switch disabled={isDisable(item)} />;
     } else if (item.type === "datetime") {
-      return <DatePicker />;
+      return <DatePicker disabled={isDisable(item)} />;
     } else if (item.type === "treeselect") {
       return (
         <TreeSelect
+          disabled={isDisable(item)}
           treeData={[
             {
               title: "Light",
@@ -67,15 +93,13 @@ const AiniFormItem: React.FC<PropType> = (props: PropType) => {
         />
       );
     } else if (item.type === "textarea") {
-      return <TextArea name={item.vModel} rows={4} />;
+      return <TextArea rows={4} disabled={isDisable(item)} />;
     } else {
       return (
-        // {model[item.vModel]}
-        <Input name={item.vModel} placeholder={item.placeholder} />
+        <Input placeholder={item.placeholder} disabled={isDisable(item)} />
       );
     }
   };
-
   return (
     <Form.Item<FieldType>
       label={formItem.label}

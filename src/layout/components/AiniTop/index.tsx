@@ -26,6 +26,8 @@ import { AppDispatch, RootState } from "@/store";
 import { useNavigate } from "react-router-dom";
 import { ITab } from "@/types";
 import { addTab } from "@/store/modules/tab";
+import AiniTheme from "../AiniTheme";
+import { useState } from "react";
 
 const AiniTop: React.FC = () => {
   const { confirm } = Modal;
@@ -33,6 +35,7 @@ const AiniTop: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const { tabList } = useSelector((state: RootState) => state.tab);
   const { collapsed } = useSelector((state: RootState) => state.app);
+  const [themeVisible, setThemeVisible] = useState(false);
   const loginOut = () => {
     confirm({
       title: "警告",
@@ -86,9 +89,13 @@ const AiniTop: React.FC = () => {
         break;
     }
   };
+
+  const handleSearch = () => {};
+  const handleOpenChat = () => {};
+  const handleFunllScreen = () => {};
+  const handlePhone = () => {};
   const handleSetting = () => {
-    // themeVisible = true;
-    // testInput = "11111111";
+    setThemeVisible(true)
   };
   const handleCollapse = () => {
     dispatch(setCollapse(!collapsed));
@@ -126,18 +133,30 @@ const AiniTop: React.FC = () => {
         </div>
       </div>
       <div className="right">
-        <span className="test">
-          <SearchOutlined />
-        </span>
-        <span className="test">
-          <WechatOutlined />
-        </span>
-        <span className="test">
-          <FullscreenOutlined />
-        </span>
-        <span className="test">
-          <PhoneOutlined />
-        </span>
+        <Button
+          type="text"
+          icon={<SearchOutlined />}
+          className="btn"
+          onClick={handleSearch}
+        />
+        <Button
+          type="text"
+          icon={<WechatOutlined />}
+          className="btn"
+          onClick={handleOpenChat}
+        />
+        <Button
+          type="text"
+          icon={<FullscreenOutlined />}
+          className="btn"
+          onClick={handleFunllScreen}
+        />
+        <Button
+          type="text"
+          icon={<PhoneOutlined />}
+          className="btn"
+          onClick={handlePhone}
+        />
         <span className="test">
           <Dropdown menu={{ items, onClick }}>
             <a onClick={(e) => e.preventDefault()}>
@@ -148,11 +167,14 @@ const AiniTop: React.FC = () => {
             </a>
           </Dropdown>
         </span>
-        <span className="test" onClick={handleSetting}>
-          <SettingOutlined />
-        </span>
+        <Button
+          type="text"
+          icon={<SettingOutlined />}
+          className="btn"
+          onClick={handleSetting}
+        />
       </div>
-      {/* <AiniTheme v-model="themeVisible"></AiniTheme> */}
+      {themeVisible && <AiniTheme themeVisible={themeVisible} onClose={()=>{setThemeVisible(false)}}></AiniTheme>}
     </div>
   );
 };

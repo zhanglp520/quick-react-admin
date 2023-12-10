@@ -1,32 +1,37 @@
 .aini-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // height: 50px;
+  // line-height: 50px;
+
+  .test {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 50px;
-    line-height: 50px;
+    height: 100%;
+    padding: 1px 15px 0;
+    cursor: pointer;
+  }
 
-    .test {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding: 1px 10px 0;
-        cursor: pointer;
-    }
+  .test:hover {
+    background-color: #f6f6f6;
+  }
 
-    .test:hover {
-        background-color: #f6f6f6;
-    }
+  .left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
 
-    .left {
-        display: flex;
-        align-items: center;
-        height: 100%;
+  .right {
+    display: flex;
+    align-items: center;
+    min-width: 180px;
+    height: 100%;
+    .btn {
+      font-size: 16px;
+      width: 40px;
+      height: 40px;
     }
-
-    .right {
-        display: flex;
-        align-items: center;
-        min-width: 180px;
-        height: 100%;
-    }
+  }
 }

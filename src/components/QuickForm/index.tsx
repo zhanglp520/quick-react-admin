@@ -2,19 +2,19 @@ import { IFormItem } from "@ainiteam/quick-vue3-ui";
 import { Button, Form, Space } from "antd";
 import AiniFormItem from "../QuickFormItem";
 import "./index.less";
+import { useForm } from "antd/es/form/Form";
 // import { useState } from "react";
 
 export type FormType = "search" | "add" | "edit" | "detail" | "form";
 export type FormLayout = "horizontal" | "inline" | "vertical";
 type PropType = {
-  form:any;
   model?: object;
   formItems?: IFormItem[];
   formType?: FormType;
   layout?: FormLayout;
   hiddenAction?: boolean;
   actionSlot?: any;
-  searchButtonName?: string;
+  submitButtonName?: string;
   resetButtonName?: string;
   onSubmit?: any;
   onReset?: any;
@@ -22,20 +22,19 @@ type PropType = {
 
 const AiniForm: React.FC<PropType> = (props: PropType) => {
   const {
-    form,
     model,
     formItems,
     formType,
     layout = "horizontal",
     hiddenAction,
     actionSlot,
-    searchButtonName,
-    resetButtonName,
+    submitButtonName = "提交",
+    resetButtonName = "重置",
     onSubmit,
     onReset,
   } = props;
   // const [formLayout, setFormLayout] = useState<LayoutType>("horizontal");
-  
+
   const formItemLayout =
     layout === "horizontal"
       ? { labelCol: { span: 4 }, wrapperCol: { span: 14 } }
@@ -43,7 +42,7 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
 
   const buttonItemLayout =
     layout === "horizontal" ? { wrapperCol: { span: 14, offset: 4 } } : null;
-
+  const [form] = Form.useForm();
   return (
     <div>
       <Form
@@ -55,31 +54,39 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
         form={form}
         style={{ maxWidth: layout === "inline" ? "none" : 600 }}
         // initialValues={{ layout: layout }}
-        initialValues={{...model}}
-
+        initialValues={{ ...model }}
+        // disabled={true}
         //   onFinish={onFinish}
         //   onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         {formItems &&
           formItems.map((item: IFormItem) => {
-            return <AiniFormItem model={model} formItem={item}></AiniFormItem>;
+            if (
+              formType === "search" ||
+              (formType === "add" && !item.addHidden) ||
+              (formType === "edit" && !item.editHidden) ||
+              (formType === "detail" && !item.detailHidden) ||
+              formType === "form"
+            ) {
+              return (
+                <AiniFormItem model={model} formItem={item} formType={formType}></AiniFormItem>
+              );
+            }
           })}
         {!hiddenAction && (
           <Form.Item {...buttonItemLayout}>
             <Space>
               <Button type="primary" onClick={onSubmit}>
-                {searchButtonName}
+                {submitButtonName}
               </Button>
               <Button onClick={onReset}>{resetButtonName}</Button>
             </Space>
           </Form.Item>
         )}
-         {hiddenAction && (
-        <Form.Item {...buttonItemLayout}>
-          <Space>{actionSlot}</Space>
-        </Form.Item>
-      )}
+        {hiddenAction && (
+          <Form.Item {...buttonItemLayout}>{actionSlot}</Form.Item>
+        )}
       </Form>
     </div>
   );
