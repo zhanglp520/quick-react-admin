@@ -3,8 +3,7 @@ import { listToTableTree } from "@/utils/index";
 import { ITab, IUser } from "@/types";
 import { IMenu, IMenubar } from "@/types";
 import { getUserByUserName } from "@/api/system/user";
-import { getPermission } from "@/api/auth";
-import store from "@/store";
+import { getPermission as getPer } from "@/api/auth";
 
 interface IUserState {
   user: IUser;
@@ -13,11 +12,11 @@ interface IUserState {
   permissionBtns: Array<IMenu>;
 }
 
-export const getPermission1 = createAsyncThunk(
-  "user/getPermission1",
+export const getPermission = createAsyncThunk(
+  "user/getPermission",
   async (id: string) => {
     const userId = id;
-    const res = await getPermission(userId);
+    const res = await getPer(userId);
     return res;
   }
 );
@@ -51,29 +50,26 @@ export const userSlice = createSlice({
   },
   reducers: {
     getPermissionBtns: (state, action: PayloadAction<ITab>) => {
-      if (state) {
-        const { payload: activeTab } = action;
-        const menuPermission = state.permissionMenuList.filter(
-          (x) => x.id?.toString() === activeTab.id
+      const { payload: activeTab } = action;
+      const menuPermission = state.permissionMenuList.filter(
+        (x) => x.id?.toString() === activeTab.id
+      );
+      if (menuPermission && menuPermission[0]) {
+        const btns = state.permissionMenuList.filter(
+          (x) => x.pId === menuPermission[0].id
         );
-        if (menuPermission && menuPermission[0]) {
-          const btns = state.permissionMenuList.filter(
-            (x) => x.pId === menuPermission[0].id
-          );
-          const permission = {};
-          btns.forEach((element) => {
-            permission[element.menuId] = true;
-          });
-          return permission as T;
-        }
+        const permission = {};
+        btns.forEach((element) => {
+          permission[element.menuId] = true;
+        });
+        return permission as T;
       }
-
       return null;
     },
   },
   extraReducers(builder) {
     builder
-      .addCase(getPermission1.fulfilled, (state, { payload }) => {
+      .addCase(getPermission.fulfilled, (state, { payload }) => {
         const { data: userPermissionMenuList } = payload;
         state.permissionMenuList = userPermissionMenuList;
         const dt = JSON.parse(JSON.stringify(userPermissionMenuList));
@@ -84,13 +80,16 @@ export const userSlice = createSlice({
         });
         const m = JSON.parse(JSON.stringify(userMenuList));
         state.menuList = m;
+        return state;
       })
       .addCase(getUserInfo.fulfilled, (state, { payload }) => {
         const { data: user } = payload;
         state.user = user;
+        return state;
       });
   },
 });
 
 export const { getPermissionBtns } = userSlice.actions;
-export default userSlice.reducer;
+const { reducer } = userSlice;
+export default reducer;

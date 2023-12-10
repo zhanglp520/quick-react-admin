@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Input, Button } from "antd";
 import { useDispatch } from "react-redux";
+import { Card, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { ILoginParams } from "@/types";
-import "./index.less";
 import { AppDispatch } from "@/store";
 import { login } from "@/store/modules/auth";
-import { getUserInfo, getPermission1 } from "@/store/modules/user";
+import { getUserInfo, getPermission } from "@/store/modules/user";
 import { IQuickResponseData } from "@/utils/request";
+import "./index.less";
 
 const Login: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     const { name, value } = event.target;
     setForm((state) => ({ ...state, [name]: value }));
   };
-  const handleLogin = async (): Promise<void> => {
+  const handleLogin = async () => {
     console.log("form", form);
     const { username } = form;
     setLoadings(true);
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
       const { payload } = await dispatch(getUserInfo(username));
       const { data: user } = payload as IQuickResponseData<IUser>;
       const { id } = user;
-      await dispatch(getPermission1(id!.toString()));
+      await dispatch(getPermission(id!.toString()));
       navigate("/");
     } catch (error) {
       console.log("login error", error);
@@ -57,7 +57,6 @@ const Login: React.FC = () => {
               name="username"
               placeholder="用户名"
               prefix={<UserOutlined className="site-form-item-icon" />}
-              //   value={form.username}
               size="large"
               onChange={handleInputChanage}
             />
@@ -67,7 +66,6 @@ const Login: React.FC = () => {
               name="password"
               placeholder="密码"
               prefix={<LockOutlined className="site-form-item-icon" />}
-              //   value={form.password}
               size="large"
               onChange={handleInputChanage}
             />

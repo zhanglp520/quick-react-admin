@@ -25,11 +25,12 @@ type PropType = {
 type ItemType = MenuItemType | SubMenuType;
 const AiniMenu: React.FC<PropType> = (props: PropType) => {
   const { collapsed } = props;
+  const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { tabList } = useSelector((state: RootState) => state.tab);
   // const { menuList } = useSelector((state: RootState) => state.user);
   const user = useSelector((state: RootState) => state.user);
-  let menuList: IMenubar = [];
+  let menuList: IMenubar[] = [];
   if (user) {
     menuList = user.menuList;
   }
@@ -60,6 +61,7 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
         return;
       }
       dispatch(addTab(tab));
+      navigate(tab.path)
     }
   };
   const homeMenuClick = () => {
@@ -126,7 +128,6 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
       defaultOpenKeys={["sub1"]}
       mode="inline"
       theme="dark"
-      inlineCollapsed={collapsed}
       items={items}
     />
   );

@@ -64,21 +64,23 @@ const Layout1: React.FC = () => {
   //   menuStore.clear();
   //   editableTabsValue = "home";
   // };
+  // useEffect(() => {
+  //   if (activeTab) {
+  //     const { id, path } = activeTab;
+  //     if (id) {
+  //       setActiveKey(id);
+  //       console.log("activeTab-监听", activeTab);
+  //     }
+  //     if (path) {
+  //       console.log("activeTab-监听", path);
+  //       // navigate(path);//TODO:死循环
+  //     }
+  //   }
+  // }, [activeTab]);
 
-  useEffect(() => {
-    if (activeTab) {
-      const { id, path } = activeTab;
-      if (id) {
-        setActiveKey(id);
-      }
-      if (path) {
-        navigate(path);
-      }
-    }
-  }, [activeTab]);
   return (
     <div className="aini-layout">
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <AiniSidebar></AiniSidebar>
         </Sider>

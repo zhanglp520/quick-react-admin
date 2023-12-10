@@ -5,6 +5,7 @@ import {
   ILeftTree,
   IActionbar,
   IToolbar,
+  ITree,
 } from "@ainiteam/quick-vue3-ui";
 import {
   Col,
@@ -135,7 +136,6 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
    * 操作栏
    */
   const handleEdit = (row: any) => {
-    debugger;
     Object.keys(formModel).forEach((key) => {
       formModel[key] = row[key];
     });
@@ -274,8 +274,8 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     const params = { ...searchFormModel, current, size };
     onLoad(params);
   };
-  const handleTreeNodeClick = (data: Tree) => {
-    selectTree = data;
+  const handleTreeNodeClick = (data: ITree) => {
+    setSelectTree(data)
     onTreeClick(data, () => {
       load();
     });
@@ -316,7 +316,7 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     onChange: onSelectChange,
   };
   const handleSearchSubmit = () => {
-    onSearchFormSubmit(searchFormModel);
+    // onSearchFormSubmit(searchFormModel);
     load();
   };
 

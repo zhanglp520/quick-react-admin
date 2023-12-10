@@ -59,7 +59,7 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
       }}
       className={position === "right" ? "right" : "left"}
     >
-      <Space>
+      <Space >
         {leftToolbarSlot}
         {btns.map((item: IBtns) => {
           if (item.position !== "right" && !item.hidden) {

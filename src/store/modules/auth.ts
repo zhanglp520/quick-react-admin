@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { userLogin, refreshToken } from "@/api/auth";
 import { ILoginParams, IToken } from "@/types";
 import { encryptForMd5 } from "@/utils/crypto";
+import { userLogin, refreshToken } from "@/api/auth";
 
 interface ILoginState {
     quickAccessToken: string;
@@ -84,5 +84,4 @@ export const authSlice = createSlice({
     }
 })
 
-export const { } = authSlice.actions;
 export default authSlice.reducer;

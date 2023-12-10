@@ -83,9 +83,9 @@ const User: React.FC = () => {
       remark: "管理员（请误删）",
     },
   ]);
-  const permissionBtn = dispatch(
-    getPermissionBtns(activeTab)
-  ) as IUserPermissionButton;
+  // const permissionBtn = dispatch(
+  //   getPermissionBtns(activeTab)
+  // ) as IUserPermissionButton;
 
   /**
    * 分页
@@ -183,7 +183,7 @@ const User: React.FC = () => {
         name: "导入(前端方式)",
         position: "left",
         type: "warning",
-        hidden: !validatePermission(permissionBtn?.import),
+        // hidden: !validatePermission(permissionBtn?.import),
         click() {
           // const fileBtn = uploadRef as HTMLInputElement;
           // fileBtn.click();
@@ -193,7 +193,7 @@ const User: React.FC = () => {
         name: "导出(前端方式)",
         position: "left",
         type: "danger",
-        hidden: !validatePermission(permissionBtn?.export),
+        // hidden: !validatePermission(permissionBtn?.export),
         click() {
           // 导出的字段映射
           const columns = [
