@@ -36,14 +36,14 @@ export const tabSlice = createSlice({
       if (index === -1) {
         state.tabList.push(tab);
       }
-      setActiveTab(tab);
+      state.activeTab = tab;
     },
     deleteTab: (state, action: PayloadAction<string>) => {
       const { payload: id } = action;
       if (id !== "home") {
         const index = state.tabList.findIndex((x) => x.id === id);
         const activeTab = state.tabList[index + 1] || state.tabList[index - 1];
-        setActiveTab(activeTab);
+        state.activeTab = activeTab;
         state.tabList = state.tabList.filter((x) => x.id !== id);
       }
     },

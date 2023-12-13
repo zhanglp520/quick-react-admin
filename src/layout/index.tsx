@@ -5,7 +5,7 @@ import { Layout, Tabs, theme } from "antd";
 
 import AiniSidebar from "./components/AiniSidebar";
 import AiniTop from "./components/AiniTop";
-import { RootState } from "@/store";
+import { AppDispatch, RootState } from "@/store";
 import { ITab } from "@/types";
 import { deleteTab, setActiveTab } from "@/store/modules/tab";
 import { setActiveMenuId } from "@/store/modules/menu";
@@ -28,12 +28,10 @@ const Layout1: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  // const [activeKey, setActiveKey] = useState(
-  //   activeTab.id ? activeTab.id : "home"
-  // );
-  const [activeKey, setActiveKey] = useState("home");
-  const [items] = useState<TabItemType[]>([]);
-
+  const [activeKey, setActiveKey] = useState(
+    activeTab.id ? activeTab.id : "home"
+  );
+  const items: TabItemType[] = [];
   tabList.forEach((tab: ITab) => {
     items.push({
       key: tab.id!,
@@ -41,12 +39,27 @@ const Layout1: React.FC = () => {
       path: tab.path!,
     });
   });
+  console.log("items", items);
+
+  useEffect(() => {
+    if (activeTab) {
+      console.log("activeTab-监听", activeTab);
+      const { id, path } = activeTab;
+      if (id) {
+        setActiveKey(id);
+      }
+    }
+  }, [activeTab]);
+
   const handleTabsEdit = (
     targetKey: TargetKey,
     action: "add" | "remove"
   ): void => {
     if (action === "remove") {
-      if (targetKey) {
+      if (targetKey && targetKey !== "home") {
+        const index = items.findIndex((x) => x.key === targetKey);
+        const tab = items[index + 1] || items[index - 1];
+        navigate(tab.path!);
         dispatch(deleteTab(targetKey.toString()));
       }
     }
@@ -54,9 +67,11 @@ const Layout1: React.FC = () => {
   const handleClick = (key: string) => {
     const index = tabList.findIndex((x) => x.id === key);
     if (index !== -1) {
-      dispatch(setActiveTab(tabList[index]));
+      const tab = tabList[index];
+      dispatch(setActiveTab(tab));
       dispatch(setActiveMenuId(key.toString()));
       setActiveKey(key.toString());
+      navigate(tab.path!);
     }
   };
   // const closeAll = () => {
@@ -64,20 +79,6 @@ const Layout1: React.FC = () => {
   //   menuStore.clear();
   //   editableTabsValue = "home";
   // };
-  // useEffect(() => {
-  //   if (activeTab) {
-  //     const { id, path } = activeTab;
-  //     if (id) {
-  //       setActiveKey(id);
-  //       console.log("activeTab-监听", activeTab);
-  //     }
-  //     if (path) {
-  //       console.log("activeTab-监听", path);
-  //       // navigate(path);//TODO:死循环
-  //     }
-  //   }
-  // }, [activeTab]);
-
   return (
     <div className="aini-layout">
       <Layout style={{ minHeight: "100vh" }}>
@@ -93,6 +94,7 @@ const Layout1: React.FC = () => {
               margin: "24px 16px",
               padding: 24,
               minHeight: 280,
+              background: colorBgContainer,
             }}
           >
             <Tabs

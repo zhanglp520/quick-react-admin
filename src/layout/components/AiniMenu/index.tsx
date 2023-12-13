@@ -94,15 +94,17 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
       key: menu.menuId,
       icon: <AppstoreOutlined />,
       label: menu.menuName,
-      onClick: () => {
-        menuClick(menu);
-      },
+      // onClick: ({ domEvent}) => {
+      //   domEvent.stopPropagation();
+      //   menuClick(menu);
+      // },
       children: menu.children.map((child: IMenubar) => {
         return {
           key: child.menuId,
           icon: <AppstoreOutlined />,
           label: child.menuName,
-          onClick: () => {
+          onClick: ({ domEvent}) => {
+            domEvent.stopPropagation();
             menuClick(child);
           },
           children:
@@ -113,7 +115,8 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
                     key: child2.menuId,
                     icon: <AppstoreOutlined />,
                     label: child2.menuName,
-                    onClick: () => {
+                    onClick: ({ domEvent}) => {
+                      domEvent.stopPropagation();
                       menuClick(child2);
                     },
                   };

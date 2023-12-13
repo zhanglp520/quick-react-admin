@@ -9,10 +9,22 @@ const staticRouter: RouteObject[] = [
         children: [{
             path: "/home",
             // Component: lazy(() => import("@/pages/404"))
-            // Component: lazy(() => import("@/views/home"))
+            Component: lazy(() => import("@/views/home"))
+            // Component: lazy(() => import("@/views/system/user"))
+        }]
+    },
+    {
+        path: "/system",
+        Component: layout,
+        children: [{
+            path: "/system/user",
             Component: lazy(() => import("@/views/system/user"))
         }]
     },
+    // {
+    //     path:'/',
+    //     element: <Navigate to="/login" />,
+    // },
     {
         path: "/login",
         Component: lazy(() => import("@/pages/login"))
