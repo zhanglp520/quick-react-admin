@@ -5,5 +5,6 @@ export interface IRole {
     roleId: string;
     roleName: string;
     deptId?: number;
+    remark?:string;
 }
 export interface IRolePermissionButton extends IPermissionButton {}
