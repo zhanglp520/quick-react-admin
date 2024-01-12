@@ -19,8 +19,12 @@ const staticRouter: RouteObject[] = [
         children: [{
             path: "/system/user",
             Component: lazy(() => import("@/views/system/user"))
+        },{
+            path: "/system/role",
+            Component: lazy(() => import("@/views/system/role"))
         }]
     },
+    
     // {
     //     path:'/',
     //     element: <Navigate to="/login" />,
