@@ -22,7 +22,7 @@ import {
   downloadFileStream,
 } from "@/api/system/user";
 import { downloadExcel, exportExcel } from "@/utils/download";
-import { Modal, message } from "antd";
+import { Modal, Table, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { validatePermission } from "@/utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -425,15 +425,6 @@ const User: React.FC = () => {
    * 表格
    */
   const tableColumns: IColumn[] = [
-    // {
-    //   width: "50",
-    //   type: "selection",
-    // },
-    // {
-    //   width: "60",
-    //   type: "index",
-    //   label: "序号",
-    // },
     {
       width: "100",
       label: "用户编号",
@@ -443,6 +434,7 @@ const User: React.FC = () => {
       width: "100",
       label: "用户名",
       prop: "userName",
+      edit: true,
     },
     {
       width: "100",
@@ -517,6 +509,8 @@ const User: React.FC = () => {
         searchFormModel={searchForm}
         pagebar={page}
         loading={loading}
+        rowEdit={true}
+        displayNumber={true}
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}

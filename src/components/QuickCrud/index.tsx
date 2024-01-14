@@ -48,6 +48,8 @@ type PropType = {
   formLayout?: FormLayout;
   loading?: boolean;
   height?: number;
+  rowEdit?: boolean;
+  displayNumber?: boolean;
   onTreeClick?: any;
   onLoad?: any;
   onTreeLoad?: any;
@@ -86,6 +88,8 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     formLayout,
     loading = false,
     height,
+    rowEdit = false,
+    displayNumber = true,
     onTreeClick,
     onLoad,
     onTreeLoad,
@@ -386,6 +390,8 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
               hiddenEditButton={actionbar.hiddenEditButton}
               hiddenDeleteButton={actionbar.hiddenDeleteButton}
               hiddenDetailButton={actionbar.hiddenDetailButton}
+              rowEdit={rowEdit}
+              displayNumber={displayNumber}
               onRowEdit={handleEdit}
               onRowDelete={handleDelete}
               onRowDetail={handleDetail}
