@@ -1,6 +1,6 @@
 import AiniCrud, { Title } from "@/components/QuickCrud";
-// import { ISearchUser, IUser } from "@/types";
-import { ISearchUser, IUser, IUserPermissionButton } from "@/types";
+import { ISearchUser, IUser } from "@/types";
+// IUserPermissionButton
 import {
   IActionbar,
   IColumn,
@@ -39,50 +39,7 @@ const User: React.FC = () => {
    * 属性
    */
   const [loading, setLoading] = useState(false);
-  const [tableDataList, setTableDataList] = useState<IUser[]>([
-    {
-      id: 116,
-      userId: "YH_0003",
-      userName: "test",
-      avatar: null,
-      fullName: "测试",
-      phone: "",
-      email: "",
-      address: "",
-      deleted: 0,
-      enabled: 1,
-      createTime: "2023-09-21 11:28:35",
-      remark: "",
-    },
-    {
-      id: 115,
-      userId: "YH_0002",
-      userName: "user",
-      avatar: null,
-      fullName: "普通用户",
-      phone: "",
-      email: "",
-      address: "",
-      deleted: 0,
-      enabled: 1,
-      createTime: "2023-09-21 11:27:28",
-      remark: "",
-    },
-    {
-      id: 114,
-      userId: "YH_0001",
-      userName: "admin",
-      avatar: null,
-      fullName: "管理员",
-      phone: "15229380174",
-      email: "zhanglp15229380174@163.com",
-      address: "北京",
-      deleted: 0,
-      enabled: 1,
-      createTime: "2023-09-19 11:01:20",
-      remark: "管理员（请误删）",
-    },
-  ]);
+  const [tableDataList, setTableDataList] = useState<IUser[]>([]);
   // const permissionBtn = dispatch(
   //   getPermissionBtns(activeTab)
   // ) as IUserPermissionButton;
@@ -153,14 +110,14 @@ const User: React.FC = () => {
     // hiddenAddButton: !validatePermission(permissionBtn?.add),
     // hiddenPrintButton: !validatePermission(permissionBtn?.print),
     position: "right",
-    leftToolbarSlot:<div>lll</div>,
-    rightToolbarSlot:<div>rrr</div>,
+    // leftToolbarSlot: <div>lll</div>,
+    // rightToolbarSlot: <div>rrr</div>,
     btns: [
       {
         name: "下载模板(浏览器下载方式)",
         position: "left",
         type: "primary",
-        hidden:false,
+        hidden: false,
         // hidden: !validatePermission(permissionBtn?.download),
         click() {
           window.location.href = `${
@@ -537,9 +494,7 @@ const User: React.FC = () => {
         const { data: userList, total } = res;
         console.log("userList", userList);
         if (userList) {
-          tableDataList.length = 0;
-          tableDataList.push(...userList);
-          setTableDataList(tableDataList);
+          setTableDataList([...userList]);
         }
         page.total = total;
       })

@@ -20,7 +20,7 @@ import {
 import "./index.less";
 import AiniTable from "../QuickTable";
 import AiniForm from "../QuickForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AiniToolbar from "../QuickToolbar";
 import AiniSearch from "../QuickSearch";
 
@@ -275,7 +275,7 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
     onLoad(params);
   };
   const handleTreeNodeClick = (data: ITree) => {
-    setSelectTree(data)
+    setSelectTree(data);
     onTreeClick(data, () => {
       load();
     });
@@ -331,6 +331,10 @@ const AiniCrud: React.FC<PropType> = (props: PropType) => {
   const handleDone = () => {
     load();
   };
+
+  useEffect(() => {
+    load();
+  }, []);
 
   return (
     <div className="quick-crud">
