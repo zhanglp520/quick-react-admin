@@ -1,4 +1,4 @@
-import { IFormItem } from "@ainiteam/quick-vue3-ui";
+import { IFormItem } from "@ainiteam/quick-react-ui";
 import { Button, Form, Space } from "antd";
 import AiniFormItem from "../QuickFormItem";
 import "./index.less";
@@ -28,7 +28,7 @@ const AiniSearch: React.FC<PropType> = (props: PropType) => {
       model={model}
       formItems={items}
       formType="search"
-      layout='inline'
+      layout="inline"
       hiddenAction={true}
       actionSlot={
         <Space>

@@ -6,6 +6,7 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 import store, { persistor } from "./store";
 import App from "./App.tsx";
 import "./index.css";
+import "@ainiteam/quick-react-ui/dist/style.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

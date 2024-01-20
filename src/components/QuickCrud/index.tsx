@@ -6,7 +6,7 @@ import {
   IActionbar,
   IToolbar,
   ITree,
-} from "@ainiteam/quick-vue3-ui";
+} from "@ainiteam/quick-react-ui";
 import {
   Col,
   Form,

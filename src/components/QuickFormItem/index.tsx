@@ -1,4 +1,4 @@
-import { IFormItem } from "@ainiteam/quick-vue3-ui";
+import { IFormItem } from "@ainiteam/quick-react-ui";
 import {
   Checkbox,
   ColorPicker,

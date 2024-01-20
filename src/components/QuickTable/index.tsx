@@ -1,4 +1,9 @@
-import { IActionbar, IBtns, IColumn, IFormItem } from "@ainiteam/quick-vue3-ui";
+import {
+  IActionbar,
+  IBtns,
+  IColumn,
+  IFormItem,
+} from "@ainiteam/quick-react-ui";
 import {
   Form,
   Input,

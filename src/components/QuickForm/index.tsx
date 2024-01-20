@@ -1,4 +1,4 @@
-import { IFormItem } from "@ainiteam/quick-vue3-ui";
+import { IFormItem } from "@ainiteam/quick-react-ui";
 import { Button, Form, Space } from "antd";
 import AiniFormItem from "../QuickFormItem";
 import "./index.less";
@@ -70,7 +70,11 @@ const AiniForm: React.FC<PropType> = (props: PropType) => {
               formType === "form"
             ) {
               return (
-                <AiniFormItem model={model} formItem={item} formType={formType}></AiniFormItem>
+                <AiniFormItem
+                  model={model}
+                  formItem={item}
+                  formType={formType}
+                ></AiniFormItem>
               );
             }
           })}

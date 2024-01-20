@@ -1,7 +1,7 @@
-import { IFormItem } from "@ainiteam/quick-vue3-ui";
+import { IFormItem } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
 import AiniFormItem from "../QuickFormItem";
-import './index.less'
+import "./index.less";
 
 type PropType = {
   formItems: IFormItem[];

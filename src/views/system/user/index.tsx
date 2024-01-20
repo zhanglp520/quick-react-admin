@@ -7,7 +7,7 @@ import {
   IFormItem,
   IPage,
   IToolbar,
-} from "@ainiteam/quick-vue3-ui";
+} from "@ainiteam/quick-react-ui";
 import { useState } from "react";
 import {
   exportUser,
@@ -28,6 +28,7 @@ import { validatePermission } from "@/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
+import { Button } from "@ainiteam/quick-react-ui";
 
 const User: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -497,6 +498,11 @@ const User: React.FC = () => {
 
   return (
     <div>
+      <div>
+        <Button type="primary" round size="small">
+          刷新
+        </Button>
+      </div>
       <AiniCrud
         dialogTitle={dialogTitle}
         formModel={formModel}

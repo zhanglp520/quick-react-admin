@@ -1,7 +1,7 @@
 import { Drawer, Form } from "antd";
 import "./index.less";
 import AiniForm from "@/components/QuickForm";
-import { IFormItem } from "@ainiteam/quick-vue3-ui";
+import { IFormItem } from "@ainiteam/quick-react-ui";
 
 type PropType = {
   themeVisible: boolean;
@@ -9,115 +9,116 @@ type PropType = {
 };
 const langOptions = [
   {
-      label: "英文",
-      value: "en"
+    label: "英文",
+    value: "en",
   },
   {
-      label: "中文",
-      value: "zh-cn"
-  }
+    label: "中文",
+    value: "zh-cn",
+  },
 ];
 const sizeOptions = [
   {
-      label: "大",
-      value: "large"
+    label: "大",
+    value: "large",
   },
   {
-      label: "中",
-      value: "default"
-  },{
+    label: "中",
+    value: "default",
+  },
+  {
     label: "小",
-    value: "small"
-}
+    value: "small",
+  },
 ];
 const modelOptions = [
   {
-      label: "亮色",
-      value: "light"
+    label: "亮色",
+    value: "light",
   },
   {
-      label: "暗色",
-      value: "dark"
-  }
+    label: "暗色",
+    value: "dark",
+  },
 ];
 
 const themeColorOptions = [
   {
-      label: "quick",
-      value: {
-          default: "#fff",
-          primary: "#0000FF",
-          success: "#00FF00",
-          info: "#909399",
-          warning: "#FFFF00",
-          danger: "#FF0000"
-      }
+    label: "quick",
+    value: {
+      default: "#fff",
+      primary: "#0000FF",
+      success: "#00FF00",
+      info: "#909399",
+      warning: "#FFFF00",
+      danger: "#FF0000",
+    },
   },
   {
-      label: "element",
-      value: {
-          default: "#fff",
-          primary: "#66b1ff",
-          success: "#67c23a",
-          info: "#909399",
-          warning: "#e6a23c",
-          danger: "#f56c6c"
-      }
+    label: "element",
+    value: {
+      default: "#fff",
+      primary: "#66b1ff",
+      success: "#67c23a",
+      info: "#909399",
+      warning: "#e6a23c",
+      danger: "#f56c6c",
+    },
   },
   {
-      label: "ant",
-      value: {
-          default: "#fff",
-          primary: "#1890ff",
-          success: "#52c41a",
-          info: "rgba(0, 0, 0, 0.25)",
-          warning: "#faad14",
-          danger: "#f5222d"
-      }
+    label: "ant",
+    value: {
+      default: "#fff",
+      primary: "#1890ff",
+      success: "#52c41a",
+      info: "rgba(0, 0, 0, 0.25)",
+      warning: "#faad14",
+      danger: "#f5222d",
+    },
   },
   {
-      label: "layui",
-      value: {
-          default: "#fff",
-          primary: "#16baaa",
-          success: "#16b777",
-          info: "#31bdec",
-          warning: "#ffb800",
-          danger: "#ff5722"
-      }
-  }
+    label: "layui",
+    value: {
+      default: "#fff",
+      primary: "#16baaa",
+      success: "#16b777",
+      info: "#31bdec",
+      warning: "#ffb800",
+      danger: "#ff5722",
+    },
+  },
 ];
 const themeOptions = [
   {
-      label: "quick主题",
-      value: "quick"
+    label: "quick主题",
+    value: "quick",
   },
   {
-      label: "element主题",
-      value: "element"
+    label: "element主题",
+    value: "element",
   },
   {
-      label: "ant主题",
-      value: "ant"
+    label: "ant主题",
+    value: "ant",
   },
   {
-      label: "layui主题",
-      value: "layui"
+    label: "layui主题",
+    value: "layui",
   },
   {
-      label: "自定义主题",
-      value: "custom"
-  }
+    label: "自定义主题",
+    value: "custom",
+  },
 ];
 const bgthemeOptions = [
   {
-      label: "政务蓝",
-      value: "rgb(41,23,91)"
+    label: "政务蓝",
+    value: "rgb(41,23,91)",
   },
   {
-      label: "中国红",
-      value: "rgb(255,0,0)"
-  }
+    label: "中国红",
+    value: "rgb(255,0,0)",
+  },
 ];
 
 const AiniTheme: React.FC<PropType> = (props: PropType) => {
@@ -142,7 +143,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
     infoColor: "#909399",
     warningColor: "#e6a23c",
     dangerColor: "#f56c6c",
-    bgColor: "rgb(41,23,91)"
+    bgColor: "rgb(41,23,91)",
   };
   const formItems: IFormItem[] = [
     {
@@ -153,7 +154,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择语言",
       prop: "lang",
       type: "select",
-      options:langOptions,
+      options: langOptions,
     },
     {
       label: "大小",
@@ -162,7 +163,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择大小",
       prop: "size",
       type: "radioGroup",
-      options:sizeOptions,
+      options: sizeOptions,
     },
     {
       label: "暗黑模式",
@@ -171,7 +172,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择暗黑模式",
       prop: "model",
       type: "radioGroup",
-      options:modelOptions,
+      options: modelOptions,
     },
     {
       label: "主题",
@@ -180,7 +181,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择暗主题",
       prop: "theme",
       type: "select",
-      options:themeOptions,
+      options: themeOptions,
     },
     {
       label: "默认颜色",
@@ -188,7 +189,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "defaultColor",
       placeholder: "请选择默认颜色",
       prop: "defaultColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "主要颜色",
@@ -196,7 +197,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "primaryColor",
       placeholder: "请选择主要颜色",
       prop: "primaryColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "成功颜色",
@@ -204,7 +205,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "successColor",
       placeholder: "请选择成功颜色",
       prop: "successColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "信息颜色",
@@ -212,7 +213,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "infoColor",
       placeholder: "请选择成功颜色",
       prop: "infoColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "警告颜色",
@@ -220,7 +221,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "warningColor",
       placeholder: "请选择警告颜色",
       prop: "warningColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "危险颜色",
@@ -228,7 +229,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "dangerColor",
       placeholder: "请选择危险颜色",
       prop: "dangerColor",
-      type:"color",
+      type: "color",
     },
     {
       label: "皮肤",
@@ -236,7 +237,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       vModel: "bgColor",
       placeholder: "请选择皮肤",
       type: "select",
-      options:bgthemeOptions,
+      options: bgthemeOptions,
       prop: "bgColor",
     },
   ];

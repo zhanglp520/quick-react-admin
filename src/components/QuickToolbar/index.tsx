@@ -1,6 +1,6 @@
 import { Button, Space } from "antd";
 import "./index.less";
-import { IBtns, IToolbar } from "@ainiteam/quick-vue3-ui";
+import { IBtns, IToolbar } from "@ainiteam/quick-react-ui";
 
 type PropType = {
   addButtonName?: string;
@@ -54,12 +54,13 @@ const AiniToolbar: React.FC<PropType> = (props: PropType) => {
   return (
     <div
       style={{
+        marginTop: 10,
         marginBottom: 16,
         display: "flex",
       }}
       className={position === "right" ? "right" : "left"}
     >
-      <Space >
+      <Space>
         {leftToolbarSlot}
         {btns.map((item: IBtns) => {
           if (item.position !== "right" && !item.hidden) {

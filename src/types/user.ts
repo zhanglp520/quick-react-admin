@@ -1,4 +1,4 @@
-import { IPermissionButton } from "@ainiteam/quick-vue3-ui";
+import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
 export interface IUser {
   id?: number;

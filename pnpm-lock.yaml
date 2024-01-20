@@ -1,9 +1,5 @@
 lockfileVersion: '6.0'
 
-settings:
-  autoInstallPeers: true
-  excludeLinksFromLockfile: false
-
 dependencies:
   react:
     specifier: ^18.2.0
@@ -13,9 +9,9 @@ dependencies:
     version: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
 
 devDependencies:
-  '@ainiteam/quick-vue3-ui':
-    specifier: ^1.2.1
-    version: registry.npmmirror.com/@ainiteam/quick-vue3-ui@1.2.1
+  '@ainiteam/quick-react-ui':
+    specifier: 0.0.1-alpha.1
+    version: registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.1-alpha.1
   '@ant-design/icons':
     specifier: ^5.2.6
     version: registry.npmmirror.com/@ant-design/icons@5.2.6(react-dom@18.2.0)(react@18.2.0)
@@ -69,13 +65,13 @@ devDependencies:
     version: registry.npmmirror.com/nprogress@0.2.0
   react-redux:
     specifier: ^9.0.2
-    version: registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(redux@5.0.0)
+    version: registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
   react-router-dom:
     specifier: ^6.20.1
     version: registry.npmmirror.com/react-router-dom@6.20.1(react-dom@18.2.0)(react@18.2.0)
   redux-persist:
     specifier: ^6.0.0-pre2.1
-    version: registry.npmmirror.com/redux-persist@6.0.0(react@18.2.0)(redux@5.0.0)
+    version: registry.npmmirror.com/redux-persist@6.0.0(react@18.2.0)
   typescript:
     specifier: ^5.2.2
     version: registry.npmmirror.com/typescript@5.2.2
@@ -95,22 +91,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  registry.npmmirror.com/@ainiteam/quick-vue3-ui@1.2.1:
-    resolution: {integrity: sha512-4t2m1oD1JTPOdLAo1L4iFgbsfoMNPCUcsaCI6cz6WGg8W0dwhfSuAbG8zWz79s95eaGdDGOepmJ6waYl01oI2Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ainiteam/quick-vue3-ui/-/quick-vue3-ui-1.2.1.tgz}
-    name: '@ainiteam/quick-vue3-ui'
-    version: 1.2.1
-    engines: {node: '>=16 <19', pnpm: '>=8 <9'}
-    requiresBuild: true
-    dependencies:
-      '@ainiteam/utils': registry.npmmirror.com/@ainiteam/utils@1.0.3
-    dev: true
-
-  registry.npmmirror.com/@ainiteam/utils@1.0.3:
-    resolution: {integrity: sha512-BILFaFC6jJ1gu2Inh73zFwaBTfL3J+kE+zD38hldCjD9KyDd1kwLjcXq4eyQO5FE/+ZGu0m2XhJLUKnL9s6b7A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ainiteam/utils/-/utils-1.0.3.tgz}
-    name: '@ainiteam/utils'
-    version: 1.0.3
-    engines: {node: v16.13.1, pnpm: 6.32.9}
-    requiresBuild: true
+  registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.1-alpha.1:
+    resolution: {integrity: sha512-612PHlPFH8JxlEyKRj86oAetDF6WMXKL1BUcI82rCkgtspyTtIOileurPUIPBzxFPEHVjr6QiqQhcaUbCy6UxA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ainiteam/quick-react-ui/-/quick-react-ui-0.0.1-alpha.1.tgz}
+    name: '@ainiteam/quick-react-ui'
+    version: 0.0.1-alpha.1
     dev: true
 
   registry.npmmirror.com/@ampproject/remapping@2.2.1:
@@ -998,7 +982,7 @@ packages:
     dependencies:
       immer: registry.npmmirror.com/immer@10.0.3
       react: registry.npmmirror.com/react@18.2.0
-      react-redux: registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(redux@5.0.0)
+      react-redux: registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)
       redux: registry.npmmirror.com/redux@5.0.0
       redux-thunk: registry.npmmirror.com/redux-thunk@3.1.0(redux@5.0.0)
       reselect: registry.npmmirror.com/reselect@5.0.1
@@ -3419,7 +3403,7 @@ packages:
     version: 18.2.0
     dev: true
 
-  registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0)(redux@5.0.0):
+  registry.npmmirror.com/react-redux@9.0.2(@types/react-dom@18.2.17)(@types/react@18.2.41)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-34EI42cYZxJF59Iht6RDM5xDun5EdhV8CbJcTe+mYx97XMHLNYA6RrH9r/ZOZX3CetVCYfBEU9oAY9h3sZarsw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/react-redux/-/react-redux-9.0.2.tgz}
     id: registry.npmmirror.com/react-redux/9.0.2
     name: react-redux
@@ -3448,7 +3432,6 @@ packages:
       '@types/use-sync-external-store': registry.npmmirror.com/@types/use-sync-external-store@0.0.3
       react: registry.npmmirror.com/react@18.2.0
       react-dom: registry.npmmirror.com/react-dom@18.2.0(react@18.2.0)
-      redux: registry.npmmirror.com/redux@5.0.0
       use-sync-external-store: registry.npmmirror.com/use-sync-external-store@1.2.0(react@18.2.0)
     dev: true
 
@@ -3496,7 +3479,7 @@ packages:
     dependencies:
       loose-envify: registry.npmmirror.com/loose-envify@1.4.0
 
-  registry.npmmirror.com/redux-persist@6.0.0(react@18.2.0)(redux@5.0.0):
+  registry.npmmirror.com/redux-persist@6.0.0(react@18.2.0):
     resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/redux-persist/-/redux-persist-6.0.0.tgz}
     id: registry.npmmirror.com/redux-persist/6.0.0
     name: redux-persist
@@ -3509,7 +3492,6 @@ packages:
         optional: true
     dependencies:
       react: registry.npmmirror.com/react@18.2.0
-      redux: registry.npmmirror.com/redux@5.0.0
     dev: true
 
   registry.npmmirror.com/redux-thunk@3.1.0(redux@5.0.0):
@@ -3971,3 +3953,7 @@ packages:
     version: 0.1.0
     engines: {node: '>=10'}
     dev: true
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false

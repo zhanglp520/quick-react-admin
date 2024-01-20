@@ -6,7 +6,7 @@ import {
   IFormItem,
   IPage,
   IToolbar,
-} from "@ainiteam/quick-vue3-ui";
+} from "@ainiteam/quick-react-ui";
 import { useState } from "react";
 import {
   getRoleList,
