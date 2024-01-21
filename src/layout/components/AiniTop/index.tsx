@@ -1,4 +1,6 @@
-// import { useState } from "react";
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Dropdown,
@@ -20,16 +22,13 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import "./index.less";
-import { useDispatch, useSelector } from "react-redux";
+import { ITab } from "@/types";
 import { setCollapse } from "@/store/modules/app";
 import { AppDispatch, RootState } from "@/store";
-import { useNavigate } from "react-router-dom";
-import { ITab } from "@/types";
 import { addTab } from "@/store/modules/tab";
 import AiniTheme from "../AiniTheme";
-import { useState } from "react";
 
-const AiniTop: React.FC = () => {
+const AiniTop: FC = () => {
   const { confirm } = Modal;
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -95,7 +94,7 @@ const AiniTop: React.FC = () => {
   const handleFunllScreen = () => {};
   const handlePhone = () => {};
   const handleSetting = () => {
-    setThemeVisible(true)
+    setThemeVisible(true);
   };
   const handleCollapse = () => {
     dispatch(setCollapse(!collapsed));
@@ -174,7 +173,14 @@ const AiniTop: React.FC = () => {
           onClick={handleSetting}
         />
       </div>
-      {themeVisible && <AiniTheme themeVisible={themeVisible} onClose={()=>{setThemeVisible(false)}}></AiniTheme>}
+      {themeVisible && (
+        <AiniTheme
+          themeVisible={themeVisible}
+          onClose={() => {
+            setThemeVisible(false);
+          }}
+        ></AiniTheme>
+      )}
     </div>
   );
 };

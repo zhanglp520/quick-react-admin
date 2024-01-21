@@ -1,14 +1,21 @@
-import AiniCrud, { Title } from "@/components/QuickCrud";
-import { ISearchUser, IUser } from "@/types";
-// IUserPermissionButton
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, message } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
   IActionbar,
   IColumn,
   IFormItem,
   IPage,
   IToolbar,
+  QuickButton,
+  QuickCrud,
+  IDialogTitle,
 } from "@ainiteam/quick-react-ui";
-import { useState } from "react";
+import "./index.less";
+// import { validatePermission } from "@/utils";
+import { downloadExcel, exportExcel } from "@/utils/download";
+import { ISearchUser, IUser } from "@/types";
 import {
   exportUser,
   getUserPageList,
@@ -21,14 +28,8 @@ import {
   disableUser,
   downloadFileStream,
 } from "@/api/system/user";
-import { downloadExcel, exportExcel } from "@/utils/download";
-import { Modal, Table, message } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-import { validatePermission } from "@/utils";
-import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { getPermissionBtns } from "@/store/modules/user";
-import { Button } from "@ainiteam/quick-react-ui";
+// import { getPermissionBtns } from "@/store/modules/user";
 
 const User: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -193,7 +194,7 @@ const User: React.FC = () => {
   /**
    * 表单
    */
-  const dialogTitle: Title = {
+  const dialogTitle: IDialogTitle = {
     add: "添加用户",
     edit: "编辑用户",
     detail: "用户详情",
@@ -499,11 +500,11 @@ const User: React.FC = () => {
   return (
     <div>
       <div>
-        <Button type="primary" round size="small">
+        <QuickButton type="primary" round size="small">
           刷新
-        </Button>
+        </QuickButton>
       </div>
-      <AiniCrud
+      <QuickCrud
         dialogTitle={dialogTitle}
         formModel={formModel}
         formItems={formItems}
@@ -524,7 +525,7 @@ const User: React.FC = () => {
         onImport={handleImport}
         onExport={handleExport}
         onPrint={handlePrint}
-      ></AiniCrud>
+      ></QuickCrud>
     </div>
   );
 };

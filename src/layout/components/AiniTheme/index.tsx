@@ -1,11 +1,11 @@
 import { Drawer, Form } from "antd";
+import { QuickForm, IFormItem } from "@ainiteam/quick-react-ui";
 import "./index.less";
-import AiniForm from "@/components/QuickForm";
-import { IFormItem } from "@ainiteam/quick-react-ui";
+import { FC } from "react";
 
 type PropType = {
   themeVisible: boolean;
-  onClose: any;
+  onClose: () => void;
 };
 const langOptions = [
   {
@@ -121,7 +121,7 @@ const bgthemeOptions = [
   },
 ];
 
-const AiniTheme: React.FC<PropType> = (props: PropType) => {
+const AiniTheme: FC<PropType> = (props: PropType) => {
   const { themeVisible, onClose } = props;
   const [form] = Form.useForm();
   const formModel: any = {
@@ -155,6 +155,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       prop: "lang",
       type: "select",
       options: langOptions,
+      clearable: false,
     },
     {
       label: "大小",
@@ -164,6 +165,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       prop: "size",
       type: "radioGroup",
       options: sizeOptions,
+      clearable: false,
     },
     {
       label: "暗黑模式",
@@ -173,6 +175,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       prop: "model",
       type: "radioGroup",
       options: modelOptions,
+      clearable: false,
     },
     {
       label: "主题",
@@ -182,6 +185,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       prop: "theme",
       type: "select",
       options: themeOptions,
+      clearable: false,
     },
     {
       label: "默认颜色",
@@ -190,6 +194,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择默认颜色",
       prop: "defaultColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "主要颜色",
@@ -198,6 +203,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择主要颜色",
       prop: "primaryColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "成功颜色",
@@ -206,6 +212,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择成功颜色",
       prop: "successColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "信息颜色",
@@ -214,6 +221,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择成功颜色",
       prop: "infoColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "警告颜色",
@@ -222,6 +230,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择警告颜色",
       prop: "warningColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "危险颜色",
@@ -230,6 +239,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       placeholder: "请选择危险颜色",
       prop: "dangerColor",
       type: "color",
+      clearable: false,
     },
     {
       label: "皮肤",
@@ -239,6 +249,7 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
       type: "select",
       options: bgthemeOptions,
       prop: "bgColor",
+      clearable: false,
     },
   ];
   const handleFormSubmit = () => {
@@ -262,13 +273,13 @@ const AiniTheme: React.FC<PropType> = (props: PropType) => {
         onClose={onClose}
         open={themeVisible}
       >
-        <AiniForm
+        <QuickForm
           form={form}
           model={formModel}
           formItems={formItems}
           hiddenAction={true}
           onSubmit={handleFormSubmit}
-        ></AiniForm>
+        ></QuickForm>
       </Drawer>
     </div>
   );

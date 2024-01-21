@@ -1,4 +1,4 @@
-import AiniCrud, { Title } from "@/components/QuickCrud";
+import Crud, { Title } from "@ainiteam/quick-react-ui";
 import { IRole } from "@/types";
 import {
   IActionbar,
@@ -240,7 +240,7 @@ const role: React.FC = () => {
 
   return (
     <>
-      <AiniCrud
+      <Crud
         dialogTitle={dialogTitle}
         formModel={formModel}
         formItems={formItems}
@@ -252,7 +252,7 @@ const role: React.FC = () => {
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
-      ></AiniCrud>
+      ></Crud>
     </>
   );
 };

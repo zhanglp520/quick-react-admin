@@ -10,8 +10,8 @@ dependencies:
 
 devDependencies:
   '@ainiteam/quick-react-ui':
-    specifier: 0.0.1-alpha.1
-    version: registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.1-alpha.1
+    specifier: 0.0.0-alpha.0
+    version: registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.0-alpha.0
   '@ant-design/icons':
     specifier: ^5.2.6
     version: registry.npmmirror.com/@ant-design/icons@5.2.6(react-dom@18.2.0)(react@18.2.0)
@@ -91,10 +91,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.1-alpha.1:
-    resolution: {integrity: sha512-612PHlPFH8JxlEyKRj86oAetDF6WMXKL1BUcI82rCkgtspyTtIOileurPUIPBzxFPEHVjr6QiqQhcaUbCy6UxA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ainiteam/quick-react-ui/-/quick-react-ui-0.0.1-alpha.1.tgz}
+  registry.npmmirror.com/@ainiteam/quick-react-ui@0.0.0-alpha.0:
+    resolution: {integrity: sha512-3haN746RdE9BCWVZMX52K/EGjJpqL4b4kOZr+srsWMJiACrIZIAVKGde6rEroo2LfetemHyKwYWx5TT2x4VBYA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@ainiteam/quick-react-ui/-/quick-react-ui-0.0.0-alpha.0.tgz}
     name: '@ainiteam/quick-react-ui'
-    version: 0.0.1-alpha.1
+    version: 0.0.0-alpha.0
     dev: true
 
   registry.npmmirror.com/@ampproject/remapping@2.2.1:

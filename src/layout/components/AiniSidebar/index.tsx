@@ -1,13 +1,13 @@
-import { IMenubar, ITab } from "@/types";
-import "./index.less";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "./index.less";
+import { IMenubar, ITab } from "@/types";
 import { RootState, AppDispatch } from "@/store";
 import { setActiveTab } from "@/store/modules/tab";
-import logo from "@/assets/react.svg";
 import AiniMenu from "../AiniMenu";
+import logo from "@/assets/react.svg";
 
-const AiniSideBar: React.FC = () => {
+const AiniSideBar: FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const [title] = useState("quick-react-admin");
   const { collapsed } = useSelector((state: RootState) => state.app);

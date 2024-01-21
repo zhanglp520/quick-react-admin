@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from "react";
-import {
-  HomeOutlined,
-  AppstoreOutlined,
-  ContainerOutlined,
-  DesktopOutlined,
-  MailOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Menu, message } from "antd";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import "./index.less";
 import { useDispatch, useSelector } from "react-redux";
-import store, { AppDispatch, RootState } from "@/store";
-import { IMenubar, ITab } from "@/types";
+import { Menu, message } from "antd";
+import { HomeOutlined, AppstoreOutlined } from "@ant-design/icons";
 import { MenuItemType, SubMenuType } from "antd/es/menu/hooks/useItems";
-import { addTab, setActiveTab } from "@/store/modules/tab";
+import "./index.less";
+import { AppDispatch, RootState } from "@/store";
+import { IMenubar, ITab } from "@/types";
+import { addTab } from "@/store/modules/tab";
 
 type PropType = {
   collapsed: boolean;
 };
 type ItemType = MenuItemType | SubMenuType;
-const AiniMenu: React.FC<PropType> = (props: PropType) => {
-  const { collapsed } = props;
+const AiniMenu: FC<PropType> = (props: PropType) => {
+  console.log("AiniMenu-props", props);
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { tabList } = useSelector((state: RootState) => state.tab);
@@ -61,7 +51,7 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
         return;
       }
       dispatch(addTab(tab));
-      navigate(tab.path)
+      navigate(tab.path);
     }
   };
   const homeMenuClick = () => {
@@ -103,7 +93,7 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
           key: child.menuId,
           icon: <AppstoreOutlined />,
           label: child.menuName,
-          onClick: ({ domEvent}) => {
+          onClick: ({ domEvent }) => {
             domEvent.stopPropagation();
             menuClick(child);
           },
@@ -115,7 +105,7 @@ const AiniMenu: React.FC<PropType> = (props: PropType) => {
                     key: child2.menuId,
                     icon: <AppstoreOutlined />,
                     label: child2.menuName,
-                    onClick: ({ domEvent}) => {
+                    onClick: ({ domEvent }) => {
                       domEvent.stopPropagation();
                       menuClick(child2);
                     },
