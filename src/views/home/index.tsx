@@ -3,6 +3,8 @@ import { Avatar, Card, Flex } from "antd";
 import "./index.less";
 
 import Echarts1 from "./components/echarts1";
+import DealList from "./components/dealList";
+import LosssList from "./components/lossList";
 
 const { Meta } = Card;
 const baseStyle: React.CSSProperties = {
@@ -76,8 +78,14 @@ const Home: React.FC = () => {
         <div className="content-echart">
           <Echarts1></Echarts1>
         </div>
-        <div className="content-deal">成交订单详情</div>
-        <div className="content-Loss">流失订单详情</div>
+        <div className="content-deal">
+          <h3>成交订单详情</h3>
+          <DealList></DealList>
+        </div>
+        <div className="content-loss">
+          <h3>流失订单详情</h3>
+          <LosssList></LosssList>
+        </div>
       </div>
     </div>
   );
