@@ -26,10 +26,6 @@ const data = [
     name: "朝可爱打字爽键盘",
     code: "000154478284",
   },
-  {
-    name: "毛绒玩具小熊",
-    code: "000154478284",
-  },
 ];
 
 const DealList: React.FC = () => (

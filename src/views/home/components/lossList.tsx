@@ -26,10 +26,6 @@ const data = [
     name: "笔记本电脑",
     code: "000154478284",
   },
-  {
-    name: "电动玩具小熊",
-    code: "000154478284",
-  },
 ];
 
 const LosssList: React.FC = () => (
