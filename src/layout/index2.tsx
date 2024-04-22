@@ -86,13 +86,7 @@ const Layout1: React.FC = () => {
           <AiniSidebar></AiniSidebar>
         </Sider>
         <Layout>
-          <Header
-            style={{
-              padding: 0,
-              background: colorBgContainer,
-              boxShadow: "0px 1px 6px 1px #80808069",
-            }}
-          >
+          <Header style={{ padding: 0, background: colorBgContainer }}>
             <AiniTop></AiniTop>
           </Header>
           <Content
@@ -101,7 +95,6 @@ const Layout1: React.FC = () => {
               padding: 24,
               minHeight: 280,
               background: colorBgContainer,
-              boxShadow: "0px 3px 4px 3px #80808069",
             }}
           >
             <Tabs
