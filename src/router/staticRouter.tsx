@@ -22,6 +22,9 @@ const staticRouter: RouteObject[] = [
         },{
             path: "/system/role",
             Component: lazy(() => import("@/views/system/role"))
+        },{
+            path: "/system/menu",
+            Component: lazy(() => import("@/views/system/menu"))
         }]
     },
     
