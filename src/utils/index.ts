@@ -79,7 +79,6 @@ export const treeFormat = (data: any, options?: ITreeOptions) => {
   });
   return arr;
 };
-
 //列表转下拉框树
 export const listToSelectTree = (data: any, pId: any, options?: any) => {
   const defaultOptions = {
@@ -88,7 +87,7 @@ export const listToSelectTree = (data: any, pId: any, options?: any) => {
     pId: "pId",
     sort: "sort",
   };
-  const value = options && options ? options : defaultOptions;
+  const value = options && options.value ? options.value : defaultOptions.value;
   const label = options && options.label ? options.label : defaultOptions.label;
   const parentId = options && options.pId ? options.pId : defaultOptions.pId;
   const arr: any = [];

@@ -3,6 +3,6 @@
   "eslint.format.enable": true,
   "eslint.validate": ["html", "javascript", "jsx", "typescript", "tsx"],
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   }
 }

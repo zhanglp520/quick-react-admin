@@ -79,42 +79,43 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
       homeMenuClick();
     },
   });
-  menuList.forEach((menu: IMenubar) => {
-    items.push({
-      key: menu.menuId,
-      icon: <AppstoreOutlined />,
-      label: menu.menuName,
-      // onClick: ({ domEvent}) => {
-      //   domEvent.stopPropagation();
-      //   menuClick(menu);
-      // },
-      children: menu.children.map((child: IMenubar) => {
-        return {
-          key: child.menuId,
-          icon: <AppstoreOutlined />,
-          label: child.menuName,
-          onClick: ({ domEvent }) => {
-            domEvent.stopPropagation();
-            menuClick(child);
-          },
-          children:
-            child.children.length <= 0
-              ? undefined
-              : child.children.map((child2: IMenubar) => {
-                  return {
-                    key: child2.menuId,
-                    icon: <AppstoreOutlined />,
-                    label: child2.menuName,
-                    onClick: ({ domEvent }) => {
-                      domEvent.stopPropagation();
-                      menuClick(child2);
-                    },
-                  };
-                }),
-        };
-      }),
+  menuList &&
+    menuList.forEach((menu: IMenubar) => {
+      items.push({
+        key: menu.menuId,
+        icon: <AppstoreOutlined />,
+        label: menu.menuName,
+        // onClick: ({ domEvent}) => {
+        //   domEvent.stopPropagation();
+        //   menuClick(menu);
+        // },
+        children: menu.children.map((child: IMenubar) => {
+          return {
+            key: child.menuId,
+            icon: <AppstoreOutlined />,
+            label: child.menuName,
+            onClick: ({ domEvent }) => {
+              domEvent.stopPropagation();
+              menuClick(child);
+            },
+            children:
+              child.children.length <= 0
+                ? undefined
+                : child.children.map((child2: IMenubar) => {
+                    return {
+                      key: child2.menuId,
+                      icon: <AppstoreOutlined />,
+                      label: child2.menuName,
+                      onClick: ({ domEvent }) => {
+                        domEvent.stopPropagation();
+                        menuClick(child2);
+                      },
+                    };
+                  }),
+          };
+        }),
+      });
     });
-  });
   return (
     <Menu
       defaultSelectedKeys={["1"]}
