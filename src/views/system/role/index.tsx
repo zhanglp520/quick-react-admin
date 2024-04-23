@@ -1,56 +1,51 @@
 import { useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
   IActionbar,
   IColumn,
   IFormItem,
-  // IPage,
   Crud,
   IDialogTitle,
-  // IToolbar,
 } from "@ainiteam/quick-react-ui";
 import "./index.less";
+import { listToSelectTree, validatePermission } from "@/utils";
 import { IDept, IRole } from "@/types";
 import {
   getRoleList,
   addRole,
   updateRole,
-  // deleteRole,
   deleteRole,
-  // resetRolePassword,
-  // enableRole,
-  // disableRole,
   getDeptList,
 } from "@/api/system/role";
-import { listToSelectTree } from "@/utils";
-// import Crud from "node_modules/@ainiteam/quick-react-ui/dist/src/crud/crud";
+// import { AppDispatch, RootState } from "@/store";
+// import { getPermissionBtns } from "@/store/modules/user";
 
 const Role: React.FC = () => {
   const { confirm } = Modal;
-  const [deptDataList, setDeptDataList] = useState([]);
-
-  const [deptTreeData, setDeptTreeData] = useState([]);
-
+  // const dispatch: AppDispatch = useDispatch();
+  // const { activeTab } = useSelector((state: RootState) => state.tab);
   /**
    * 属性
    */
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IRole[]>([]);
+  const [deptDataList, setDeptDataList] = useState([]);
+  const [deptTreeData, setDeptTreeData] = useState([]);
+  // const permissionBtn = dispatch(
+  //   getPermissionBtns(activeTab)
+  // ) as IUserPermissionButton;
 
-  const handleBatchDelete = (data: any, done: any) => {
-    const { ids } = data;
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: "你真的删除选择的角色吗？",
-      onOk() {
-        deleteRole(ids).then(() => {
-          message.success("角色删除成功");
-          done();
-        });
-      },
-    });
+  /**
+   * 工具栏
+   */
+  const tableToolbar = {
+    hiddenBatchDeleteButton: true,
+    hiddenImportButton: true,
+    hiddenExportButton: true,
+    hiddenPrintButton: true,
+    // hiddenAddButton: !validatePermission(permissionBtn?.add),
   };
 
   /**
@@ -83,7 +78,6 @@ const Role: React.FC = () => {
           trigger: "blur",
         },
         {
-          // validator: validateRoleId,
           trigger: "blur",
         },
       ],
@@ -100,10 +94,6 @@ const Role: React.FC = () => {
           message: "请输入角色名",
           trigger: "blur",
         },
-        // {
-        //   // validator: validateRoleName,
-        //   trigger: "blur",
-        // },
       ],
     },
     {
@@ -122,9 +112,19 @@ const Role: React.FC = () => {
         },
       ],
     },
+    {
+      label: "描述",
+      labelWidth: "80px",
+      vModel: "remark",
+      type: "textarea",
+      prop: "remark",
+      // options: deptTreeData,
+    },
   ];
   const handleFormSubmit = (form: IRole, done: any) => {
     const row = { ...form };
+    row.deptId = form.deptId ? form.deptId : 0;
+    console.log("row", row);
     if (row.id) {
       console.log("updateRole", row);
       updateRole(row).then(() => {
@@ -144,7 +144,22 @@ const Role: React.FC = () => {
   /**
    * 操作栏
    */
-
+  const handleDelete = (item: IRole, done: any) => {
+    confirm({
+      title: "警告",
+      icon: <ExclamationCircleFilled />,
+      content: `你真的删除【${item.roleName}】的用户吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        deleteRole(item.id).then(() => {
+          message.success("用户删除成功");
+          done();
+        });
+      },
+    });
+  };
   const tableActionbar: IActionbar = {
     width: 300,
     // hiddenEditButton: !validatePermission(permissionBtn?.edit),
@@ -158,7 +173,7 @@ const Role: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      width: "100",
+      width: "200",
       label: "角色编号",
       prop: "roleId",
     },
@@ -172,7 +187,7 @@ const Role: React.FC = () => {
       width: "200",
       label: "所属部门",
       prop: "deptId",
-      format(row: IRole) {
+      render(row: IRole) {
         console.log("拿到的所属部门", deptDataList);
         const dept = deptDataList?.find((x: IDept) => x.id === row.deptId);
 
@@ -191,22 +206,9 @@ const Role: React.FC = () => {
     },
   ];
 
-  /**
-   * 工具栏
-   */
-  const tableToolbar = {
-    hiddenBatchDeleteButton: true,
-    hiddenImportButton: true,
-    hiddenExportButton: true,
-    hiddenPrintButton: true,
-    // hiddenAddButton: !validatePermission(permissionBtn.value?.add)
-  };
-  // /**
-  //  * 加载部门下拉框数据
-  //  */
+  //加载部门下拉框数据
   const loadDeptSelectData = () => {
     getDeptList().then((res: any) => {
-      // debugger;
       const { data: deptList } = res;
       setDeptDataList([...deptList]);
       const deptTree = listToSelectTree(deptList, 0, {
@@ -250,14 +252,13 @@ const Role: React.FC = () => {
         tableColumns={tableColumns}
         tableActionbar={tableActionbar}
         tableToolbar={tableToolbar}
-        pagebar={false}
         loading={loading}
+        pagebar={false}
         rowEdit={true}
         displayNumber={true}
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
-        // onDelete={handleDelete}
-        onBatchDelete={handleBatchDelete}
+        onDelete={handleDelete}
       ></Crud>
     </div>
   );
