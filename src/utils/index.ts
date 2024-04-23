@@ -38,7 +38,7 @@ export const selectTreeFormat = (data: any, options?: ISelectTreeOptions) => {
     children: "children",
   };
   const label = options && options.label ? options.label : defaultOptions.label;
-  const value = options && options ? options : defaultOptions;
+  const value = options && options.value ? options.value : defaultOptions.value;
   const children =
     options && options.children ? options.children : defaultOptions.children;
   data.forEach((element: ISelectTree) => {

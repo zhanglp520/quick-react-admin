@@ -6,7 +6,7 @@ import {
   IColumn,
   IFormItem,
   // IPage,
-  QuickCrud,
+  Crud,
   IDialogTitle,
   // IToolbar,
 } from "@ainiteam/quick-react-ui";
@@ -24,7 +24,7 @@ import {
   getDeptList,
 } from "@/api/system/role";
 import { listToSelectTree } from "@/utils";
-// import QuickCrud from "node_modules/@ainiteam/quick-react-ui/dist/src/crud/crud";
+// import Crud from "node_modules/@ainiteam/quick-react-ui/dist/src/crud/crud";
 
 const Role: React.FC = () => {
   const { confirm } = Modal;
@@ -242,7 +242,7 @@ const Role: React.FC = () => {
   return (
     <div>
       <div></div>
-      <QuickCrud
+      <Crud
         dialogTitle={dialogTitle}
         formModel={formModel}
         formItems={formItems}
@@ -258,7 +258,7 @@ const Role: React.FC = () => {
         onFormSubmit={handleFormSubmit}
         // onDelete={handleDelete}
         onBatchDelete={handleBatchDelete}
-      ></QuickCrud>
+      ></Crud>
     </div>
   );
 };

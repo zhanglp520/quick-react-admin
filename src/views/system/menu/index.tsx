@@ -7,7 +7,7 @@ import {
   IColumn,
   IFormItem,
   IPage,
-  QuickCrud,
+  Crud,
   IDialogTitle,
   IOptions,
 } from "@ainiteam/quick-react-ui";
@@ -426,7 +426,7 @@ const Menu: React.FC = () => {
   };
   return (
     <div>
-      <QuickCrud
+      <Crud
         dialogTitle={dialogTitle}
         formModel={formModel}
         formItems={formItems}
@@ -441,7 +441,7 @@ const Menu: React.FC = () => {
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
         onBatchDelete={handleBatchDelete}
-      ></QuickCrud>
+      ></Crud>
     </div>
   );
 };

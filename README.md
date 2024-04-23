@@ -7,11 +7,11 @@
 
 ## 简介
 
-quick-react-admin 是一款免费开源快速搭建中后台系统框架。本框架基于 vite5、react、antd、@reduxjs/toolkit以及react-router-dom等最新主流技术并封装了通用的组件方便开发者提高工作效率。后期也会通过版本升级的方式来维护并更新，使开发者拥有一款长期并且稳定的脚手架。本团队还提供了基于 quick 框架开发的各类业务项目，比如： 订单管理系统、调度管理系统、聊天系统、音视系统 、监控系统、商城系统、物联网平台、外卖系统、ERP 系统、CMR 系统、OA 系统、物流管理系统、CRM 管理系统等等常用的业务系统，如有相关需求联系管理员。
+quick-react-admin 是一款免费开源快速搭建中后台系统框架。本框架基于 vite5、react、antd、@reduxjs/toolkit 以及 react-router-dom 等最新主流技术并封装了通用的组件方便开发者提高工作效率。后期也会通过版本升级的方式来维护并更新，使开发者拥有一款长期并且稳定的脚手架。本团队还提供了基于 quick 框架开发的各类业务项目，比如： 订单管理系统、调度管理系统、聊天系统、音视系统 、监控系统、商城系统、物联网平台、外卖系统、ERP 系统、CMR 系统、OA 系统、物流管理系统、CRM 管理系统等等常用的业务系统，如有相关需求联系管理员。
 
 ## 软件特色
 
-- 使用 vite5、react8、redux、@reduxjs/toolkit、react-router-dom、antd和 typescript 等前言技术
+- 使用 vite5、react8、redux、@reduxjs/toolkit、react-router-dom、antd 和 typescript 等前言技术
 - 封装了通用的组件
 - 提供了系统管理常用功能模块
 - 提供权限管理模块
@@ -29,28 +29,27 @@ quick-react-admin 是一款免费开源快速搭建中后台系统框架。本�
 - 个人资料修改及密码修改功能
 - 支持支付功能
 - docker 容器化
-- jenkins自动化部署技术
+- jenkins 自动化部署技术
 - k8s 分布式
-
 
 ## 预览
 
--   [quick-react-admin](https://react.quick.ainiteam.com/) - 框架演示 1.0 版本
+- [quick-react-admin](https://react.quick.ainiteam.com/) - 框架演示 1.0 版本
 
 演示账号密码：admin/123456
 
 ## 开发文档
 
--   [quick-react-admin](https://doc.quick.ainiteam.com/react) - quick-react-admin 开发文档
+- [quick-react-admin](https://doc.quick.ainiteam.com/react) - quick-react-admin 开发文档
 
 ## 接口文档
 
--   [quick 接口文档](https://console-docs.apipost.cn/preview/0e11a2eb3c3883a7/4fff7a394c074ac7) - quick 接口文档 1.0 版本
--   [quick 接口文档](https://console-docs.apipost.cn/preview/52de13c4d013470f/e5aa6f10d52601f7) - quick 接口文档 2.0 版本
+- [quick 接口文档](https://console-docs.apipost.cn/preview/0e11a2eb3c3883a7/4fff7a394c074ac7) - quick 接口文档 1.0 版本
+- [quick 接口文档](https://console-docs.apipost.cn/preview/52de13c4d013470f/e5aa6f10d52601f7) - quick 接口文档 2.0 版本
 
 ## 安装使用
 
--   克隆项目
+- 克隆项目
 
 ```bash
 github： git clone https://gitee.com/zhanglp520/quick-react-admin.git
@@ -59,32 +58,38 @@ gitee：git clone https://gitee.com/zhanglp520/quick-react-admin.git
 
 ```
 
--   切换淘宝镜像
+- 切换淘宝最新镜像
+
+```bash
+npm config set registry https://npmmirror.com/
+```
+
+- 切换淘宝镜像-过期
 
 ```bash
 npm config set registry https://registry.npm.taobao.org
 ```
 
--   切换 npm
+- 切换 npm
 
 ```bash
 npm config set registry https://registry.npmjs.org
 
 ```
 
--   切换是否成功验证
+- 切换是否成功验证
 
 ```bash
 npm config get registry
 ```
 
--   安装 pnpm
+- 安装 pnpm
 
 ```bash
 npm install -g pnpm
 ```
 
--   安装项目依赖包
+- 安装项目依赖包
 
 ```bash
 pnpm install
@@ -92,7 +97,7 @@ pnpm install
 
 如果 install 失败，删除 pnpm-lock.yaml 和 node_modules 以及 D 盘的.pnpm-store 目录，并且重新 install
 
--   运行
+- 运行
 
 ```bash
 pnpm run dev
@@ -100,19 +105,19 @@ pnpm run dev
 
 运行命令执行服务启动后，浏览器输入：http://localhost:3100/
 
--   eslint 检测
+- eslint 检测
 
 ```bash
 pnpm run lint 检测并尝试修复
 ```
 
--   打包上线
+- 打包上线
 
 ```bash
 pnpm run build
 ```
 
--   打包后预览
+- 打包后预览
 
 ```bash
 pnpm run preview
@@ -120,8 +125,8 @@ pnpm run preview
 
 ## 后端接口
 
--   官方提供后端接口项目 express 版本：https://gitee.com/zhanglp520/quick-node-express.git 接口 v1 版本
--   官方提供后端接口项目 nestjs 版本：https://github.com/zhanglp520/quick-node-Nestjs.git 接口 v2 版本
+- 官方提供后端接口项目 express 版本：https://gitee.com/zhanglp520/quick-node-express.git 接口 v1 版本
+- 官方提供后端接口项目 nestjs 版本：https://github.com/zhanglp520/quick-node-Nestjs.git 接口 v2 版本
 
 ## 寻求帮助
 
@@ -129,9 +134,9 @@ pnpm run preview
 2. 发起 Issue
 3. 加 quick 框架 QQ 群：
 
--   群 1：528166164(vue)
--   群 2：485013155(react)
--   群 3：558795174(electron)
+- 群 1：528166164(vue)
+- 群 2：485013155(react)
+- 群 3：558795174(electron)
 
 ## License
 

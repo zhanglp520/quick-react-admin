@@ -8,8 +8,7 @@ import {
   IFormItem,
   IPage,
   IToolbar,
-  QuickButton,
-  QuickCrud,
+  Crud,
   IDialogTitle,
 } from "@ainiteam/quick-react-ui";
 import "./index.less";
@@ -436,7 +435,7 @@ const User: React.FC = () => {
       width: "100",
       label: "用户名",
       prop: "userName",
-      edit: true,
+      // edit: true,
     },
     {
       width: "100",
@@ -457,7 +456,7 @@ const User: React.FC = () => {
       width: "60",
       label: "启用",
       prop: "enabled",
-      format: (row: IUser) => {
+      render: (row: IUser) => {
         return row.enabled === 1 ? "启用" : "禁用";
       },
     },
@@ -499,12 +498,7 @@ const User: React.FC = () => {
 
   return (
     <div>
-      <div>
-        <QuickButton type="primary" round size="small">
-          刷新
-        </QuickButton>
-      </div>
-      <QuickCrud
+      <Crud
         dialogTitle={dialogTitle}
         formModel={formModel}
         formItems={formItems}
@@ -525,7 +519,7 @@ const User: React.FC = () => {
         onImport={handleImport}
         onExport={handleExport}
         onPrint={handlePrint}
-      ></QuickCrud>
+      ></Crud>
     </div>
   );
 };

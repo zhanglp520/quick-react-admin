@@ -1,5 +1,5 @@
 import { Drawer, Form } from "antd";
-import { QuickForm, IFormItem } from "@ainiteam/quick-react-ui";
+import { Form as QuickForm, IFormItem } from "@ainiteam/quick-react-ui";
 import "./index.less";
 import { FC } from "react";
 
