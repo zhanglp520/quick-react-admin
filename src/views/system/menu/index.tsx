@@ -1,7 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
-// import "@/assets/iconfont/quickIconFont.js";
-// import quickIconFont from "@/config/quickIconFont.json";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
   IColumn,
@@ -11,14 +10,14 @@ import {
   IDialogTitle,
   IOptions,
 } from "@ainiteam/quick-react-ui";
+
 // import "./index.less";
-import { ISearchUser, IMenu } from "@/types";
 import {
-  addUser,
-  updateUser,
-  deleteUser,
-  batchDeleteUser,
-} from "@/api/system/user";
+  listToSelectTree,
+  listToTableTree,
+  validatePermission,
+} from "@/utils/index";
+import { ISearchMenu, IMenu, IMenuPermissionButton } from "@/types";
 import {
   getMenuList,
   addMenu,
@@ -26,13 +25,13 @@ import {
   deleteMenu,
 } from "@/api/system/menu";
 import { AppDispatch, RootState } from "@/store";
-/**导入项目文件 */
-import {
-  listToSelectTree,
-  listToTableTree,
-  validatePermission,
-} from "@/utils/index";
+// import { getPermissionBtns } from "@/store/modules/user";
+import "@/assets/iconfont/quickIconFont.js";
+import quickIconFont from "@/config/quickIconFont.json";
+
 const Menu: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const { activeTab } = useSelector((state: RootState) => state.tab);
   const { confirm } = Modal;
 
   /**
@@ -41,6 +40,10 @@ const Menu: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IMenu[]>([]);
   const [parentTreeData, setParentTreeData] = useState<Array<IOptions>>([]);
+  // const permissionBtn = dispatch(
+  //   getPermissionBtns(activeTab)
+  // ) as IMenuPermissionButton;
+
   /**
    * 分页
    */
@@ -54,7 +57,7 @@ const Menu: React.FC = () => {
   /**
    * 搜索
    */
-  const searchForm: ISearchUser = {
+  const searchForm: ISearchMenu = {
     keyword: "",
   };
   const searchFormItems: IFormItem[] = [
@@ -65,19 +68,15 @@ const Menu: React.FC = () => {
     },
   ];
 
-  const handleBatchDelete = (data: any, done: any) => {
-    const { ids } = data;
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: "你真的删除选择的菜单吗？",
-      onOk() {
-        batchDeleteUser(ids).then(() => {
-          message.success("菜单删除成功");
-          done();
-        });
-      },
-    });
+  /**
+   * 工具栏
+   */
+  const tableToolbar = {
+    hiddenBatchDeleteButton: true,
+    hiddenImportButton: true,
+    hiddenExportButton: true,
+    hiddenPrintButton: true,
+    // hiddenAddButton: !validatePermission(permissionBtn?.add),
   };
 
   /**
@@ -136,6 +135,7 @@ const Menu: React.FC = () => {
         },
       ],
     },
+
     {
       label: "菜单类型",
       labelWidth: "80px",
@@ -173,12 +173,12 @@ const Menu: React.FC = () => {
       placeholder: "请选择菜单图标",
       prop: "icon",
       type: "icon",
-      // iconOptions: [
-      //   {
-      //     label: "quick官网",
-      //     data: quickIconFont,
-      //   },
-      // ],
+      iconOptions: [
+        {
+          label: "quick官网",
+          data: quickIconFont,
+        },
+      ],
       width: "400px",
       select: (val) => {
         formModel.icon = val;
@@ -259,19 +259,30 @@ const Menu: React.FC = () => {
       width: "400px",
       prop: "linkUrl",
     },
+    {
+      label: "备注",
+      labelWidth: "80px",
+      vModel: "remark",
+      type: "textarea",
+      placeholder: "备注",
+      width: "400px",
+      prop: "remark",
+    },
   ];
   const handleFormSubmit = (form: IMenu, done: any) => {
+    console.log("提交", form);
     const row = { ...form };
+    row.pId = form.pId ? form.pId : 0;
     if (row.id) {
-      console.log("updateUser", row);
-      updateUser(row).then(() => {
+      console.log("updateMenu", row);
+      updateMenu(row).then(() => {
         message.success("菜单修改成功");
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addUser", row);
-      addUser(row).then(() => {
+      console.log("addMenu", row);
+      addMenu(row).then(() => {
         message.success("菜单创建成功");
         done();
       });
@@ -285,12 +296,12 @@ const Menu: React.FC = () => {
     confirm({
       title: "警告",
       icon: <ExclamationCircleFilled />,
-      content: `你真的删除【${item.userName}】的菜单吗？`,
+      content: `你真的删除【${item.menuName}】的菜单吗？`,
       onOk() {
         if (!item.id) {
           return;
         }
-        deleteUser(item.id).then(() => {
+        deleteMenu(item.id).then(() => {
           message.success("菜单删除成功");
           done();
         });
@@ -331,9 +342,7 @@ const Menu: React.FC = () => {
       label: "菜单类型",
       prop: "menuType",
       width: "200",
-      format: (row: IMenu) => {
-        console.log("菜单类型", row);
-
+      render: (row: IMenu) => {
         if (row.menuType === 0) {
           return "目录";
         }
@@ -360,7 +369,7 @@ const Menu: React.FC = () => {
       label: "缓存",
       prop: "cache",
       width: "200",
-      format: (row: IMenu) => {
+      render: (row: IMenu) => {
         return row.cache ? "缓存" : "不缓存";
       },
     },
@@ -368,7 +377,7 @@ const Menu: React.FC = () => {
       label: "显示",
       prop: "status",
       width: "200",
-      format: (row: IMenu) => {
+      render: (row: IMenu) => {
         return row.status ? "显示" : "不显示";
       },
     },
@@ -376,7 +385,7 @@ const Menu: React.FC = () => {
       label: "启用",
       prop: "enabled",
       width: "200",
-      format: (row: IMenu) => {
+      render: (row: IMenu) => {
         return !row.enabled ? "启用" : "禁用";
       },
     },
@@ -384,7 +393,7 @@ const Menu: React.FC = () => {
       label: "是否外链",
       prop: "link",
       width: "200",
-      format: (row: IMenu) => {
+      render: (row: IMenu) => {
         return row.link === 1 ? "外链" : "非外链";
       },
     },
@@ -400,9 +409,6 @@ const Menu: React.FC = () => {
       value: "id",
       label: "menuName",
     });
-
-    // useState(parentTreeData)
-    // parentTreeData.length = 0;
     setParentTreeData([...parentTree]);
     console.log("父级菜单", parentTree);
   };
@@ -432,15 +438,16 @@ const Menu: React.FC = () => {
         formItems={formItems}
         tableData={tableDataList}
         tableColumns={tableColumns}
+        tableToolbar={tableToolbar}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
         pagebar={page}
         loading={loading}
-        displayNumber={true}
+        displayNumber={false}
+        formInline={true}
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
-        onBatchDelete={handleBatchDelete}
       ></Crud>
     </div>
   );

@@ -1,7 +1,7 @@
 import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
 export interface IMenu {
-  id?: number | string;
+  id?: number;
   menuId: string;
   menuName: string;
   path: string;
@@ -14,7 +14,10 @@ export interface IMenu {
   linkUrl?: string;
   enabled?: boolean;
   status?: boolean;
-  cache: boolean;
+  cache?: boolean;
+}
+export interface ISearchMenu {
+  keyword: string;
 }
 export interface IMenuTree extends IMenu {
   children: IMenuTree[];
