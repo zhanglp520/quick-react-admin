@@ -36,7 +36,7 @@ const Login: React.FC = () => {
       const { data: user } = payload as IQuickResponseData<IUser>;
       const { id } = user;
       await dispatch(getPermission(id!.toString()));
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.log("login error", error);
     } finally {

@@ -12,9 +12,9 @@ import {
   IDialogTitle,
 } from "@ainiteam/quick-react-ui";
 import "./index.less";
-// import { validatePermission } from "@/utils";
+import { validatePermission } from "@/utils";
 import { downloadExcel, exportExcel } from "@/utils/download";
-import { ISearchUser, IUser } from "@/types";
+import { ISearchUser, IUser, IUserPermissionButton } from "@/types";
 import {
   exportUser,
   getUserPageList,
@@ -28,22 +28,21 @@ import {
   downloadFileStream,
 } from "@/api/system/user";
 import { AppDispatch, RootState } from "@/store";
-// import { getPermissionBtns } from "@/store/modules/user";
+import { getPermissionBtns } from "@/store/modules/user";
 
 const User: React.FC = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const dispatch: AppDispatch = useDispatch();
-  const { activeTab } = useSelector((state: RootState) => state.tab);
-  const { confirm } = Modal;
-
   /**
    * 属性
    */
+  const { confirm } = Modal;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const dispatch: AppDispatch = useDispatch();
+  const { activeTab } = useSelector((state: RootState) => state.tab);
+  dispatch(getPermissionBtns(activeTab));
+  const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
+    useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IUser[]>([]);
-  // const permissionBtn = dispatch(
-  //   getPermissionBtns(activeTab)
-  // ) as IUserPermissionButton;
 
   /**
    * 分页
@@ -105,11 +104,11 @@ const User: React.FC = () => {
   const tableToolbar: IToolbar = {
     importButtonName: "导入（默认后端方式）",
     exportButtonName: "导出（默认后端方式）",
-    // hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
-    // hiddenImportButton: !validatePermission(permissionBtn?.import),
-    // hiddenExportButton: !validatePermission(permissionBtn?.export),
-    // hiddenAddButton: !validatePermission(permissionBtn?.add),
-    // hiddenPrintButton: !validatePermission(permissionBtn?.print),
+    hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
+    hiddenImportButton: !validatePermission(permissionBtn?.import),
+    hiddenExportButton: !validatePermission(permissionBtn?.export),
+    hiddenAddButton: !validatePermission(permissionBtn?.add),
+    hiddenPrintButton: !validatePermission(permissionBtn?.print),
     position: "right",
     // leftToolbarSlot: <div>lll</div>,
     // rightToolbarSlot: <div>rrr</div>,
@@ -118,8 +117,7 @@ const User: React.FC = () => {
         name: "下载模板(浏览器下载方式)",
         position: "left",
         type: "primary",
-        hidden: false,
-        // hidden: !validatePermission(permissionBtn?.download),
+        hidden: !validatePermission(permissionBtn?.download),
         click() {
           window.location.href = `${
             import.meta.env.VITE_APP_BASE_URL
@@ -130,7 +128,7 @@ const User: React.FC = () => {
         name: "下载模板(流文件方式)",
         position: "left",
         type: "primary",
-        // hidden: !validatePermission(permissionBtn?.download),
+        hidden: !validatePermission(permissionBtn?.download),
         click() {
           downloadFileStream("templates/用户模板.xlsx").then((res) => {
             downloadExcel(res, "用户导入模板");
@@ -141,7 +139,7 @@ const User: React.FC = () => {
         name: "导入(前端方式)",
         position: "left",
         type: "warning",
-        // hidden: !validatePermission(permissionBtn?.import),
+        hidden: !validatePermission(permissionBtn?.import),
         click() {
           // const fileBtn = uploadRef as HTMLInputElement;
           // fileBtn.click();
@@ -151,7 +149,7 @@ const User: React.FC = () => {
         name: "导出(前端方式)",
         position: "left",
         type: "danger",
-        // hidden: !validatePermission(permissionBtn?.export),
+        hidden: !validatePermission(permissionBtn?.export),
         click() {
           // 导出的字段映射
           const columns = [
@@ -388,20 +386,20 @@ const User: React.FC = () => {
   };
   const tableActionbar: IActionbar = {
     width: 300,
-    // hiddenEditButton: !validatePermission(permissionBtn?.edit),
-    // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
-    // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+    hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    hiddenDetailButton: !validatePermission(permissionBtn?.detail),
     btns: [
       {
         name: "重置密码",
-        // hidden: !validatePermission(permissionBtn?.resetPassword),
+        hidden: !validatePermission(permissionBtn?.resetPassword),
         click(item: IUser, done: any) {
           handleResetPassword(item, done);
         },
       },
       {
         name: "启用",
-        // hidden: !validatePermission(permissionBtn?.enabled),
+        hidden: !validatePermission(permissionBtn?.enabled),
         click(item: IUser, done: any) {
           handleEnable(item, done);
         },
@@ -411,7 +409,7 @@ const User: React.FC = () => {
       },
       {
         name: "禁用",
-        // hidden: !validatePermission(permissionBtn?.disabled),
+        hidden: !validatePermission(permissionBtn?.disabled),
         click(item: IUser, done: any) {
           handleDisable(item, done);
         },

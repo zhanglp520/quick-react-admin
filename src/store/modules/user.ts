@@ -10,6 +10,7 @@ interface IUserState {
   permissionMenuList: Array<IMenu>;
   menuList: Array<IMenubar>;
   permissionBtns: Array<IMenu>;
+  permissionBtn: object;
 }
 
 export const getPermission = createAsyncThunk(
@@ -46,6 +47,7 @@ export const userSlice = createSlice({
       permissionMenuList: [],
       menuList: [],
       permissionBtns: [],
+      permissionBtn: {},
     };
   },
   reducers: {
@@ -62,9 +64,8 @@ export const userSlice = createSlice({
         btns.forEach((element) => {
           permission[element.menuId] = true;
         });
-        return permission as T;
+        state.permissionBtn = permission;
       }
-      return null;
     },
   },
   extraReducers(builder) {
