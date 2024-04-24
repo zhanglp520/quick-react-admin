@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
+  IActionbar,
   IColumn,
   IFormItem,
   IPage,
@@ -25,24 +26,25 @@ import {
   deleteMenu,
 } from "@/api/system/menu";
 import { AppDispatch, RootState } from "@/store";
-// import { getPermissionBtns } from "@/store/modules/user";
+import { getPermissionBtns } from "@/store/modules/user";
 import "@/assets/iconfont/quickIconFont.js";
 import quickIconFont from "@/config/quickIconFont.json";
 
 const Menu: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const { activeTab } = useSelector((state: RootState) => state.tab);
-  const { confirm } = Modal;
-
   /**
    * 属性
    */
+  const { confirm } = Modal;
+  const dispatch: AppDispatch = useDispatch();
+  const { activeTab } = useSelector((state: RootState) => state.tab);
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+  }, []);
+  const { permissionBtn }: { permissionBtn: IMenuPermissionButton } =
+    useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IMenu[]>([]);
   const [parentTreeData, setParentTreeData] = useState<Array<IOptions>>([]);
-  // const permissionBtn = dispatch(
-  //   getPermissionBtns(activeTab)
-  // ) as IMenuPermissionButton;
 
   /**
    * 分页
@@ -76,7 +78,7 @@ const Menu: React.FC = () => {
     hiddenImportButton: true,
     hiddenExportButton: true,
     hiddenPrintButton: true,
-    // hiddenAddButton: !validatePermission(permissionBtn?.add),
+    hiddenAddButton: !validatePermission(permissionBtn?.add),
   };
 
   /**
@@ -308,6 +310,12 @@ const Menu: React.FC = () => {
       },
     });
   };
+  const tableActionbar: IActionbar = {
+    width: 300,
+    hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+  };
 
   /**
    * 表格
@@ -438,6 +446,7 @@ const Menu: React.FC = () => {
         formItems={formItems}
         tableData={tableDataList}
         tableColumns={tableColumns}
+        tableActionbar={tableActionbar}
         tableToolbar={tableToolbar}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
