@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
@@ -38,7 +38,9 @@ const User: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  dispatch(getPermissionBtns(activeTab));
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+  }, []);
   const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
