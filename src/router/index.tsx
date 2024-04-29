@@ -6,6 +6,7 @@ import { IMenubar } from "@/types";
 import NotFound from "@/pages/404";
 import staticRoutes from "./static";
 import { buildRoutes } from "./dynamic";
+import AuthRouter from "./AuthRouter";
 
 const Router: React.FC = () => {
   const user = useSelector((state: RootState) => state.user);
