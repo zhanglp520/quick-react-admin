@@ -1,91 +1,33 @@
-import { useRoutes, RouteObject, Navigate } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import { RootState } from "@/store";
 import { IMenubar } from "@/types";
-import { lazy, Suspense } from "react";
-import Layout from "@/layout/index";
-import Home from "@/views/home";
-import Login from "@/pages/login";
-import ChangePassword from "@/views/changePassword";
 import NotFound from "@/pages/404";
+import staticRoutes from "./static";
+import { buildRoutes } from "./dynamic";
 
-const Router = () => {
+const Router: React.FC = () => {
   const user = useSelector((state: RootState) => state.user);
   let menuList: IMenubar[] = [];
-  if (user) {
-    menuList = user.menuList;
-  }
-  const routes: RouteObject[] = [
-    {
-      path: "/",
-      element: <Navigate to="/home" />,
-    },
-    {
-      path: "/home",
-      element: <Layout />,
-      children: [
-        {
-          path: "/home",
-          element: <Home />,
-        },
-      ],
-    },
+  menuList = user.menuList;
+  console.log("menuList", menuList);
 
+  const dynamicRoutes = buildRoutes(menuList);
+  console.log("staticRoutes", staticRoutes);
+  console.log("dynamicRoutes", dynamicRoutes);
+
+  const routes = [
+    ...staticRoutes,
+    ...dynamicRoutes,
     {
-      path: "/login",
-      element: <Login />,
+      path: "/:catchAll(.*)",
+      element: <NotFound />,
     },
-    {
-      path: "/changePassword",
-      element: <Layout />,
-      children: [
-        {
-          path: "/changePassword/index",
-          element: <ChangePassword />,
-        },
-      ],
-    },
-    // {
-    //   path: "/:catchAll(.*)",
-    //   element: <NotFound />,
-    // },
   ];
 
-  const genRouter = (menuList: IMenubar[], routes: RouteObject[]) => {
-    menuList.map((ele: IMenubar) => {
-      const arr: RouteObject[] = [];
-      let path = "";
-      path = ele.path;
-      if (ele.children && ele.children.length > 0) {
-        ele.children.map((item: IMenubar) => {
-          arr.push({
-            path: item.path,
-            element: LazyWrapper(item.path),
-          });
-        });
-      }
-      routes.push({
-        path: path,
-        element: <Layout />,
-        children: arr,
-      });
-    });
-  };
-  const LazyWrapper = (path: any) => {
-    const Component = lazy(() => import(`../views${path}`));
-    return (
-      <Suspense>
-        <Component />
-      </Suspense>
-    );
-  };
-  genRouter(menuList, routes);
-  routes.push({
-    path: "/:catchAll(.*)",
-    element: <NotFound />,
-  });
+  console.log("合并后的路由", routes);
   const element = useRoutes(routes);
-  console.log("路由", routes);
   return <>{element}</>;
 };
 export default Router;

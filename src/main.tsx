@@ -3,17 +3,18 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
+import "@ainiteam/quick-react-ui/dist/style.css";
+
 import store, { persistor } from "./store";
 import App from "./App.tsx";
 import "./index.css";
-import "@ainiteam/quick-react-ui/dist/style.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          <App />
+          <App></App>
         </BrowserRouter>
       </PersistGate>
     </Provider>

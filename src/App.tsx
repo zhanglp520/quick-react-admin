@@ -1,6 +1,8 @@
-// import { Suspense } from "react";
+import { Suspense } from "react";
+
+import Router from "@/router";
 import "./App.css";
-import Router from "@/router/index";
+
 function App() {
   return (
     // <Suspense

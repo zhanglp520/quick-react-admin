@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout, Tabs, theme } from "antd";
+import { Layout as ALayout, Tabs, theme } from "antd";
 
 import AiniSidebar from "./components/AiniSidebar";
 import AiniTop from "./components/AiniTop";
@@ -11,7 +11,7 @@ import { deleteTab, setActiveTab } from "@/store/modules/tab";
 import { setActiveMenuId } from "@/store/modules/menu";
 import "./index.less";
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content } = ALayout;
 
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 type TabItemType = {
@@ -20,7 +20,7 @@ type TabItemType = {
   path: string;
 };
 
-const Layout1: React.FC = () => {
+const Layout: React.FC = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const { tabList, activeTab } = useSelector((state: RootState) => state.tab);
@@ -81,11 +81,11 @@ const Layout1: React.FC = () => {
   // };
   return (
     <div className="aini-layout">
-      <Layout style={{ minHeight: "100vh" }}>
+      <ALayout style={{ minHeight: "100vh" }}>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <AiniSidebar></AiniSidebar>
         </Sider>
-        <Layout>
+        <ALayout>
           <Header
             style={{
               padding: 0,
@@ -114,10 +114,10 @@ const Layout1: React.FC = () => {
             />
             <Outlet />
           </Content>
-        </Layout>
-      </Layout>
+        </ALayout>
+      </ALayout>
     </div>
   );
 };
 
-export default Layout1;
+export default Layout;
