@@ -1,5 +1,5 @@
-import { useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import {
@@ -11,7 +11,7 @@ import {
 } from "@ainiteam/quick-react-ui";
 import "./index.less";
 import { listToSelectTree, validatePermission } from "@/utils";
-import { IDept, IRole } from "@/types";
+import { IDept, IRole, IRolePermissionButton } from "@/types";
 import {
   getRoleList,
   addRole,
@@ -19,33 +19,34 @@ import {
   deleteRole,
   getDeptList,
 } from "@/api/system/role";
-// import { AppDispatch, RootState } from "@/store";
-// import { getPermissionBtns } from "@/store/modules/user";
+import { AppDispatch, RootState } from "@/store";
+import { getPermissionBtns } from "@/store/modules/user";
 
 const Role: React.FC = () => {
-  const { confirm } = Modal;
-  // const dispatch: AppDispatch = useDispatch();
-  // const { activeTab } = useSelector((state: RootState) => state.tab);
   /**
    * 属性
    */
+  const { confirm } = Modal;
+  const dispatch: AppDispatch = useDispatch();
+  const { activeTab } = useSelector((state: RootState) => state.tab);
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+  }, []);
+  const { permissionBtn }: { permissionBtn: IRolePermissionButton } =
+    useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IRole[]>([]);
   const [deptDataList, setDeptDataList] = useState([]);
   const [deptTreeData, setDeptTreeData] = useState([]);
-  // const permissionBtn = dispatch(
-  //   getPermissionBtns(activeTab)
-  // ) as IUserPermissionButton;
-
   /**
    * 工具栏
    */
   const tableToolbar = {
-    hiddenBatchDeleteButton: true,
-    hiddenImportButton: true,
-    hiddenExportButton: true,
-    hiddenPrintButton: true,
-    // hiddenAddButton: !validatePermission(permissionBtn?.add),
+    hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
+    hiddenImportButton: !validatePermission(permissionBtn?.import),
+    hiddenExportButton: !validatePermission(permissionBtn?.export),
+    hiddenPrintButton: !validatePermission(permissionBtn?.print),
+    hiddenAddButton: !validatePermission(permissionBtn?.add),
   };
 
   /**
@@ -162,9 +163,9 @@ const Role: React.FC = () => {
   };
   const tableActionbar: IActionbar = {
     width: 300,
-    // hiddenEditButton: !validatePermission(permissionBtn?.edit),
-    // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
-    // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+    hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    hiddenDetailButton: !validatePermission(permissionBtn?.detail),
     btns: [],
   };
 
