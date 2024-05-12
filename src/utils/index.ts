@@ -96,8 +96,8 @@ export const listToSelectTree = (data: any, pId: any, options?: any) => {
   nodeData.forEach((element: any) => {
     children = listToSelectTree(data, element[value], options);
     arr.push({
-      value: element[value],
-      label: element[label],
+      key: element[value],
+      title: element[label],
       children,
     });
   });
@@ -121,8 +121,8 @@ export const listToTree = (data: any, pId: any, options?: any) => {
   nodeData.forEach((element: any) => {
     children = listToTree(data, element[id], options);
     arr.push({
-      id: element[id],
-      label: element[label],
+      key: element[id],
+      title: element[label],
       children,
     });
   });

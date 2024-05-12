@@ -38,28 +38,23 @@ const Dept: React.FC = () => {
   const { confirm } = Modal;
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  useEffect(() => {
-    dispatch(getPermissionBtns(activeTab));
-    treeLoad(() => {});
-  }, []);
   const { permissionBtn }: { permissionBtn: IDeptPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [deptTreeData, setDeptTreeData] = useState<IOptions[]>([]);
   const [tableDataList, setTableDataList] = useState<IDept[]>([]);
   const [deptDdataListTemp, setDeptDdataListTemp] = useState<IDept[]>([]);
-  const [currentTreeData, setCurrentTreeData] = useState<ITree>({
-    id: "",
-    label: "",
+  const [currentTreeData, setCurrentTreeData] = useState({
+    key: "",
+    title: "",
     children: [],
   });
-
   /**
    * 工具栏
    */
   const handleAdd = (item: IDept, done: any) => {
     const form = { ...item };
-    form.pId = Number(currentTreeData.id);
+    form.pId = Number(currentTreeData.key);
     done(form);
   };
   const tableToolbar: IToolbar = {
@@ -126,8 +121,9 @@ const Dept: React.FC = () => {
    * 加载数据
    */
   const loadData = () => {
-    const { id } = currentTreeData;
-    const pId = id;
+    debugger;
+    const { key } = currentTreeData;
+    const pId = key;
     setLoading(true);
     const deptTree = listToTableTree(deptDdataListTemp, Number(pId));
     setLoading(false);
@@ -136,10 +132,10 @@ const Dept: React.FC = () => {
   /**
    * 左树
    */
-  const leftTree: ILeftTree = {
+  const [leftTree, setLeftTree] = useState<ILeftTree>({
     treeData: [],
     treeSpan: 6,
-  };
+  });
   const treeLoad = (done: any) => {
     getDeptList().then((res) => {
       const { data: deptList } = res;
@@ -150,17 +146,15 @@ const Dept: React.FC = () => {
         label: "deptName",
       });
       console.log("deptTree", deptTree);
-      leftTree.treeData.length = 0;
-      leftTree.treeData.push(...deptTree);
+      leftTree.treeData = deptTree;
       console.log("leftTree", leftTree.treeData);
-      currentTreeData.id = deptTree && deptTree[0].id;
-      done(currentTreeData.id);
+      setCurrentTreeData({ ...(deptTree && deptTree[0]) });
+      done(currentTreeData);
     });
   };
-  const handleTreeClick = (data: ITree, done: any) => {
-    setCurrentTreeData(data);
-    loadData();
-    loadSelectTreeData();
+  const handleTreeClick = (data: any, done: any) => {
+    debugger;
+    setCurrentTreeData({ ...data });
     done();
   };
   /**
@@ -243,7 +237,11 @@ const Dept: React.FC = () => {
       });
     }
   };
-
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+    loadData();
+    loadSelectTreeData();
+  }, [activeTab, currentTreeData, dispatch]);
   return (
     <>
       <div className="dept_wrap">
