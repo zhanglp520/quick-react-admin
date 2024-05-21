@@ -24,15 +24,16 @@ const Operate: React.FC = () => {
   const { activeTab } = useSelector((state: RootState) => state.tab);
   const { permissionBtn }: { permissionBtn: ILogPermissionButton } =
     useSelector((state: RootState) => state.user);
+
   /**
    * 分页
    */
-  const page: IPage = {
+  const [page] = useState<IPage>({
     current: 1,
     size: 10,
     sizes: [10, 20, 30, 40, 50],
     total: 0,
-  };
+  });
   /**
    * 搜索
    */

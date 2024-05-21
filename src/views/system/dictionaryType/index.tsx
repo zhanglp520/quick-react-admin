@@ -42,12 +42,12 @@ const DictionaryType: React.FC = () => {
   /**
    * 分页
    */
-  const page: IPage = {
+  const [page] = useState<IPage>({
     current: 1,
     size: 10,
     sizes: [10, 20, 30, 40, 50],
     total: 0,
-  };
+  });
 
   /**
    * 工具栏
