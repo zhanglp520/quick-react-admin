@@ -122,7 +122,6 @@ const Dept: React.FC = () => {
    * 加载数据
    */
   const loadData = () => {
-    debugger;
     const { key } = currentTreeData;
     const pId = key;
     setLoading(true);
@@ -154,7 +153,6 @@ const Dept: React.FC = () => {
     });
   };
   const handleTreeClick = (data: any, done: any) => {
-    debugger;
     setCurrentTreeData({ ...data });
     done();
   };

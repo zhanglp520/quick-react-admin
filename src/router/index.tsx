@@ -46,7 +46,21 @@ const Router: React.FC = () => {
                   menu2.children.length <= 0 &&
                   renderElement(menu2.path)
                 }
-              ></Route>
+              >
+                {menu2.children &&
+                  menu2.children.length > 0 &&
+                  menu2.children.map((menu3: IMenubar) => (
+                    <Route
+                      key={menu3.path}
+                      path={menu3.path}
+                      element={
+                        menu3.children &&
+                        menu3.children.length <= 0 &&
+                        renderElement(menu3.path)
+                      }
+                    ></Route>
+                  ))}
+              </Route>
             ))}
         </Route>
       ));
