@@ -13,6 +13,7 @@ import {
   ITree,
   ILeftTree,
   IDialogTitle,
+  ITreeOptions,
 } from "@ainiteam/quick-react-ui";
 /**导入项目文件 */
 import {
@@ -41,7 +42,7 @@ const Dept: React.FC = () => {
   const { permissionBtn }: { permissionBtn: IDeptPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
-  const [deptTreeData, setDeptTreeData] = useState<IOptions[]>([]);
+  const [deptTreeData, setDeptTreeData] = useState<ITreeOptions[]>([]);
   const [tableDataList, setTableDataList] = useState<IDept[]>([]);
   const [deptDdataListTemp, setDeptDdataListTemp] = useState<IDept[]>([]);
   const [currentTreeData, setCurrentTreeData] = useState({
@@ -206,8 +207,8 @@ const Dept: React.FC = () => {
       labelWidth: "80px",
       vModel: "pId",
       placeholder: "请选择父级部门",
-      type: "tree",
-      addDisabled: true,
+      type: "treeselect",
+      // addDisabled: true,
       detailDisabled: true,
       options: deptTreeData,
       prop: "pId",
