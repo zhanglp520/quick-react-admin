@@ -68,8 +68,8 @@ export const treeFormat = (data: any, options?: ITreeOptions) => {
     options && options.children ? options.children : defaultOptions.children;
   data.forEach((element: ITree) => {
     const obj: ITree = {
-      label: element[label],
-      id: element[id],
+      title: element[label],
+      key: element[id],
       children: [],
     };
     if (element[children] && element[children].length > 0) {
