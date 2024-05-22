@@ -49,12 +49,12 @@ const Menu: React.FC = () => {
   /**
    * 分页
    */
-  const page: IPage = {
+  const [page] = useState<IPage>({
     current: 1,
     size: 10,
     sizes: [10, 20, 30, 40, 50],
     total: 0,
-  };
+  });
 
   /**
    * 搜索
@@ -350,14 +350,14 @@ const Menu: React.FC = () => {
       label: "菜单类型",
       prop: "menuType",
       width: "200",
-      render: (row: IMenu) => {
-        if (row.menuType === 0) {
+      render: (value: number) => {
+        if (value === 0) {
           return "目录";
         }
-        if (row.menuType === 1) {
+        if (value === 1) {
           return "菜单";
         }
-        if (row.menuType === 2) {
+        if (value === 2) {
           return "按钮";
         }
         return "";
@@ -377,32 +377,32 @@ const Menu: React.FC = () => {
       label: "缓存",
       prop: "cache",
       width: "200",
-      render: (row: IMenu) => {
-        return row.cache ? "缓存" : "不缓存";
+      render: (value: boolean) => {
+        return value ? "缓存" : "不缓存";
       },
     },
     {
       label: "显示",
       prop: "status",
       width: "200",
-      render: (row: IMenu) => {
-        return row.status ? "显示" : "不显示";
+      render: (value: boolean) => {
+        return value ? "显示" : "不显示";
       },
     },
     {
       label: "启用",
       prop: "enabled",
       width: "200",
-      render: (row: IMenu) => {
-        return !row.enabled ? "启用" : "禁用";
+      render: (value: boolean) => {
+        return !value ? "启用" : "禁用";
       },
     },
     {
       label: "是否外链",
       prop: "link",
       width: "200",
-      render: (row: IMenu) => {
-        return row.link === 1 ? "外链" : "非外链";
+      render: (value: number) => {
+        return value === 1 ? "外链" : "非外链";
       },
     },
   ];
@@ -453,7 +453,7 @@ const Menu: React.FC = () => {
         pagebar={page}
         loading={loading}
         displayNumber={false}
-        formInline={true}
+        // formLayout="inline"
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
