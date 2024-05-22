@@ -11,12 +11,33 @@ import Home from "@/views/home";
 import ChangePassword from "@/views/changePassword";
 
 const Router: React.FC = () => {
+  const modules = import.meta.glob("../views/**/*.tsx");
+  console.log("modules", modules);
   const user = useSelector((state: RootState) => state.user);
   let menuList: IMenubar[] = [];
   menuList = user.menuList;
   console.log("menuList", menuList);
-  const renderElement = (path: string) => {
-    const Component = lazy(() => import(`../views${path}`));
+  const renderElement = (menu: IMenubar) => {
+    let Component = null;
+    if (menu.viewPath) {
+      const viewPath = modules[`../views${menu.viewPath}.tsx`];
+      if (!viewPath) {
+        console.error(
+          `IMenu view path configuration error or view does not exist ../views${menu.viewPath}.vue`
+        );
+      } else {
+        Component = lazy(viewPath);
+      }
+    } else {
+      const path = modules[`../views${menu.path}/index.tsx`];
+      if (!path) {
+        console.error(
+          `IMenu routing path configuration error or view does not exist ../views${menu.path}/index.vue`
+        );
+      } else {
+        Component = lazy(path);
+      }
+    }
     return (
       <>
         <Suspense>{<Component></Component>}</Suspense>
@@ -30,9 +51,7 @@ const Router: React.FC = () => {
           key={menu1.path}
           path={menu1.path}
           element={
-            menu1.children &&
-            menu1.children.length <= 0 &&
-            renderElement(menu1.path)
+            menu1.children && menu1.children.length <= 0 && renderElement(menu1)
           }
         >
           {menu1.children &&
@@ -44,7 +63,7 @@ const Router: React.FC = () => {
                 element={
                   menu2.children &&
                   menu2.children.length <= 0 &&
-                  renderElement(menu2.path)
+                  renderElement(menu2)
                 }
               >
                 {menu2.children &&
@@ -56,7 +75,7 @@ const Router: React.FC = () => {
                       element={
                         menu3.children &&
                         menu3.children.length <= 0 &&
-                        renderElement(menu3.path)
+                        renderElement(menu3)
                       }
                     ></Route>
                   ))}
