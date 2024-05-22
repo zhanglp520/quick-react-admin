@@ -109,7 +109,7 @@ const Role: React.FC = () => {
         {
           required: true,
           message: "请选择所属部门",
-          trigger: "change",
+          // trigger: "change",
         },
       ],
     },

@@ -214,7 +214,7 @@ const Dept: React.FC = () => {
         {
           required: true,
           message: "请选择父级部门",
-          trigger: "change",
+          // trigger: "change",
         },
       ],
     },
