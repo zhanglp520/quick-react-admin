@@ -49,12 +49,12 @@ const User: React.FC = () => {
   /**
    * 分页
    */
-  const page: IPage = {
+  const [page] = useState<IPage>({
     current: 1,
     size: 10,
     sizes: [10, 20, 30, 40, 50],
     total: 0,
-  };
+  });
 
   /**
    * 搜索
@@ -456,8 +456,8 @@ const User: React.FC = () => {
       width: "60",
       label: "启用",
       prop: "enabled",
-      render: (row: IUser) => {
-        return row.enabled === 1 ? "启用" : "禁用";
+      render: (value: number) => {
+        return value === 1 ? "启用" : "禁用";
       },
     },
     {
