@@ -164,7 +164,7 @@ const Menu: React.FC = () => {
         {
           required: true,
           message: "请选择菜单类型",
-          trigger: "change",
+          // trigger: "change",
         },
       ],
     },
