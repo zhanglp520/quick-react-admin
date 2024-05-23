@@ -254,7 +254,7 @@ const Dept: React.FC = () => {
           tableToolbar={tableToolbar}
           // dialogTitles={dialogTitles}
           leftTree={leftTree}
-          leftTree-refresh={true}
+          leftTreeRefresh={true}
           loading={loading}
           onTreeLoad={treeLoad}
           onTreeClick={handleTreeClick}
