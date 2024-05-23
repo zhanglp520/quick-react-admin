@@ -85,10 +85,13 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
         key: menu.menuId,
         icon: <AppstoreOutlined />,
         label: menu.menuName,
-        // onClick: ({ domEvent}) => {
-        //   domEvent.stopPropagation();
-        //   menuClick(menu);
-        // },
+        onClick: ({ domEvent }) => {
+          domEvent.stopPropagation();
+          if (menu.children.length > 0) {
+            return;
+          }
+          menuClick(menu);
+        },
         children: menu.children.map((child: IMenubar) => {
           return {
             key: child.menuId,
@@ -96,6 +99,9 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
             label: child.menuName,
             onClick: ({ domEvent }) => {
               domEvent.stopPropagation();
+              if (child.children.length > 0) {
+                return;
+              }
               menuClick(child);
             },
             children:
@@ -108,6 +114,9 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
                       label: child2.menuName,
                       onClick: ({ domEvent }) => {
                         domEvent.stopPropagation();
+                        if (child2.children.length > 0) {
+                          return;
+                        }
                         menuClick(child2);
                       },
                     };
