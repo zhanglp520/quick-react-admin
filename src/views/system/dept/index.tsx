@@ -256,6 +256,7 @@ const Dept: React.FC = () => {
           leftTree={leftTree}
           leftTreeRefresh={true}
           loading={loading}
+          displayNumber={false}
           onTreeLoad={treeLoad}
           onTreeClick={handleTreeClick}
           onFormSubmit={handleFormSubmit}
