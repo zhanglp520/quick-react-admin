@@ -17,9 +17,10 @@ import {
   IToolbar,
 } from "@ainiteam/quick-react-ui";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { Modal, message } from "antd";
+import { Modal, message, Button } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import DialogProgress from "./components/DialogProgress";
 
 const Role: React.FC = () => {
   /**
@@ -39,15 +40,7 @@ const Role: React.FC = () => {
     setDialogVisible(true);
     setRole({ ...item });
   };
-  /**
-   * 分页
-   */
-  //   const [page] = useState<IPage>({
-  //     current: 1,
-  //     size: 10,
-  //     sizes: [10, 20, 30, 40, 50],
-  //     total: 0,
-  //   });
+
   /**
    * 工具栏
    */
@@ -186,6 +179,27 @@ const Role: React.FC = () => {
       });
     }
   };
+  /**
+   * 弹窗
+   */
+  const handleOk = () => {
+    setDialogVisible(false);
+  };
+
+  const handleCancel = () => {
+    setDialogVisible(false);
+  };
+  const prev = () => {
+    // dialogProgressRef?.prev();
+  };
+  const next = () => {
+    // dialogProgressRef?.next();
+  };
+  const save = () => {
+    // dialogProgressRef?.save(() => {
+    //   setDialogVisible(false);
+    // });
+  };
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));
     load();
@@ -207,6 +221,28 @@ const Role: React.FC = () => {
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
       ></Crud>
+      <Modal
+        title="角色授权"
+        open={dialogVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width="30%"
+        footer={[
+          <Button key="back" onClick={prev} type="primary">
+            上一步
+          </Button>,
+          <Button type="primary" loading={loading} onClick={next}>
+            下一步
+          </Button>,
+          <Button type="primary" loading={loading} onClick={save}>
+            保存
+          </Button>,
+        ]}
+      >
+        <div>
+          <DialogProgress role={role}></DialogProgress>
+        </div>
+      </Modal>
     </>
   );
 };
