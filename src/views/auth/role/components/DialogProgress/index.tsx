@@ -1,242 +1,198 @@
-import { getApiPermission, getMenuPermission } from "@/api/auth";
+import {
+  getApiPermission,
+  getMenuPermission,
+  rolePermission,
+} from "@/api/auth";
 import { getApiList } from "@/api/system/api";
 import { getMenuList } from "@/api/system/menu";
-import { IMenuTree } from "@/types";
+import { IApi, IMenuTree } from "@/types";
 import { listToTableTree, listToTree } from "@/utils";
-import { Steps, Tree } from "antd";
-import { useEffect, useState } from "react";
+import { Steps, Tree, message } from "antd";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 type RoleProp = {
   role: any;
+  onActive: any;
 };
 
-const DialogProgress: React.FC<RoleProp> = (props: RoleProp) => {
-  const { role } = props;
-  const [current, setCurrent] = useState(0);
-  const [menuTreeData, setMenuTreeData] = useState<IMenuTree[]>([]);
-  const [menuTreeList, setMenuTreeList] = useState<IMenuTree[]>([]);
-  const [apiTreeList, setApiTreeList] = useState<IMenuTree[]>([]);
-  const [apiTreeData, setApiTreeData] = useState<IMenuTree[]>([]);
+const DialogProgress: React.FC<RoleProp> = forwardRef(
+  (props: RoleProp, ref) => {
+    const { role, onActive } = props;
+    const menuTreeRef = useRef(null);
+    const apiTreeRef = useRef(null);
+    const [active, setActive] = useState(0);
+    const [menuIds, setMenuIds] = useState("");
+    const [apiIds, setApiIds] = useState("");
+    const [menuTreeList, setMenuTreeList] = useState<IMenuTree[]>([]);
+    const [apiTreeList, setApiTreeList] = useState<IApi[]>([]);
+    const [checkedMenuKeys, setCheckedMenuKeys] = useState([""]);
+    const [checkedApiKeys, setCheckedApiKeys] = useState([""]);
 
-  const treeData = [
-    {
-      title: "0-0",
-      key: "0-0",
-      children: [
-        {
-          title: "0-0-0",
-          key: "0-0-0",
-          children: [
-            {
-              title: "0-0-0-0",
-              key: "0-0-0-0",
-            },
-            {
-              title: "0-0-0-1",
-              key: "0-0-0-1",
-            },
-            {
-              title: "0-0-0-2",
-              key: "0-0-0-2",
-            },
-          ],
-        },
-        {
-          title: "0-0-1",
-          key: "0-0-1",
-          children: [
-            {
-              title: "0-0-1-0",
-              key: "0-0-1-0",
-            },
-            {
-              title: "0-0-1-1",
-              key: "0-0-1-1",
-            },
-            {
-              title: "0-0-1-2",
-              key: "0-0-1-2",
-            },
-          ],
-        },
-        {
-          title: "0-0-2",
-          key: "0-0-2",
-        },
-      ],
-    },
-    {
-      title: "0-1",
-      key: "0-1",
-      children: [
-        {
-          title: "0-1-0-0",
-          key: "0-1-0-0",
-        },
-        {
-          title: "0-1-0-1",
-          key: "0-1-0-1",
-        },
-        {
-          title: "0-1-0-2",
-          key: "0-1-0-2",
-        },
-      ],
-    },
-    {
-      title: "0-2",
-      key: "0-2",
-    },
-  ];
-  const [expandedKeys, setExpandedKeys] = useState(["0-0-0", "0-0-1"]);
-  const [checkedKeys, setCheckedKeys] = useState(["0-0-0"]);
-  const [selectedKeys, setSelectedKeys] = useState([]);
-  const [autoExpandParent, setAutoExpandParent] = useState(true);
-  const [currentTreeData, setCurrentTreeData] = useState({
-    key: "",
-    title: "",
-    children: [],
-  });
+    const prev = () => {
+      if (active > 0) {
+        if (active === 1) {
+          const apiIdKeys = checkedApiKeys ? checkedApiKeys.join(",") : "";
+          setApiIds(apiIdKeys);
+        } else if (active === 2) {
+          //TODO:数据权限
+        }
 
-  const onExpand = (expandedKeysValue: any) => {
-    setExpandedKeys(expandedKeysValue);
-    setAutoExpandParent(false);
-  };
-  const onCheck = (checkedKeysValue: any) => {
-    console.log("onCheck", checkedKeysValue);
-    setCheckedKeys(checkedKeysValue);
-  };
-  const onSelect = (selectedKeysValue: any, info: any) => {
-    console.log("onSelect", info);
-    setSelectedKeys(selectedKeysValue);
-  };
-
-  const onChange = (value: any) => {
-    setCurrent(value);
-  };
-  /**
-   * 加载接口数据
-   */
-  const apiLoad = () => {
-    getApiList().then((res) => {
-      const { data: apiList } = res;
-      setApiTreeList([...apiList]);
-      getApiPermission1(role.id!.toString());
-    });
-  };
-
-  const getApiPermission1 = (id: string) => {
-    getApiPermission(id).then((res) => {
-      const { data: keys } = res;
-      setSelectedKeys(keys);
-      setApiTreeData([...apiTreeList]);
-      // nextTick(() => {
-      //   if (apiTreeRef.value) {
-      //     apiTreeRef.value.setCheckedKeys(keys, false);
-      //   }
-      // });
-    });
-  };
-  /**
-   * 加载菜单数据
-   */
-  const menuLoad = () => {
-    getMenuList().then((res) => {
-      const { data: menuList } = res;
-      const menuTree = listToTree(menuList, 0, {
-        pId: "pId",
-        label: "menuName",
+        setActive(active - 1);
+      }
+    };
+    const next = () => {
+      if (active < 2) {
+        if (active === 0) {
+          const menuIdKeys = checkedMenuKeys ? checkedMenuKeys?.join(",") : "";
+          setMenuIds(menuIdKeys);
+        } else if (active === 1) {
+          const apiIdKeys = checkedApiKeys ? checkedApiKeys.join(",") : "";
+          setApiIds(apiIdKeys);
+        }
+        setActive(active + 1);
+        // active++;
+      }
+    };
+    const save = (done: any) => {
+      rolePermission({
+        roleId: role.id,
+        menuIds: menuIds,
+        apiIds: apiIds,
+      }).then(() => {
+        message.success("角色授权成功");
+        done();
       });
-      console.log("menuTree", menuTree);
-      setMenuTreeList([...menuTree]);
-      getMenuPermission1(role.id!.toString());
-    });
-  };
-  const getMenuPermission1 = (id: string) => {
-    getMenuPermission(id).then((res) => {
-      const { data: keys } = res;
-      setSelectedKeys(keys);
-      setMenuTreeData([...menuTreeList]);
-      // nextTick(() => {
-      //   if (menuTreeRef.value) {
-      //     menuTreeRef.value.setCheckedKeys(keys, false);
-      //   }
-      // });
-    });
-  };
-  const FirstTree = () => {
-    if (current == 0) {
-      return (
-        <Tree
-          checkable
-          multiple={true}
-          onExpand={onExpand}
-          expandedKeys={expandedKeys}
-          autoExpandParent={autoExpandParent}
-          onCheck={onCheck}
-          checkedKeys={checkedKeys}
-          onSelect={onSelect}
-          selectedKeys={selectedKeys}
-          treeData={menuTreeList}
-        />
-      );
-    } else if (current == 1) {
-      return <Tree checkable treeData={apiTreeData} />;
-    } else if (current == 2) {
-      return <div>待开发</div>;
-    }
-  };
-  useEffect(() => {
-    menuLoad();
-    apiLoad();
-  }, []);
-  return (
-    <>
-      <div>
-        <Steps
-          current={current}
-          onChange={onChange}
-          type="navigation"
-          items={[
-            {
-              title: "菜单权限",
-              status: "finish",
-            },
-            {
-              title: "接口权限",
-              status: "finish",
-            },
-            {
-              title: "数据权限",
-              status: "finish",
-            },
-          ]}
-        ></Steps>
-        <FirstTree></FirstTree>
-        {/* <div v-if="active === 1">
-        <el-tree
-            ref="menuTreeRef"
-            :data="menuTreeData"
-            :props="menuProps"
-            show-checkbox
-            node-key="id"
-            highlight-current
-        />
-    </div>
-    <div v-if="active === 2">
-        <el-tree
-            ref="apiTreeRef"
-            :data="apiTreeData"
-            :props="apiProps"
-            show-checkbox
-            node-key="id"
-            highlight-current
-        />
-    </div> */}
-        {/* <div v-if="current === 2"> 待开发 </div> */}
-      </div>
-    </>
-  );
-};
+    };
+    // 暴露给父组件使用
+    useImperativeHandle(ref, () => ({
+      next,
+      prev,
+      save,
+      active,
+    }));
+
+    const onMenuCheck = (checkedKeysValue: any) => {
+      console.log("onMenuCheck", checkedKeysValue);
+      setCheckedMenuKeys(checkedKeysValue);
+    };
+    const onApiCheck = (checkedKeysValue: any) => {
+      console.log("onApiCheck", checkedKeysValue);
+      setCheckedApiKeys(checkedKeysValue);
+    };
+    const onChange = (value: any) => {
+      setActive(value);
+    };
+    /**
+     * 加载接口数据
+     */
+    const apiLoad = () => {
+      getApiList().then((res) => {
+        const { data: apiList } = res;
+        setApiTreeList([...apiList]);
+        getApiPermission1(role.id!.toString());
+      });
+    };
+
+    const getApiPermission1 = (id: string) => {
+      getApiPermission(id).then((res) => {
+        const { data: keys } = res;
+        setCheckedApiKeys(keys);
+      });
+    };
+    /**
+     * 加载菜单数据
+     */
+    const menuLoad = () => {
+      getMenuList().then((res) => {
+        const { data: menuList } = res;
+        const menuTree = listToTree(menuList, 0, {
+          pId: "pId",
+          label: "menuName",
+        });
+        console.log("menuTree", menuTree);
+        setMenuTreeList([...menuTree]);
+        getMenuPermission1(role.id!.toString());
+      });
+    };
+    const getMenuPermission1 = (id: string) => {
+      getMenuPermission(id).then((res) => {
+        const { data: keys } = res;
+        setCheckedMenuKeys(keys);
+      });
+    };
+    const FirstTree = () => {
+      if (active == 0) {
+        return (
+          <Tree
+            checkable
+            ref={menuTreeRef}
+            multiple={true}
+            onCheck={onMenuCheck}
+            checkedKeys={checkedMenuKeys}
+            treeData={menuTreeList}
+          />
+        );
+      } else if (active == 1) {
+        return (
+          <Tree
+            checkable
+            ref={apiTreeRef}
+            onCheck={onApiCheck}
+            checkedKeys={checkedApiKeys}
+            treeData={apiTreeList}
+            fieldNames={{
+              title: "apiName",
+              key: "id",
+            }}
+          />
+        );
+      } else if (active == 2) {
+        return <div>待开发</div>;
+      }
+    };
+
+    useEffect(() => {
+      if (active === 0) {
+        menuLoad();
+      } else if (active === 1) {
+        apiLoad();
+      }
+      onActive(active);
+    }, [active]);
+
+    return (
+      <>
+        <div>
+          <Steps
+            current={active}
+            onChange={onChange}
+            type="navigation"
+            items={[
+              {
+                title: "菜单权限",
+                disabled: true,
+              },
+              {
+                title: "接口权限",
+                disabled: true,
+              },
+              {
+                title: "数据权限",
+                disabled: true,
+              },
+            ]}
+          ></Steps>
+          <FirstTree></FirstTree>
+        </div>
+      </>
+    );
+  }
+);
 
 export default DialogProgress;

@@ -18,7 +18,7 @@ import {
 } from "@ainiteam/quick-react-ui";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Modal, message, Button } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DialogProgress from "./components/DialogProgress";
 
@@ -28,7 +28,9 @@ const Role: React.FC = () => {
    */
   const { confirm } = Modal;
 
+  const dialogProgressRef = useRef(null);
   const [dataList, setDataList] = useState<IRole[]>([]);
+  const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
@@ -190,15 +192,24 @@ const Role: React.FC = () => {
     setDialogVisible(false);
   };
   const prev = () => {
-    // dialogProgressRef?.prev();
+    if (dialogProgressRef.current) {
+      dialogProgressRef.current.prev();
+    }
   };
   const next = () => {
+    if (dialogProgressRef.current) {
+      dialogProgressRef.current.next();
+    }
     // dialogProgressRef?.next();
   };
   const save = () => {
-    // dialogProgressRef?.save(() => {
-    //   setDialogVisible(false);
-    // });
+    if (dialogProgressRef.current) {
+      dialogProgressRef.current.save();
+    }
+    setDialogVisible(false);
+  };
+  const handleActive = (status: number) => {
+    setActive(status);
   };
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));
@@ -228,19 +239,38 @@ const Role: React.FC = () => {
         onCancel={handleCancel}
         width="30%"
         footer={[
-          <Button key="back" onClick={prev} type="primary">
+          <Button
+            key="back"
+            onClick={prev}
+            type="primary"
+            disabled={active == 0}
+          >
             上一步
           </Button>,
-          <Button type="primary" loading={loading} onClick={next}>
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={next}
+            disabled={active == 2}
+          >
             下一步
           </Button>,
-          <Button type="primary" loading={loading} onClick={save}>
+          <Button
+            type="primary"
+            loading={loading}
+            onClick={save}
+            disabled={active < 2}
+          >
             保存
           </Button>,
         ]}
       >
         <div>
-          <DialogProgress role={role}></DialogProgress>
+          <DialogProgress
+            onActive={handleActive}
+            role={role}
+            ref={dialogProgressRef}
+          ></DialogProgress>
         </div>
       </Modal>
     </>
