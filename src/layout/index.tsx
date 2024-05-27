@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Layout as ALayout, Tabs, theme } from "antd";
+import { Layout as ALayout, Button, Tabs, Tooltip, theme } from "antd";
 
 import AiniSidebar from "./components/AiniSidebar";
 import AiniTop from "./components/AiniTop";
 import { AppDispatch, RootState } from "@/store";
 import { ITab } from "@/types";
-import { deleteTab, setActiveTab } from "@/store/modules/tab";
-import { setActiveMenuId } from "@/store/modules/menu";
+import { deleteTab, setActiveTab, clear } from "@/store/modules/tab";
+import { setActiveMenuId, clear as clearMenu } from "@/store/modules/menu";
 import "./index.less";
+import { CloseOutlined } from "@ant-design/icons";
 
 const { Header, Sider, Content } = ALayout;
 
@@ -74,11 +75,12 @@ const Layout: React.FC = () => {
       navigate(tab.path!);
     }
   };
-  // const closeAll = () => {
-  //   tabStore.clear();
-  //   menuStore.clear();
-  //   editableTabsValue = "home";
-  // };
+  const closeAll = () => {
+    dispatch(clear());
+    dispatch(clearMenu());
+    setActiveKey("home");
+    navigate("/home");
+  };
   return (
     <div className="aini-layout">
       <ALayout style={{ minHeight: "100vh" }}>
@@ -112,6 +114,14 @@ const Layout: React.FC = () => {
               onEdit={handleTabsEdit}
               onChange={handleClick}
             />
+            <Tooltip title="关闭全部">
+              <Button
+                style={{ position: "absolute", top: "110px", right: "45px" }}
+                icon={<CloseOutlined />}
+                onClick={closeAll}
+              ></Button>
+            </Tooltip>
+
             <Outlet />
           </Content>
         </ALayout>

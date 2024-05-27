@@ -53,8 +53,8 @@ const AiniTop: FC = () => {
       name: "个人资料",
       path: "/personalInfo",
     };
-    if (tabList.length >= 15) {
-      message.warning("选项卡最多15个，请关闭部分再试");
+    if (tabList.length >= 13) {
+      message.warning("选项卡最多13个，请关闭部分再试");
       return;
     }
     dispatch(addTab(tab));
@@ -66,8 +66,8 @@ const AiniTop: FC = () => {
       name: "修改密码",
       path: "/changePassword",
     };
-    if (tabList.length >= 15) {
-      message.warning("选项卡最多15个，请关闭部分再试");
+    if (tabList.length >= 13) {
+      message.warning("选项卡最多13个，请关闭部分再试");
       return;
     }
     dispatch(addTab(tab));

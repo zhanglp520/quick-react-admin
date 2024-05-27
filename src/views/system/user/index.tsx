@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal, message } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  DownloadOutlined,
+  ExclamationCircleFilled,
+  ExportOutlined,
+  ImportOutlined,
+} from "@ant-design/icons";
 import {
   IActionbar,
   IColumn,
@@ -119,6 +124,7 @@ const User: React.FC = () => {
         name: "下载模板(浏览器下载方式)",
         position: "left",
         type: "primary",
+        icon: <DownloadOutlined />,
         hidden: !validatePermission(permissionBtn?.download),
         click() {
           window.location.href = `${
@@ -129,6 +135,7 @@ const User: React.FC = () => {
       {
         name: "下载模板(流文件方式)",
         position: "left",
+        icon: <DownloadOutlined />,
         type: "primary",
         hidden: !validatePermission(permissionBtn?.download),
         click() {
@@ -140,6 +147,7 @@ const User: React.FC = () => {
       {
         name: "导入(前端方式)",
         position: "left",
+        icon: <ImportOutlined />,
         type: "warning",
         hidden: !validatePermission(permissionBtn?.import),
         click() {
@@ -150,6 +158,7 @@ const User: React.FC = () => {
       {
         name: "导出(前端方式)",
         position: "left",
+        icon: <ExportOutlined />,
         type: "danger",
         hidden: !validatePermission(permissionBtn?.export),
         click() {

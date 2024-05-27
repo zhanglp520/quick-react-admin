@@ -46,8 +46,8 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
         name: menuName,
         path: routerPath,
       };
-      if (tabList.length >= 15) {
-        message.warning("选项卡最多15个，请关闭部分再试");
+      if (tabList.length >= 13) {
+        message.warning("选项卡最多13个，请关闭部分再试");
         return;
       }
       dispatch(addTab(tab));
