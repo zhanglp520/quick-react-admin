@@ -385,10 +385,12 @@ const Generator: React.FC = () => {
    * 弹窗
    */
   const handleOk = () => {
+    setDialogViewVisible(false);
     setDialogConfigVisible(false);
   };
 
   const handleCancel = () => {
+    setDialogViewVisible(false);
     setDialogConfigVisible(false);
   };
   //   useEffect(() => {
@@ -424,9 +426,9 @@ const Generator: React.FC = () => {
       <Modal
         title="预览"
         open={dialogViewVisible}
-        // onOk={handleOk}
-        // onCancel={handleCancel}
-        // width="30%"
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width="30%"
       >
         <CodeView></CodeView>
       </Modal>
