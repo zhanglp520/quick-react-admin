@@ -54,7 +54,7 @@ const Api: React.FC = () => {
     {
       label: "",
       vModel: "keyword",
-      placeholder: "接口名称|菜单名称",
+      placeholder: "接口名称|接口编号|接口地址",
     },
   ];
   /**
