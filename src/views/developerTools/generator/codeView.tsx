@@ -1,11 +1,9 @@
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { useState } from "react";
-import "codemirror/lib/codemirror.css"; // 引入CodeMirror的样式文件
-import { Codemirror } from "@uiw/react-codemirror"; // 引入Codemirror组件
+import { CodeMirror } from "@ainiteam/quick-react-ui";
 
 const CodeView: React.FC = () => {
-  const [value, setValue] = useState('console.log("Hello, Codemirror!");'); // 使用useState管理值
   const [data1, setData1] = useState("");
   const [data2, setData2] = useState("");
   const [data3, setData3] = useState("");
@@ -31,86 +29,44 @@ export class UserController extends BaseController<UserVo> {
 }
     `,
   };
-  const handleCodeChange = (value: string) => {
+
+  const handleCodeChange = (value: any, viewUpdate: any) => {
+    debugger;
     setData1(value);
   };
-
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "entity",
-      children: (
-        <>
-          <Codemirror
-            value={value} // 设置编辑器的初始值
-            onChange={(value, viewUpdate) => {
-              setValue(value); // 当值改变时更新状态
-            }}
-            options={{
-              mode: "javascript", // 设置编辑器的语言模式
-              theme: "default", // 设置编辑器的主题
-            }}
-          />
-        </>
-      ),
+      children: <CodeMirror value={data1} onChange={handleCodeChange} />,
     },
-    // {
-    //   key: "2",
-    //   label: "vo",
-    //   children: (
-    //     <CodeMirror
-    //       value={data1}
-    //       language="javascript"
-    //       onChange={handleCodeChange}
-    //     />
-    //   ),
-    // },
-    // {
-    //   key: "3",
-    //   label: "dto",
-    //   children: (
-    //     <CodeMirror
-    //       value={data1}
-    //       language="javascript"
-    //       onChange={handleCodeChange}
-    //     />
-    //   ),
-    // },
-    // {
-    //   key: "4",
-    //   label: "repository",
-    //   children: (
-    //     <CodeMirror
-    //       value={data1}
-    //       language="javascript"
-    //       onChange={handleCodeChange}
-    //     />
-    //   ),
-    // },
-    // {
-    //   key: "5",
-    //   label: "server",
-    //   children: (
-    //     <CodeMirror
-    //       value={data1}
-    //       language="javascript"
-    //       onChange={handleCodeChange}
-    //     />
-    //   ),
-    // },
-    // {
-    //   key: "6",
-    //   label: "controller",
-    //   children: (
-    //     <CodeMirror
-    //       value={data1}
-    //       language="javascript"
-    //       onChange={handleCodeChange}
-    //     />
-    //   ),
-    // },
+    {
+      key: "2",
+      label: "vo",
+      children: <CodeMirror value={data2} onChange={handleCodeChange} />,
+    },
+    {
+      key: "3",
+      label: "dto",
+      children: <CodeMirror value={data3} onChange={handleCodeChange} />,
+    },
+    {
+      key: "4",
+      label: "repository",
+      children: <CodeMirror value={data4} onChange={handleCodeChange} />,
+    },
+    {
+      key: "5",
+      label: "server",
+      children: <CodeMirror value={data5} onChange={handleCodeChange} />,
+    },
+    {
+      key: "6",
+      label: "controller",
+      children: <CodeMirror value={data6} onChange={handleCodeChange} />,
+    },
   ];
-  const handleClick = (key: string) => {
+  const handleChange = (key: string) => {
     console.log(key);
     switch (key) {
       case "1":
@@ -137,7 +93,7 @@ export class UserController extends BaseController<UserVo> {
   };
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} onChange={handleClick}></Tabs>
+      <Tabs defaultActiveKey="1" items={items} onChange={handleChange}></Tabs>
     </>
   );
 };
