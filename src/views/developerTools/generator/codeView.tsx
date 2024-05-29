@@ -1,9 +1,11 @@
-import CodeMirror from "@/components/CodeMirror";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { useState } from "react";
+import "codemirror/lib/codemirror.css"; // 引入CodeMirror的样式文件
+import { Codemirror } from "@uiw/react-codemirror"; // 引入Codemirror组件
 
 const CodeView: React.FC = () => {
+  const [value, setValue] = useState('console.log("Hello, Codemirror!");'); // 使用useState管理值
   const [data1, setData1] = useState("");
   const [data2, setData2] = useState("");
   const [data3, setData3] = useState("");
@@ -29,37 +31,84 @@ export class UserController extends BaseController<UserVo> {
 }
     `,
   };
+  const handleCodeChange = (value: string) => {
+    setData1(value);
+  };
+
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "entity",
-      children: <CodeMirror itemData={data1} />,
+      children: (
+        <>
+          <Codemirror
+            value={value} // 设置编辑器的初始值
+            onChange={(value, viewUpdate) => {
+              setValue(value); // 当值改变时更新状态
+            }}
+            options={{
+              mode: "javascript", // 设置编辑器的语言模式
+              theme: "default", // 设置编辑器的主题
+            }}
+          />
+        </>
+      ),
     },
-    {
-      key: "2",
-      label: "vo",
-      children: <CodeMirror itemData={data2} />,
-    },
-    {
-      key: "3",
-      label: "dto",
-      children: <CodeMirror itemData={data3} />,
-    },
-    {
-      key: "4",
-      label: "repository",
-      children: <CodeMirror itemData={data4} />,
-    },
-    {
-      key: "5",
-      label: "server",
-      children: <CodeMirror itemData={data5} />,
-    },
-    {
-      key: "6",
-      label: "controller",
-      children: <CodeMirror itemData={data6} />,
-    },
+    // {
+    //   key: "2",
+    //   label: "vo",
+    //   children: (
+    //     <CodeMirror
+    //       value={data1}
+    //       language="javascript"
+    //       onChange={handleCodeChange}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: "3",
+    //   label: "dto",
+    //   children: (
+    //     <CodeMirror
+    //       value={data1}
+    //       language="javascript"
+    //       onChange={handleCodeChange}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: "4",
+    //   label: "repository",
+    //   children: (
+    //     <CodeMirror
+    //       value={data1}
+    //       language="javascript"
+    //       onChange={handleCodeChange}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: "5",
+    //   label: "server",
+    //   children: (
+    //     <CodeMirror
+    //       value={data1}
+    //       language="javascript"
+    //       onChange={handleCodeChange}
+    //     />
+    //   ),
+    // },
+    // {
+    //   key: "6",
+    //   label: "controller",
+    //   children: (
+    //     <CodeMirror
+    //       value={data1}
+    //       language="javascript"
+    //       onChange={handleCodeChange}
+    //     />
+    //   ),
+    // },
   ];
   const handleClick = (key: string) => {
     console.log(key);
