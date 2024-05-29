@@ -10,3 +10,5 @@ export * from "./permission";
 export * from "./role";
 export * from "./tab";
 export * from "./user";
+export * from "./projec";
+export * from "./dataSource";

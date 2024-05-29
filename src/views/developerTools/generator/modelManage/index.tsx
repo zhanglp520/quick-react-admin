@@ -1,4 +1,3 @@
-import { deleteRole } from "@/api/system/role";
 import {
   addUser,
   deleteUser,
@@ -7,7 +6,7 @@ import {
   updateUser,
 } from "@/api/system/user";
 import { AppDispatch, RootState } from "@/store";
-import { getPermissionBtns } from "@/store/modules/user";
+
 import { IUser, IUserPermissionButton } from "@/types";
 import { validatePermission } from "@/utils";
 import { downloadExcel } from "@/utils/download";
@@ -29,7 +28,8 @@ import { Modal, message, Button } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
-const Generator: React.FC = () => {
+
+const ModelManage: React.FC = () => {
   /**
    * 属性
    */
@@ -74,9 +74,9 @@ const Generator: React.FC = () => {
    * 表单
    */
   const dialogTitle = {
-    add: "新增角色",
-    edit: "编辑角色",
-    detail: "角色详情",
+    add: "新增模块",
+    edit: "编辑模块",
+    detail: "模块详情",
   };
   const validateUserId = (rule: any, value: string, callback: any) => {
     console.log("rule", rule);
@@ -162,11 +162,7 @@ const Generator: React.FC = () => {
       width: "50",
       type: "selection",
     },
-    {
-      width: "60",
-      type: "index",
-      label: "序号",
-    },
+
     {
       width: "100",
       label: "项目编号",
@@ -435,4 +431,4 @@ const Generator: React.FC = () => {
     </>
   );
 };
-export default Generator;
+export default ModelManage;
