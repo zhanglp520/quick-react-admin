@@ -5,10 +5,13 @@ import {
   updateUser,
 } from "@/api/system/user";
 
-import { getModelList } from "@/api/developerTools/generator/model";
+import {
+  getModuleList,
+  buildModule,
+} from "@/api/developerTools/generator/module";
 import { AppDispatch, RootState } from "@/store";
 
-import { IUser, IUserPermissionButton } from "@/types";
+import { IModule, IModulePermissionButton } from "@/types";
 import { validatePermission } from "@/utils";
 import { downloadExcel } from "@/utils/download";
 import {
@@ -30,18 +33,18 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
 
-const Model: React.FC = () => {
+const Module: React.FC = () => {
   /**
    * 属性
    */
   const { confirm } = Modal;
   const [dialogConfigVisible, setDialogConfigVisible] = useState(false);
   const [dialogViewVisible, setDialogViewVisible] = useState(false);
-  const [tableDataList, setTableDataList] = useState<IUser[]>([]);
+  const [tableDataList, setTableDataList] = useState<IModule[]>([]);
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
+  const { permissionBtn }: { permissionBtn: IModulePermissionButton } =
     useSelector((state: RootState) => state.user);
   /**
    * 分页
@@ -57,13 +60,13 @@ const Model: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getModelList(parmas)
+    getModuleList(parmas)
       .then((res) => {
         setLoading(false);
-        const { data: userList, total } = res;
-        console.log("userList", userList);
-        if (userList) {
-          setTableDataList([...userList]);
+        const { data: moduleList, total } = res;
+        console.log("moduleList", moduleList);
+        if (moduleList) {
+          setTableDataList([...moduleList]);
         }
         page.total = total;
       })
@@ -79,69 +82,86 @@ const Model: React.FC = () => {
     edit: "编辑模块",
     detail: "模块详情",
   };
-  const validateUserId = (rule: any, value: string, callback: any) => {
+  const validateModuleId = (rule: any, value: string, callback: any) => {
     console.log("rule", rule);
     const reg = /^YH_\d+$/;
     if (!reg.test(value)) {
-      callback(new Error("用户编号必须是以YH_开头和数字组合"));
+      callback(new Error("模块编号必须是以YH_开头和数字组合"));
     } else {
       callback();
     }
   };
-  const validateUserName = (rule: any, value: string, callback: any) => {
+  const validateModuleName = (rule: any, value: string, callback: any) => {
     console.log("rule", rule);
     const reg = /^[a-zA-Z0-9]{4,16}$/;
     if (!reg.test(value)) {
-      callback(new Error("用户必须是4-16位的字母、数字"));
+      callback(new Error("模块必须是4-16位的字母、数字"));
     } else {
       callback();
     }
   };
-  const formModel: IUser = {
+  const formModel: IModule = {
     id: undefined,
-    userId: "",
-    userName: "",
-    fullName: "",
-    phone: "",
-    email: "",
-    address: "",
+    projectId: undefined,
+    moduleId: "",
+    moduleName: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
     {
-      label: "项目编号",
+      label: "模块编号",
       labelWidth: "80px",
-      vModel: "userId",
+      vModel: "moduleId",
       editReadonly: true,
       addHidden: true,
-      placeholder: "请输入用户编号",
-      prop: "userId",
+      placeholder: "请输入模块编号",
+      prop: "moduleId",
       rules: [
         {
           required: true,
-          message: "请输入用户编号",
+          message: "请输入模块编号",
           trigger: "blur",
         },
         {
-          validator: validateUserId,
+          validator: validateModuleId,
           trigger: "blur",
         },
       ],
     },
     {
-      label: "项目名称",
+      label: "项目编号",
       labelWidth: "80px",
-      vModel: "userName",
-      placeholder: "请输入用户名",
-      prop: "userName",
+      vModel: "projectId",
+      editReadonly: true,
+      addHidden: true,
+      placeholder: "请输入项目编号",
+      prop: "projectId",
       rules: [
         {
           required: true,
-          message: "请输入用户名",
+          message: "请输入项目编号",
           trigger: "blur",
         },
         {
-          validator: validateUserName,
+          validator: validateModuleId,
+          trigger: "blur",
+        },
+      ],
+    },
+    {
+      label: "模块名称",
+      labelWidth: "80px",
+      vModel: "moduleName",
+      placeholder: "请输入模块名",
+      prop: "moduleName",
+      rules: [
+        {
+          required: true,
+          message: "请输入模块名",
+          trigger: "blur",
+        },
+        {
+          validator: validateModuleName,
           trigger: "blur",
         },
       ],
@@ -163,21 +183,20 @@ const Model: React.FC = () => {
       width: "50",
       type: "selection",
     },
-
+    {
+      width: "100",
+      label: "模块编号",
+      prop: "moduleId",
+    },
     {
       width: "100",
       label: "项目编号",
-      prop: "userId",
+      prop: "projectId",
     },
     {
-      width: "500",
-      label: "保存路径",
-      prop: "fullName",
-    },
-    {
-      width: "120",
-      label: "创建人",
-      prop: "phone",
+      width: "100",
+      label: "模块编号",
+      prop: "moduleName",
     },
     {
       width: "180",
@@ -189,12 +208,12 @@ const Model: React.FC = () => {
       prop: "remark",
     },
   ];
-  const handleFormSubmit = (form: IUser, done: any) => {
+  const handleFormSubmit = (form: IModule, done: any) => {
     const row = { ...form };
     if (row.id) {
       console.log("updateUser", row);
       updateUser(row).then(() => {
-        message.success("用户修改成功");
+        message.success("模块修改成功");
 
         done();
       });
@@ -202,7 +221,7 @@ const Model: React.FC = () => {
       row.id = undefined;
       console.log("addUser", row);
       addUser(row).then(() => {
-        message.success("用户创建成功");
+        message.success("模块创建成功");
         done();
       });
     }
@@ -216,7 +235,7 @@ const Model: React.FC = () => {
       {
         name: "配置",
         // hidden: !validatePermission(permissionBtn?.config),
-        click(item: IUser, done: any) {
+        click(item: IModule, done: any) {
           setDialogConfigVisible(true);
           console.log("11111", item, done);
         },
@@ -227,7 +246,7 @@ const Model: React.FC = () => {
       {
         name: "生成",
         // hidden: !validatePermission(permissionBtn?.build),
-        click(item: IUser, done: any) {
+        click(item: IModule, done: any) {
           handleBuild(item, done);
         },
         render() {
@@ -237,7 +256,7 @@ const Model: React.FC = () => {
       {
         name: "预览",
         // hidden: !validatePermission(permissionBtn?.view),
-        click(item: IUser, done: any) {
+        click(item: IModule, done: any) {
           setDialogViewVisible(true);
           console.log("11111", item, done);
         },
@@ -248,7 +267,7 @@ const Model: React.FC = () => {
       {
         name: "下载",
         // hidden: !validatePermission(permissionBtn?.view),
-        click(item: IUser, done: any) {
+        click(item: IModule, done: any) {
           console.log("11111", item, done);
         },
         render() {
@@ -257,19 +276,19 @@ const Model: React.FC = () => {
       },
     ],
   };
-  const handleBuild = (item: IUser, done: any) => {
+  const handleBuild = (item: IModule, done: any) => {
     confirm({
       title: "警告",
       icon: "",
-      content: `你真的启用【${item.userName}】的用户吗？`,
+      content: `你真的确定生成【${item.moduleName}】模块吗？`,
       onOk() {
-        if (!item.id) {
+        if (!item.projectId || !item.id) {
           return;
         }
-        // deleteRole(item.id).then(() => {
-        //   message.success("删除成功");
-        //   done();
-        // });
+        buildModule(item.projectId, item.id).then(() => {
+          message.success("模块生成成功");
+          done();
+        });
       },
     });
   };
@@ -290,7 +309,7 @@ const Model: React.FC = () => {
         click() {
           window.location.href = `${
             import.meta.env.VITE_APP_BASE_URL
-          }/api/v2/downloads?filePath=templates/用户模板.xlsx`;
+          }/api/v2/downloads?filePath=templates/模块模板.xlsx`;
         },
       },
       {
@@ -300,8 +319,8 @@ const Model: React.FC = () => {
         type: "primary",
         // hidden: !validatePermission(permissionBtn?.download),
         click() {
-          downloadFileStream("templates/用户模板.xlsx").then((res) => {
-            downloadExcel(res, "用户导入模板");
+          downloadFileStream("templates/模块模板.xlsx").then((res) => {
+            downloadExcel(res, "模块导入模板");
           });
         },
       },
@@ -330,31 +349,23 @@ const Model: React.FC = () => {
               value: "id",
             },
             {
-              label: "用户编号",
-              value: "userId",
+              label: "模块编号",
+              value: "moduleId",
             },
             {
-              label: "用户名",
-              value: "userName",
+              label: "模块名",
+              value: "moduleName",
             },
             {
-              label: "姓名",
-              value: "fullName",
+              label: "创建时间",
+              value: "createTime",
             },
             {
-              label: "手机号",
-              value: "phone",
-            },
-            {
-              label: "邮箱",
-              value: "email",
-            },
-            {
-              label: "地址",
-              value: "address",
+              label: "备注",
+              value: "remark",
             },
           ];
-          exportExcel(tableDataList, "用户列表", columns);
+          exportExcel(tableDataList, "模块列表", columns);
         },
       },
     ],
@@ -362,17 +373,17 @@ const Model: React.FC = () => {
   /**
    * 操作栏
    */
-  const handleDelete = (item: IUser, done: any) => {
+  const handleDelete = (item: IModule, done: any) => {
     confirm({
       title: "警告",
       icon: "",
-      content: `你真的删除【${item.userName}】的用户吗？`,
+      content: `你真的删除【${item.moduleName}】的模块吗？`,
       onOk() {
         if (!item.id) {
           return;
         }
         deleteUser(item.id).then(() => {
-          message.success("用户删除成功");
+          message.success("模块删除成功");
           done();
         });
       },
@@ -432,4 +443,4 @@ const Model: React.FC = () => {
     </>
   );
 };
-export default Model;
+export default Module;

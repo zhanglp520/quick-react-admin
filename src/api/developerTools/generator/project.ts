@@ -1,4 +1,4 @@
-import { IDataSource } from "@/types";
+import { IProjec } from "@/types";
 import request, { IQuickResponseData } from "@/utils/request";
 import { projects as api } from "../index";
 export { downloadFileStream } from "@/api/common";
@@ -10,11 +10,19 @@ export { downloadFileStream } from "@/api/common";
  */
 
 export const getProjectList = (): Promise<
-  IQuickResponseData<Array<IDataSource>>
+  IQuickResponseData<Array<IProjec>>
 > => {
-  return request<IQuickResponseData<Array<IDataSource>>>({
+  return request<IQuickResponseData<Array<IProjec>>>({
     url: api,
     method: "GET",
   });
 };
 // project
+
+// 生成项目
+export const buildProjec = (id: number) => {
+  return request({
+    url: `${api}/build/${id}`,
+    method: "POST",
+  });
+};

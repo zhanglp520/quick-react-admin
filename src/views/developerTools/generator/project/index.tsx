@@ -19,7 +19,10 @@ import {
   deleteUser,
   batchDeleteUser,
 } from "@/api/system/user";
-import { getProjectList } from "@/api/developerTools/generator/project";
+import {
+  getProjectList,
+  buildProjec,
+} from "@/api/developerTools/generator/project";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
@@ -107,7 +110,7 @@ const Project: React.FC = () => {
   };
   const formModel: IProjec = {
     id: undefined,
-    projectId: "",
+    projectId: undefined,
     projectName: "",
     dbId: "",
     author: "",
@@ -239,12 +242,39 @@ const Project: React.FC = () => {
       },
     });
   };
-
+  const handleBuild = (item: IProjec, done: any) => {
+    confirm({
+      title: "警告",
+      icon: "",
+      content: `你真的确定生成【${item.projectName}】项目吗？`,
+      onOk() {
+        if (!item.id) {
+          return;
+        }
+        buildProjec(item.id).then(() => {
+          message.success("项目生成成功");
+          done();
+        });
+      },
+    });
+  };
   const tableActionbar: IActionbar = {
     width: 300,
     // hiddenEditButton: !validatePermission(permissionBtn?.edit),
     // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
     // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+    btns: [
+      {
+        name: "生成",
+        // hidden: !validatePermission(permissionBtn?.build),
+        click(item: IProjec, done: any) {
+          handleBuild(item, done);
+        },
+        render() {
+          return true;
+        },
+      },
+    ],
   };
 
   /**

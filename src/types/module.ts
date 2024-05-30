@@ -1,19 +1,18 @@
 import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
-export interface IProjec {
+export interface IModule {
   id?: number;
   projectId?: number;
-  projectName: string;
+  moduleId: string;
+  moduleName: string;
   deleted?: number;
   createTime?: string;
-  dbId?: string;
-  author?: string;
   remark?: string;
 }
-export interface ISearchProjec {
+export interface ISearchModule {
   keyword: string;
 }
 
-export interface IProjecPermissionButton extends IPermissionButton {
+export interface IModulePermissionButton extends IPermissionButton {
   resetPassword?: boolean;
 }

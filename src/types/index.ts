@@ -12,3 +12,4 @@ export * from "./tab";
 export * from "./user";
 export * from "./projec";
 export * from "./dataSource";
+export * from "./module";
