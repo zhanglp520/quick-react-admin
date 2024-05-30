@@ -18,12 +18,12 @@ import {
   IDataSourcePermissionButton,
 } from "@/types";
 import {
-  getUserPageList,
   addUser,
   updateUser,
   deleteUser,
   batchDeleteUser,
 } from "@/api/system/user";
+import { getDataSourcesList } from "@/api/developerTools/generator/dataSource";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
@@ -336,7 +336,7 @@ const DataSource: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getUserPageList(parmas)
+    getDataSourcesList(parmas)
       .then((res) => {
         setLoading(false);
         const { data: userList, total } = res;

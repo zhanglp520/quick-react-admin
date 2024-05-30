@@ -14,16 +14,16 @@ import {
 import { validatePermission } from "@/utils";
 import { ISearchProjec, IProjec, IProjecPermissionButton } from "@/types";
 import {
-  getUserPageList,
   addUser,
   updateUser,
   deleteUser,
   batchDeleteUser,
 } from "@/api/system/user";
+import { getProjectList } from "@/api/developerTools/generator/project";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
-const ProjectManage: React.FC = () => {
+const Project: React.FC = () => {
   /**
    * 属性
    */
@@ -285,7 +285,7 @@ const ProjectManage: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getUserPageList(parmas)
+    getProjectList(parmas)
       .then((res) => {
         setLoading(false);
         const { data: userList, total } = res;
@@ -324,4 +324,4 @@ const ProjectManage: React.FC = () => {
   );
 };
 
-export default ProjectManage;
+export default Project;

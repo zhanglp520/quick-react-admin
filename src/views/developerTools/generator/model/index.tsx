@@ -2,9 +2,10 @@ import {
   addUser,
   deleteUser,
   downloadFileStream,
-  getUserPageList,
   updateUser,
 } from "@/api/system/user";
+
+import { getModelList } from "@/api/developerTools/generator/model";
 import { AppDispatch, RootState } from "@/store";
 
 import { IUser, IUserPermissionButton } from "@/types";
@@ -29,7 +30,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
 
-const ModelManage: React.FC = () => {
+const Model: React.FC = () => {
   /**
    * 属性
    */
@@ -56,7 +57,7 @@ const ModelManage: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getUserPageList(parmas)
+    getModelList(parmas)
       .then((res) => {
         setLoading(false);
         const { data: userList, total } = res;
@@ -431,4 +432,4 @@ const ModelManage: React.FC = () => {
     </>
   );
 };
-export default ModelManage;
+export default Model;
