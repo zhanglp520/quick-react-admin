@@ -81,49 +81,55 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
   });
   menuList &&
     menuList.forEach((menu: IMenubar) => {
-      items.push({
-        key: menu.menuId,
-        icon: <AppstoreOutlined />,
-        label: menu.menuName,
-        onClick: ({ domEvent }) => {
-          domEvent.stopPropagation();
-          if (menu.children.length > 0) {
-            return;
-          }
-          menuClick(menu);
-        },
-        children: menu.children.map((child: IMenubar) => {
-          return {
-            key: child.menuId,
-            icon: <AppstoreOutlined />,
-            label: child.menuName,
-            onClick: ({ domEvent }) => {
-              domEvent.stopPropagation();
-              if (child.children.length > 0) {
-                return;
-              }
-              menuClick(child);
-            },
-            children:
-              child.children.length <= 0
-                ? undefined
-                : child.children.map((child2: IMenubar) => {
-                    return {
-                      key: child2.menuId,
-                      icon: <AppstoreOutlined />,
-                      label: child2.menuName,
-                      onClick: ({ domEvent }) => {
-                        domEvent.stopPropagation();
-                        if (child2.children.length > 0) {
-                          return;
+      if (menu.status) {
+        items.push({
+          key: menu.menuId,
+          icon: <AppstoreOutlined />,
+          label: menu.menuName,
+          onClick: ({ domEvent }) => {
+            domEvent.stopPropagation();
+            if (menu.children.length > 0) {
+              return;
+            }
+            menuClick(menu);
+          },
+          children: menu.children.map((child: IMenubar) => {
+            if (child.status) {
+              return {
+                key: child.menuId,
+                icon: <AppstoreOutlined />,
+                label: child.menuName,
+                onClick: ({ domEvent }) => {
+                  domEvent.stopPropagation();
+                  if (child.children.length > 0) {
+                    return;
+                  }
+                  menuClick(child);
+                },
+                children:
+                  child.children.length <= 0
+                    ? undefined
+                    : child.children.map((child2: IMenubar) => {
+                        if (child2.status) {
+                          return {
+                            key: child2.menuId,
+                            icon: <AppstoreOutlined />,
+                            label: child2.menuName,
+                            onClick: ({ domEvent }) => {
+                              domEvent.stopPropagation();
+                              if (child2.children.length > 0) {
+                                return;
+                              }
+                              menuClick(child2);
+                            },
+                          };
                         }
-                        menuClick(child2);
-                      },
-                    };
-                  }),
-          };
-        }),
-      });
+                      }),
+              };
+            }
+          }),
+        });
+      }
     });
   return (
     <Menu
