@@ -12,7 +12,13 @@ import {
   IDialogTitle,
 } from "@ainiteam/quick-react-ui";
 import { validatePermission } from "@/utils";
-import { ISearchProjec, IProjec, IProjecPermissionButton } from "@/types";
+import {
+  ISearchProjec,
+  IProjec,
+  IProjecPermissionButton,
+  ITab,
+  IMenu,
+} from "@/types";
 import {
   addUser,
   updateUser,
@@ -25,6 +31,8 @@ import {
 } from "@/api/developerTools/generator/project";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { addTab } from "@/store/modules/tab";
 
 const Project: React.FC = () => {
   /**
@@ -41,7 +49,12 @@ const Project: React.FC = () => {
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IProjec[]>([]);
-
+  const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.user);
+  let menuList: IMenu[] = [];
+  if (user) {
+    menuList = user.permissionMenuList;
+  }
   /**
    * 分页
    */
@@ -269,6 +282,35 @@ const Project: React.FC = () => {
         // hidden: !validatePermission(permissionBtn?.build),
         click(item: IProjec, done: any) {
           handleBuild(item, done);
+        },
+        render() {
+          return true;
+        },
+      },
+      {
+        name: "模块",
+        // hidden: !validatePermission(permissionBtn?.build),
+        click(item: IProjec) {
+          // return (
+          //   <Routes>
+          //     <Route
+          //       path="/developerTools/generator/module/:projectId"
+          //       element={<Module />}
+          //     />
+          //   </Routes>
+          // );
+          const menu = menuList.find((x) => x.menuName == "模块管理");
+          if (menu) {
+            const { id, menuName, path } = menu;
+            const pathData = path.split("/:");
+            const tab: ITab = {
+              id: id?.toString(),
+              name: menuName,
+              path: `${pathData[0]}/${item.id}`,
+            };
+            dispatch(addTab(tab));
+            navigate(`/developerTools/generator/module/${item.id}`);
+          }
         },
         render() {
           return true;

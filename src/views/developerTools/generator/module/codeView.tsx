@@ -31,7 +31,6 @@ export class UserController extends BaseController<UserVo> {
   };
 
   const handleCodeChange = (value: any, viewUpdate: any) => {
-    debugger;
     setData1(value);
   };
   const items: TabsProps["items"] = [

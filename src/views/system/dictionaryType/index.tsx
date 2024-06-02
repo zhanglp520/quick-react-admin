@@ -121,7 +121,7 @@ const DictionaryType: React.FC = () => {
   ];
   const handleFormSubmit = (form: IDictionaryType, done: any) => {
     const row = { ...form };
-    debugger;
+
     if (row.id) {
       console.log("updateDictionaryType", row);
       updateDictionaryType(row).then(() => {

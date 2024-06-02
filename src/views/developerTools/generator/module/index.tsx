@@ -32,6 +32,7 @@ import { Modal, message, Button } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
+import { useParams } from "react-router-dom";
 
 const Module: React.FC = () => {
   /**
@@ -46,6 +47,7 @@ const Module: React.FC = () => {
   const { activeTab } = useSelector((state: RootState) => state.tab);
   const { permissionBtn }: { permissionBtn: IModulePermissionButton } =
     useSelector((state: RootState) => state.user);
+  const { projectId } = useParams();
   /**
    * 分页
    */
@@ -58,9 +60,14 @@ const Module: React.FC = () => {
   /**
    * 加载数据
    */
-  const loadData = (parmas: object) => {
+  const loadData = (params: object) => {
     setLoading(true);
-    getModuleList(parmas)
+    const obj = {
+      ...params,
+      projectId,
+    };
+
+    getModuleList(obj)
       .then((res) => {
         setLoading(false);
         const { data: moduleList, total } = res;
@@ -285,7 +292,7 @@ const Module: React.FC = () => {
         if (!item.projectId || !item.id) {
           return;
         }
-        buildModule(item.projectId, item.id).then(() => {
+        buildModule(item.projectId).then(() => {
           message.success("模块生成成功");
           done();
         });

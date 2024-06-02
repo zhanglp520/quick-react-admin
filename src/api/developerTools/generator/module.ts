@@ -9,12 +9,13 @@ export { downloadFileStream } from "@/api/common";
  *@Date: 2022-11-28 11:57:43
  */
 
-export const getModuleList = (): Promise<
-  IQuickResponseData<Array<IModule>>
-> => {
+export const getModuleList = (
+  params: object
+): Promise<IQuickResponseData<Array<IModule>>> => {
   return request<IQuickResponseData<Array<IModule>>>({
     url: api,
     method: "GET",
+    params,
   });
 };
 // 生成模块

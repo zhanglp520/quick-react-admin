@@ -29,10 +29,11 @@ const Router: React.FC = () => {
         Component = lazy(viewPath);
       }
     } else {
-      const path = modules[`../views${menu.path}/index.tsx`];
+      const pathData = menu.path.split("/:");
+      const path = modules[`../views${pathData[0]}/index.tsx`];
       if (!path) {
         console.error(
-          `IMenu routing path configuration error or view does not exist ../views${menu.path}/index.vue`
+          `IMenu routing path configuration error or view does not exist ../views${pathData[0]}/index.vue`
         );
       } else {
         Component = lazy(path);
