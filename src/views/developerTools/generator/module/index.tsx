@@ -30,6 +30,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
 import { useParams } from "react-router-dom";
+import CodeConfig from "./codeConfig";
 
 const Module: React.FC = () => {
   /**
@@ -197,6 +198,8 @@ const Module: React.FC = () => {
       placeholder: "请输入创建时间",
       prop: "createTime",
       addHidden: true,
+      editHidden: true,
+      detailHidden: true,
     },
     {
       label: "备注",
@@ -274,10 +277,10 @@ const Module: React.FC = () => {
     }
   };
   const tableActionbar: IActionbar = {
-    width: 300,
-    hiddenEditButton: true,
-    hiddenDeleteButton: true,
-    hiddenDetailButton: true,
+    width: 350,
+    hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    hiddenDetailButton: !validatePermission(permissionBtn?.detail),
     btns: [
       {
         name: "配置",
@@ -437,16 +440,25 @@ const Module: React.FC = () => {
     });
   };
   /**
-   * 弹窗
+   * 配置弹窗
    */
-  const handleOk = () => {
-    setDialogViewVisible(false);
+  const handleConfigOk = () => {
     setDialogConfigVisible(false);
   };
 
-  const handleCancel = () => {
-    setDialogViewVisible(false);
+  const handleConfigCancel = () => {
     setDialogConfigVisible(false);
+  };
+
+  /**
+   * 预览弹窗
+   */
+  const handleViewOk = () => {
+    setDialogViewVisible(false);
+  };
+
+  const handleViewCancel = () => {
+    setDialogViewVisible(false);
   };
   //   useEffect(() => {
   //     dispatch(getPermissionBtns(activeTab));
@@ -472,17 +484,17 @@ const Module: React.FC = () => {
       <Modal
         title="配置"
         open={dialogConfigVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleConfigOk}
+        onCancel={handleConfigCancel}
         width="30%"
       >
-        <div>{/* <code-config></code-config> */}</div>
+        <CodeConfig></CodeConfig>
       </Modal>
       <Modal
         title="预览"
         open={dialogViewVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleViewOk}
+        onCancel={handleViewCancel}
         width="30%"
       >
         <CodeView></CodeView>

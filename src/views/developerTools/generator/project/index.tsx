@@ -171,12 +171,6 @@ const Project: React.FC = () => {
       vModel: "dbId",
       placeholder: "请输入数据源编码",
       prop: "dbId",
-      rules: [
-        {
-          // validator: validateFullName,
-          trigger: "blur",
-        },
-      ],
     },
     {
       label: "作者",
@@ -199,12 +193,8 @@ const Project: React.FC = () => {
       placeholder: "请输入创建时间",
       prop: "createTime",
       addHidden: true,
-      rules: [
-        {
-          // validator: validatePhone,
-          trigger: "blur",
-        },
-      ],
+      editHidden: true,
+      detailHidden: true,
     },
     {
       label: "备注",

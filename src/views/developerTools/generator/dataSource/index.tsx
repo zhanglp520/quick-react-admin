@@ -153,11 +153,6 @@ const DataSource: React.FC = () => {
       vModel: "dbPort",
       placeholder: "请输入数据库端口",
       prop: "dbPort",
-      rules: [
-        {
-          trigger: "blur",
-        },
-      ],
     },
     {
       label: "数据库名称",
@@ -202,6 +197,8 @@ const DataSource: React.FC = () => {
       placeholder: "请输入创建时间",
       prop: "createTime",
       addHidden: true,
+      editHidden: true,
+      detailHidden: true,
     },
 
     {
