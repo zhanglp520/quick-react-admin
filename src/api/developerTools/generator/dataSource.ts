@@ -17,3 +17,24 @@ export const getDataSourcesList = (): Promise<
     method: "GET",
   });
 };
+export const addDataSource = (data: IDataSource) => {
+  return request({
+    url: api,
+    method: "POST",
+    data,
+  });
+};
+export const updateDataSource = (data: IDataSource) => {
+  const { id } = data;
+  return request({
+    url: `${api}/${id}`,
+    method: "PUT",
+    data,
+  });
+};
+export const deleteDataSource = (id: number) => {
+  return request({
+    url: `${api}/${id}`,
+    method: "DELETE",
+  });
+};

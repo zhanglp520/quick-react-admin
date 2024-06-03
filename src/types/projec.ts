@@ -1,6 +1,6 @@
 import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
-export interface IProjec {
+export interface IProject {
   id?: number;
   projectId?: number;
   projectName: string;

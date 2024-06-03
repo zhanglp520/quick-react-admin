@@ -18,12 +18,11 @@ import {
   IDataSourcePermissionButton,
 } from "@/types";
 import {
-  addUser,
-  updateUser,
-  deleteUser,
-  batchDeleteUser,
-} from "@/api/system/user";
-import { getDataSourcesList } from "@/api/developerTools/generator/dataSource";
+  getDataSourcesList,
+  addDataSource,
+  updateDataSource,
+  deleteDataSource,
+} from "@/api/developerTools/generator/dataSource";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
@@ -76,20 +75,6 @@ const DataSource: React.FC = () => {
    * 工具栏
    */
 
-  const handleBatchDelete = (data: any, done: any) => {
-    const { ids } = data;
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: "你真的删除选择的数据源吗？",
-      onOk() {
-        batchDeleteUser(ids).then(() => {
-          message.success("数据源删除成功");
-          done();
-        });
-      },
-    });
-  };
   const tableToolbar: IToolbar = {
     // importButtonName: "导入（默认后端方式）",
     // exportButtonName: "导出（默认后端方式）",
@@ -118,7 +103,6 @@ const DataSource: React.FC = () => {
     dbName: "",
     dbAccount: "",
     dbPassword: "",
-    createTime: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
@@ -135,10 +119,6 @@ const DataSource: React.FC = () => {
           message: "请输入数据源编码",
           trigger: "blur",
         },
-        {
-          // validator: validateUserId,
-          trigger: "blur",
-        },
       ],
     },
     {
@@ -151,10 +131,6 @@ const DataSource: React.FC = () => {
         {
           required: true,
           message: "请输入数据源名称",
-          trigger: "blur",
-        },
-        {
-          // validator: validateUserName,
           trigger: "blur",
         },
       ],
@@ -225,12 +201,7 @@ const DataSource: React.FC = () => {
       vModel: "createTime",
       placeholder: "请输入创建时间",
       prop: "createTime",
-      rules: [
-        {
-          // validator: validatePhone,
-          trigger: "blur",
-        },
-      ],
+      addHidden: true,
     },
 
     {
@@ -245,15 +216,15 @@ const DataSource: React.FC = () => {
   const handleFormSubmit = (form: IDataSource, done: any) => {
     const row = { ...form };
     if (row.id) {
-      console.log("updateUser", row);
-      updateUser(row).then(() => {
+      console.log("updateDataSource", row);
+      updateDataSource(row).then(() => {
         message.success("数据源修改成功");
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addUser", row);
-      addUser(row).then(() => {
+      console.log("addDataSource", row);
+      addDataSource(row).then(() => {
         message.success("数据源创建成功");
         done();
       });
@@ -272,7 +243,7 @@ const DataSource: React.FC = () => {
         if (!item.id) {
           return;
         }
-        deleteUser(item.id).then(() => {
+        deleteDataSource(item.id).then(() => {
           message.success("数据源删除成功");
           done();
         });
@@ -369,7 +340,6 @@ const DataSource: React.FC = () => {
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
-        onBatchDelete={handleBatchDelete}
       ></Crud>
     </div>
   );

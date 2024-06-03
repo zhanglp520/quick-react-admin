@@ -1,13 +1,10 @@
-import {
-  addUser,
-  deleteUser,
-  downloadFileStream,
-  updateUser,
-} from "@/api/system/user";
-
+import { downloadFileStream } from "@/api/system/user";
 import {
   getModuleList,
   buildModule,
+  addModule,
+  updateModule,
+  deleteModule,
 } from "@/api/developerTools/generator/module";
 import { AppDispatch, RootState } from "@/store";
 
@@ -91,9 +88,9 @@ const Module: React.FC = () => {
   };
   const validateModuleId = (rule: any, value: string, callback: any) => {
     console.log("rule", rule);
-    const reg = /^YH_\d+$/;
+    const reg = /^MK_\d+$/;
     if (!reg.test(value)) {
-      callback(new Error("模块编号必须是以YH_开头和数字组合"));
+      callback(new Error("模块编号必须是以MK_开头和数字组合"));
     } else {
       callback();
     }
@@ -119,8 +116,6 @@ const Module: React.FC = () => {
       label: "模块编号",
       labelWidth: "80px",
       vModel: "moduleId",
-      editReadonly: true,
-      addHidden: true,
       placeholder: "请输入模块编号",
       prop: "moduleId",
       rules: [
@@ -129,30 +124,10 @@ const Module: React.FC = () => {
           message: "请输入模块编号",
           trigger: "blur",
         },
-        {
-          validator: validateModuleId,
-          trigger: "blur",
-        },
-      ],
-    },
-    {
-      label: "项目编号",
-      labelWidth: "80px",
-      vModel: "projectId",
-      editReadonly: true,
-      addHidden: true,
-      placeholder: "请输入项目编号",
-      prop: "projectId",
-      rules: [
-        {
-          required: true,
-          message: "请输入项目编号",
-          trigger: "blur",
-        },
-        {
-          validator: validateModuleId,
-          trigger: "blur",
-        },
+        // {
+        //   validator: validateModuleId,
+        //   trigger: "blur",
+        // },
       ],
     },
     {
@@ -167,11 +142,61 @@ const Module: React.FC = () => {
           message: "请输入模块名",
           trigger: "blur",
         },
+        // {
+        //   validator: validateModuleName,
+        //   trigger: "blur",
+        // },
+      ],
+    },
+    {
+      label: "项目编号",
+      labelWidth: "80px",
+      vModel: "projectId",
+      placeholder: "请输入项目编号",
+      prop: "projectId",
+      addHidden: true,
+      editHidden: true,
+      rules: [
         {
-          validator: validateModuleName,
+          required: true,
+          message: "请输入项目编号",
+          trigger: "blur",
+        },
+        {
+          validator: validateModuleId,
           trigger: "blur",
         },
       ],
+    },
+    {
+      label: "表名",
+      labelWidth: "80px",
+      vModel: "tableName",
+      placeholder: "请输入表名",
+      prop: "tableName",
+      rules: [
+        {
+          required: true,
+          message: "请输入表名",
+          trigger: "blur",
+        },
+      ],
+    },
+    {
+      label: "表描述",
+      labelWidth: "80px",
+      vModel: "tableComment",
+      placeholder: "请输入表描述",
+      prop: "tableComment",
+    },
+
+    {
+      label: "创建时间",
+      labelWidth: "80px",
+      vModel: "createTime",
+      placeholder: "请输入创建时间",
+      prop: "createTime",
+      addHidden: true,
     },
     {
       label: "备注",
@@ -206,6 +231,17 @@ const Module: React.FC = () => {
       prop: "moduleName",
     },
     {
+      width: "100",
+      label: "表名",
+      prop: "tableName",
+    },
+
+    {
+      width: "100",
+      label: "表描述",
+      prop: "tableComment",
+    },
+    {
       width: "180",
       label: "创建时间",
       prop: "createTime",
@@ -218,16 +254,20 @@ const Module: React.FC = () => {
   const handleFormSubmit = (form: IModule, done: any) => {
     const row = { ...form };
     if (row.id) {
-      console.log("updateUser", row);
-      updateUser(row).then(() => {
+      console.log("updateModule", row);
+      updateModule(row).then(() => {
         message.success("模块修改成功");
 
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addUser", row);
-      addUser(row).then(() => {
+      console.log("addModule", row);
+      const rowData = {
+        ...row,
+        projectId,
+      };
+      addModule(rowData).then(() => {
         message.success("模块创建成功");
         done();
       });
@@ -389,7 +429,7 @@ const Module: React.FC = () => {
         if (!item.id) {
           return;
         }
-        deleteUser(item.id).then(() => {
+        deleteModule(item.id).then(() => {
           message.success("模块删除成功");
           done();
         });

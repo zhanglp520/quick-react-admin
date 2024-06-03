@@ -14,18 +14,16 @@ import {
 import { validatePermission } from "@/utils";
 import {
   ISearchProjec,
-  IProjec,
+  IProject,
   IProjecPermissionButton,
   ITab,
   IMenu,
 } from "@/types";
+import { batchDeleteUser } from "@/api/system/user";
 import {
-  addUser,
-  updateUser,
-  deleteUser,
-  batchDeleteUser,
-} from "@/api/system/user";
-import {
+  addProject,
+  updateProject,
+  deleteProject,
   getProjectList,
   buildProjec,
 } from "@/api/developerTools/generator/project";
@@ -48,7 +46,7 @@ const Project: React.FC = () => {
   const { permissionBtn }: { permissionBtn: IProjecPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
-  const [tableDataList, setTableDataList] = useState<IProjec[]>([]);
+  const [tableDataList, setTableDataList] = useState<IProject[]>([]);
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   let menuList: IMenu[] = [];
@@ -58,12 +56,12 @@ const Project: React.FC = () => {
   /**
    * 分页
    */
-  const [page] = useState<IPage>({
-    current: 1,
-    size: 10,
-    sizes: [10, 20, 30, 40, 50],
-    total: 0,
-  });
+  // const [page] = useState<IPage>({
+  //   current: 1,
+  //   size: 10,
+  //   sizes: [10, 20, 30, 40, 50],
+  //   total: 0,
+  // });
 
   /**
    * 搜索
@@ -121,13 +119,12 @@ const Project: React.FC = () => {
     edit: "编辑项目",
     detail: "项目详情",
   };
-  const formModel: IProjec = {
+  const formModel: IProject = {
     id: undefined,
     projectId: undefined,
     projectName: "",
     dbId: "",
     author: "",
-    createTime: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
@@ -201,6 +198,7 @@ const Project: React.FC = () => {
       vModel: "createTime",
       placeholder: "请输入创建时间",
       prop: "createTime",
+      addHidden: true,
       rules: [
         {
           // validator: validatePhone,
@@ -208,7 +206,6 @@ const Project: React.FC = () => {
         },
       ],
     },
-
     {
       label: "备注",
       labelWidth: "80px",
@@ -218,18 +215,18 @@ const Project: React.FC = () => {
       prop: "remark",
     },
   ];
-  const handleFormSubmit = (form: IProjec, done: any) => {
+  const handleFormSubmit = (form: IProject, done: any) => {
     const row = { ...form };
     if (row.id) {
-      console.log("updateUser", row);
-      updateUser(row).then(() => {
+      console.log("updateProject", row);
+      updateProject(row).then(() => {
         message.success("项目修改成功");
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addUser", row);
-      addUser(row).then(() => {
+      console.log("addProject", row);
+      addProject(row).then(() => {
         message.success("项目创建成功");
         done();
       });
@@ -239,7 +236,7 @@ const Project: React.FC = () => {
   /**
    * 操作栏
    */
-  const handleDelete = (item: IProjec, done: any) => {
+  const handleDelete = (item: IProject, done: any) => {
     confirm({
       title: "警告",
       icon: <ExclamationCircleFilled />,
@@ -248,14 +245,14 @@ const Project: React.FC = () => {
         if (!item.id) {
           return;
         }
-        deleteUser(item.id).then(() => {
+        deleteProject(item.id).then(() => {
           message.success("项目删除成功");
           done();
         });
       },
     });
   };
-  const handleBuild = (item: IProjec, done: any) => {
+  const handleBuild = (item: IProject, done: any) => {
     confirm({
       title: "警告",
       icon: "",
@@ -280,7 +277,7 @@ const Project: React.FC = () => {
       {
         name: "生成",
         // hidden: !validatePermission(permissionBtn?.build),
-        click(item: IProjec, done: any) {
+        click(item: IProject, done: any) {
           handleBuild(item, done);
         },
         render() {
@@ -288,9 +285,9 @@ const Project: React.FC = () => {
         },
       },
       {
-        name: "模块",
+        name: "模块管理",
         // hidden: !validatePermission(permissionBtn?.build),
-        click(item: IProjec) {
+        click(item: IProject) {
           // return (
           //   <Routes>
           //     <Route
@@ -365,7 +362,7 @@ const Project: React.FC = () => {
         if (userList) {
           setTableDataList([...userList]);
         }
-        page.total = total;
+        // page.total = total;
       })
       .catch(() => {
         setLoading(false);
@@ -384,7 +381,7 @@ const Project: React.FC = () => {
         tableToolbar={tableToolbar}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
-        pagebar={page}
+        // pagebar={page}
         loading={loading}
         displayNumber={true}
         onLoad={loadData}

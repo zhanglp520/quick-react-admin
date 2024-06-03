@@ -25,10 +25,24 @@ export const buildModule = (projectId: number, id: number) => {
     method: "POST",
   });
 };
-// export const buildModule = (data: IModule) => {
-//   return request({
-//     url: api,
-//     method: "POST",
-//     data,
-//   });
-// };
+export const addModule = (data: IModule) => {
+  return request({
+    url: api,
+    method: "POST",
+    data,
+  });
+};
+export const updateModule = (data: IModule) => {
+  const { id } = data;
+  return request({
+    url: `${api}/${id}`,
+    method: "PUT",
+    data,
+  });
+};
+export const deleteModule = (id: number) => {
+  return request({
+    url: `${api}/${id}`,
+    method: "DELETE",
+  });
+};
