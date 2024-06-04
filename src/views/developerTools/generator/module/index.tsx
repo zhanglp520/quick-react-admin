@@ -287,7 +287,7 @@ const Module: React.FC = () => {
         // hidden: !validatePermission(permissionBtn?.config),
         click(item: IModule, done: any) {
           setDialogConfigVisible(true);
-          console.log("11111", item, done);
+          console.log("配置", item, done);
         },
         render() {
           return true;
@@ -308,7 +308,7 @@ const Module: React.FC = () => {
         // hidden: !validatePermission(permissionBtn?.view),
         click(item: IModule, done: any) {
           setDialogViewVisible(true);
-          console.log("11111", item, done);
+          console.log("预览", item, done);
         },
         render() {
           return true;
@@ -318,7 +318,7 @@ const Module: React.FC = () => {
         name: "下载",
         // hidden: !validatePermission(permissionBtn?.view),
         click(item: IModule, done: any) {
-          console.log("11111", item, done);
+          console.log("下载", item, done);
         },
         render() {
           return true;
@@ -486,7 +486,7 @@ const Module: React.FC = () => {
         open={dialogConfigVisible}
         onOk={handleConfigOk}
         onCancel={handleConfigCancel}
-        width="30%"
+        width="45%"
       >
         <CodeConfig></CodeConfig>
       </Modal>

@@ -19,7 +19,7 @@ export const selectFormat = (data: any, options: IOptions = {}) => {
     value: "value",
   };
   const label = options && options.label ? options.label : defaultOptions.label;
-  const value = options && options ? options : defaultOptions;
+  const value = options && options.value ? options.value : defaultOptions.value;
   data.forEach((element: any) => {
     arr.push({
       label: element[label],
