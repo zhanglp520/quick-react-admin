@@ -179,7 +179,7 @@ const UIConfig: React.FC = () => {
   };
   useEffect(() => {
     loadDicData();
-  }, [frameworkTemplateDic, listTemplateDic, formTemplateDic]);
+  }, []);
   return (
     <QuickForm
       style={{ width: "100%" }}

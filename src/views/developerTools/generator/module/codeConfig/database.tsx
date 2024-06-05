@@ -108,7 +108,7 @@ const Database: React.FC = () => {
   };
   useEffect(() => {
     loadDicData();
-  }, [databaseDic]);
+  }, []);
   return (
     <QuickForm
       form={formInstance}

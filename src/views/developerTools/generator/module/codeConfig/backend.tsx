@@ -91,7 +91,7 @@ const Backend: React.FC = () => {
   };
   useEffect(() => {
     loadDicData();
-  }, [backendLangDic, backendFrameworkDic]);
+  }, []);
   return (
     <QuickForm
       form={formInstance}
