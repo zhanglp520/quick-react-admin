@@ -460,6 +460,9 @@ const Module: React.FC = () => {
   const handleViewCancel = () => {
     setDialogViewVisible(false);
   };
+  const handlePreview = () => {};
+  const handleGenerateOk = () => {};
+
   //   useEffect(() => {
   //     dispatch(getPermissionBtns(activeTab));
   //     loadData();
@@ -482,11 +485,24 @@ const Module: React.FC = () => {
         onDelete={handleDelete}
       ></Crud>
       <Modal
-        title="配置"
+        title="代码生成配置"
         open={dialogConfigVisible}
         onOk={handleConfigOk}
         onCancel={handleConfigCancel}
         width="45%"
+        footer={[
+          <Button key="back" onClick={handlePreview}>
+            预览
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleGenerateOk}
+          >
+            生成
+          </Button>,
+        ]}
       >
         <CodeConfig></CodeConfig>
       </Modal>
