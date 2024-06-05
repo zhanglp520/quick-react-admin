@@ -1,35 +1,115 @@
+import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
+import { Form } from "antd";
 import React, { useEffect, useState } from "react";
 import { Divider } from "antd";
 import QuickRadio from "./components/quickRadio";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
 
+interface IDatabase {
+  id?: number;
+  databaseType: string;
+  address?: string;
+  port: string;
+  databaseName: string;
+  accountNumber: string;
+  password?: string;
+}
+
 const Database: React.FC = () => {
   const [databaseDic, setDatabaseDic] = useState(null);
-  const titleForm = {
-    title1: "类型",
-  };
 
-  const databaseData = [
+  const form: IDatabase = {
+    id: undefined,
+    databaseType: "sqlserver",
+    address: "",
+    port: "",
+    databaseName: "",
+    accountNumber: "",
+    password: "",
+  };
+  const formItems: IFormItem[] = [
     {
-      label: "sqlserver",
-      value: 0,
-      explain: `Vue2-JS：一套构建数据驱动的 web 界面的渐进式框架。
-      与其他重量级框架不同的是，Vue 采用自底向上增量开发的设计。
-      只关注视图层，非常容易与其它库或已有项目整合。`,
+      label: "数据库类型",
+      labelWidth: "120px",
+      vModel: "databaseType",
+      prop: "databaseType",
+      type: "radio",
+      options: [
+        {
+          label: "sqlserver",
+          value: "sqlserver",
+        },
+        {
+          label: "mysql",
+          value: "mysql",
+        },
+        {
+          label: "oracle",
+          value: "oracle",
+        },
+      ],
+      change: () => {},
     },
     {
-      label: "mysql",
-      value: 1,
+      label: "地址",
+      labelWidth: "120px",
+      vModel: "address",
+      editReadonly: true,
+      placeholder: "请输入",
+      prop: "address",
+      type: "input",
     },
     {
-      label: "oracle",
-      value: 2,
-      explain: `React：一个由Facebook开发的非MVC模式的框架,主要用于构建用户界面。
-      它采用虚拟DOM和组件化开发模式，支持JSX，适合构建单页应用程序和交互式界面。
-      它允许你创建一个可复用的UI组件，Facebook和Instagram的用户界面就是用ReactJS开发的。 `,
+      label: "端口",
+      labelWidth: "120px",
+      vModel: "port",
+      editReadonly: true,
+      placeholder: "请输入",
+      prop: "port",
+      type: "input",
+    },
+    {
+      label: "数据库名称",
+      labelWidth: "120px",
+      vModel: "databaseName",
+      editReadonly: true,
+      placeholder: "请输入",
+      prop: "databaseName",
+      type: "input",
+    },
+    {
+      label: "账号",
+      labelWidth: "120px",
+      vModel: "accountNumber",
+      editReadonly: true,
+      placeholder: "请输入",
+      prop: "accountNumber",
+      type: "input",
+    },
+    {
+      label: "密码",
+      labelWidth: "120px",
+      vModel: "password",
+      editReadonly: true,
+      placeholder: "请输入",
+      prop: "password",
+      type: "input",
     },
   ];
+  const handleSubmit = (value: any) => {
+    console.log("handleSubmit", form, value);
+  };
+  const handleClear = () => {
+    Object.keys(form).forEach((key) => {
+      form[key] = "";
+    });
+    console.log("handleClear", form);
+  };
+  const handleError = (errInfo: any) => {
+    console.log("handleError", errInfo);
+  };
+  const [formInstance] = Form.useForm();
   const loadDicData = () => {
     getDictionaryList("database_type").then((res) => {
       const { data: dictionaryList } = res;
@@ -45,10 +125,15 @@ const Database: React.FC = () => {
     loadDicData();
   }, [databaseDic]);
   return (
-    <>
-      <Divider orientation="left">{titleForm.title1}</Divider>
-      <QuickRadio data={databaseDic} value="sqlserver"></QuickRadio>
-    </>
+    <QuickForm
+      form={formInstance}
+      model={form}
+      formItems={formItems}
+      hiddenAction={true}
+      onSubmit={handleSubmit}
+      onError={handleError}
+      onReset={handleClear}
+    ></QuickForm>
   );
 };
 export default Database;

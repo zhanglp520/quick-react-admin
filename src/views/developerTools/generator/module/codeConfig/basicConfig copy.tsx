@@ -6,7 +6,6 @@ interface IBasicConfig {
   id?: number;
   author: string;
   folderName: string;
-  radioValue: string;
 }
 
 const BasicConfig: React.FC = () => {
@@ -14,7 +13,6 @@ const BasicConfig: React.FC = () => {
     id: undefined,
     author: "",
     folderName: "",
-    radioValue: "1",
   };
   const formItems: IFormItem[] = [
     {
@@ -34,24 +32,6 @@ const BasicConfig: React.FC = () => {
       placeholder: "请输入文件夹名称",
       prop: "folderName",
       type: "input",
-    },
-    {
-      label: "单选按钮",
-      labelWidth: "120px",
-      vModel: "radioValue",
-      prop: "folderName",
-      type: "radio",
-      options: [
-        {
-          label: "难",
-          value: "1",
-        },
-        {
-          label: "简单",
-          value: "2",
-        },
-      ],
-      change: () => {},
     },
   ];
   const handleSubmit = (value: any) => {
