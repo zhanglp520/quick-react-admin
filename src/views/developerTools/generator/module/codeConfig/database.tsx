@@ -3,7 +3,6 @@ import { Divider } from "antd";
 import QuickRadio from "./components/quickRadio";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
-import { IDictionary } from "@/types";
 
 const Database: React.FC = () => {
   const [databaseDic, setDatabaseDic] = useState(null);
