@@ -4,13 +4,15 @@ import UIConfig from "./UIConfig";
 import Backend from "./backend";
 import Database from "./database";
 import BasicConfig from "./basicConfig";
+import { useRef } from "react";
 
 const CodeConfig: React.FC = () => {
+  const basicConfigRef = useRef(null);
   const items: TabsProps["items"] = [
     {
       key: "0",
       label: "基础配置",
-      children: <BasicConfig />,
+      children: <BasicConfig ref={basicConfigRef} />,
     },
     {
       key: "1",

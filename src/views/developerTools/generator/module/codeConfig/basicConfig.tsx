@@ -25,6 +25,9 @@ const BasicConfig: React.FC = () => {
       placeholder: "请输入作者",
       prop: "author",
       type: "input",
+      change: (e) => {
+        form.author = e.target.value;
+      },
     },
     {
       label: "文件夹",
@@ -34,25 +37,10 @@ const BasicConfig: React.FC = () => {
       placeholder: "请输入文件夹名称",
       prop: "folderName",
       type: "input",
+      change: (e) => {
+        form.folderName = e.target.value;
+      },
     },
-    // {
-    //   label: "单选按钮",
-    //   labelWidth: "120px",
-    //   vModel: "radioValue",
-    //   prop: "folderName",
-    //   type: "radio",
-    //   options: [
-    //     {
-    //       label: "难",
-    //       value: "1",
-    //     },
-    //     {
-    //       label: "简单",
-    //       value: "2",
-    //     },
-    //   ],
-    //   change: () => {},
-    // },
   ];
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", form, value);
