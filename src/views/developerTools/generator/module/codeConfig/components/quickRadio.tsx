@@ -8,17 +8,19 @@ export type QuickProp = {
 };
 const QuickRadio: React.FC<QuickProp> = (props: QuickProp) => {
   const { data, value } = props;
-
+  const [radioValue, setRadioValue] = useState();
   const onChange = (e: RadioChangeEvent) => {
     console.log("radio checked", e.target.value);
+    setRadioValue(e.target.value);
   };
   useEffect(() => {
     console.log("数据库", data);
-  }, [data]);
+    setRadioValue(value);
+  }, [data, value]);
   return (
     <>
       <div className="radio-wrap">
-        <Radio.Group onChange={onChange} value={value}>
+        <Radio.Group onChange={onChange} value={radioValue}>
           <Space size={[8, 16]} wrap>
             {data &&
               data.map((item, index) => (
