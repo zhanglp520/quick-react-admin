@@ -1,28 +1,17 @@
-import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
-import { Form } from "antd";
 import React, { useEffect, useState } from "react";
+import { Divider, Radio, RadioChangeEvent, Space, Tooltip } from "antd";
+import QuickRadio from "./components/quickRadio";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
-
-interface IUIConfig {
-  id?: number;
-  frameworkType: string;
-  listType?: string;
-  isDialog: string;
-  formType: string;
-}
-
 const UIConfig: React.FC = () => {
-  const [formInstance] = Form.useForm();
   const [frameworkTemplateDic, setFrameworkTemplateDic] = useState(null);
   const [listTemplateDic, setListTemplateDic] = useState(null);
   const [formTemplateDic, setFormTemplateDic] = useState(null);
-  const form: IUIConfig = {
-    id: undefined,
-    frameworkType: "vue",
-    listType: "tree_table",
-    isDialog: "0",
-    formType: "parant_child",
+  const titleForm = {
+    title1: "前端框架",
+    title2: "列表模板",
+    title3: "表单弹窗",
+    title4: "表单模板",
   };
   const frameworkData = [
     {
@@ -87,6 +76,29 @@ const UIConfig: React.FC = () => {
       Foundation4就已经把mobile first放在首要开发。`,
     },
   ];
+  const listData = [
+    {
+      label: "基础列表",
+      value: 0,
+    },
+    {
+      label: "表格树",
+      value: 1,
+    },
+    {
+      label: "左树右表",
+      value: 2,
+    },
+
+    {
+      label: "卡片模式",
+      value: 5,
+    },
+    {
+      label: "父子表",
+      value: 6,
+    },
+  ];
   const dialogData = [
     {
       label: "是",
@@ -97,57 +109,16 @@ const UIConfig: React.FC = () => {
       value: "1",
     },
   ];
-  const formItems: IFormItem[] = [
+  const formData = [
     {
-      label: "前端框架",
-      labelWidth: "120px",
-      vModel: "frameworkType",
-      prop: "databaseType",
-      type: "radio",
-      options: frameworkTemplateDic,
-      change: () => {},
+      label: "基础表单",
+      value: 0,
     },
     {
-      label: "列表模板",
-      labelWidth: "120px",
-      vModel: "listType",
-      prop: "listType",
-      type: "radio",
-      options: listTemplateDic,
-      change: () => {},
-    },
-    {
-      label: "表单弹窗",
-      labelWidth: "120px",
-      vModel: "isDialog",
-      prop: "isDialog",
-      type: "radio",
-      options: dialogData,
-      change: () => {},
-    },
-    {
-      label: "表单模板",
-      labelWidth: "120px",
-      vModel: "formType",
-      prop: "formType",
-      type: "radio",
-      options: formTemplateDic,
-      change: () => {},
+      label: "父子表单",
+      value: 1,
     },
   ];
-  const handleSubmit = (value: any) => {
-    console.log("handleSubmit", form, value);
-  };
-  const handleClear = () => {
-    Object.keys(form).forEach((key) => {
-      form[key] = "";
-    });
-    console.log("handleClear", form);
-  };
-  const handleError = (errInfo: any) => {
-    console.log("handleError", errInfo);
-  };
-
   const loadDicData = () => {
     getDictionaryList("framework_template").then((res) => {
       const { data: dictionaryList } = res;
@@ -181,16 +152,16 @@ const UIConfig: React.FC = () => {
     loadDicData();
   }, [frameworkTemplateDic, listTemplateDic, formTemplateDic]);
   return (
-    <QuickForm
-      style={{ width: "100%" }}
-      form={formInstance}
-      model={form}
-      formItems={formItems}
-      hiddenAction={true}
-      onSubmit={handleSubmit}
-      onError={handleError}
-      onReset={handleClear}
-    ></QuickForm>
+    <>
+      <Divider orientation="left">{titleForm.title1}</Divider>
+      <QuickRadio data={frameworkTemplateDic} value="vue"></QuickRadio>
+      <Divider orientation="left">{titleForm.title2}</Divider>
+      <QuickRadio data={listTemplateDic} value="tree_table"></QuickRadio>
+      <Divider orientation="left">{titleForm.title3}</Divider>
+      <QuickRadio data={dialogData} value="0"></QuickRadio>
+      <Divider orientation="left">{titleForm.title4}</Divider>
+      <QuickRadio data={formTemplateDic} value="parant_child"></QuickRadio>
+    </>
   );
 };
 export default UIConfig;

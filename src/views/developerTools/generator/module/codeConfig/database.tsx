@@ -1,8 +1,6 @@
 import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
 import React, { useEffect, useState } from "react";
-import { Divider } from "antd";
-import QuickRadio from "./components/quickRadio";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
 
@@ -35,20 +33,7 @@ const Database: React.FC = () => {
       vModel: "databaseType",
       prop: "databaseType",
       type: "radio",
-      options: [
-        {
-          label: "sqlserver",
-          value: "sqlserver",
-        },
-        {
-          label: "mysql",
-          value: "mysql",
-        },
-        {
-          label: "oracle",
-          value: "oracle",
-        },
-      ],
+      options: databaseDic,
       change: () => {},
     },
     {
