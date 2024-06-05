@@ -34,7 +34,9 @@ const Database: React.FC = () => {
       prop: "databaseType",
       type: "radio",
       options: databaseDic,
-      change: () => {},
+      change: (e) => {
+        form.databaseType = e.target.value;
+      },
     },
     {
       label: "地址",

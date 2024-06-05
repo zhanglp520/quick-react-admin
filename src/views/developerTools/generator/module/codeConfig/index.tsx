@@ -46,7 +46,7 @@ const CodeConfig: React.FC = () => {
   };
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} onChange={handleChange}></Tabs>
+      <Tabs defaultActiveKey="0" items={items} onChange={handleChange}></Tabs>
     </>
   );
 };

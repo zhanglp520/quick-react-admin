@@ -16,8 +16,8 @@ const Backend: React.FC = () => {
   const [backendFrameworkDic, setBackendFrameworkDic] = useState(null);
   const form: IBackend = {
     id: undefined,
-    framework: "c#",
-    backendLang: "springboot",
+    framework: "springboot",
+    backendLang: "c#",
     designPattern: "",
   };
   const dialogData = [
@@ -28,22 +28,26 @@ const Backend: React.FC = () => {
   ];
   const formItems: IFormItem[] = [
     {
-      label: "后端框架",
-      labelWidth: "120px",
-      vModel: "framework",
-      prop: "framework",
-      type: "radio",
-      options: backendLangDic,
-      change: () => {},
-    },
-    {
       label: "后端语言",
       labelWidth: "120px",
       vModel: "backendLang",
       prop: "backendLang",
       type: "radio",
       options: backendFrameworkDic,
-      change: () => {},
+      change: (e) => {
+        form.backendLang = e.target.value;
+      },
+    },
+    {
+      label: "后端框架",
+      labelWidth: "120px",
+      vModel: "framework",
+      prop: "framework",
+      type: "radio",
+      options: backendLangDic,
+      change: (e) => {
+        form.framework = e.target.value;
+      },
     },
     {
       label: "设计模式",
@@ -52,7 +56,9 @@ const Backend: React.FC = () => {
       prop: "designPattern",
       type: "radio",
       options: dialogData,
-      change: () => {},
+      change: (e) => {
+        form.designPattern = e.target.value;
+      },
     },
   ];
   const handleSubmit = (value: any) => {
@@ -77,7 +83,7 @@ const Backend: React.FC = () => {
         label: "dicName",
         value: "dicId",
       });
-      setBackendLangDic([...dataList]);
+      setBackendFrameworkDic([...dataList]);
     });
     getDictionaryList("backend_framework").then((res) => {
       const { data: dictionaryList } = res;
@@ -86,7 +92,7 @@ const Backend: React.FC = () => {
         label: "dicName",
         value: "dicId",
       });
-      setBackendFrameworkDic([...dataList]);
+      setBackendLangDic([...dataList]);
     });
   };
   useEffect(() => {

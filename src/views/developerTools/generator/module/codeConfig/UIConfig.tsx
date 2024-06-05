@@ -102,10 +102,12 @@ const UIConfig: React.FC = () => {
       label: "前端框架",
       labelWidth: "120px",
       vModel: "frameworkType",
-      prop: "databaseType",
+      prop: "frameworkType",
       type: "radio",
       options: frameworkTemplateDic,
-      change: () => {},
+      change: (e) => {
+        form.frameworkType = e.target.value;
+      },
     },
     {
       label: "列表模板",
@@ -114,7 +116,9 @@ const UIConfig: React.FC = () => {
       prop: "listType",
       type: "radio",
       options: listTemplateDic,
-      change: () => {},
+      change: (e) => {
+        form.listType = e.target.value;
+      },
     },
     {
       label: "表单弹窗",
@@ -123,7 +127,9 @@ const UIConfig: React.FC = () => {
       prop: "isDialog",
       type: "radio",
       options: dialogData,
-      change: () => {},
+      change: (e) => {
+        form.isDialog = e.target.value;
+      },
     },
     {
       label: "表单模板",
@@ -132,7 +138,9 @@ const UIConfig: React.FC = () => {
       prop: "formType",
       type: "radio",
       options: formTemplateDic,
-      change: () => {},
+      change: (e) => {
+        form.formType = e.target.value;
+      },
     },
   ];
   const handleSubmit = (value: any) => {

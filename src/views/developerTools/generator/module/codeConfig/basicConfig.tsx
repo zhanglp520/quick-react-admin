@@ -35,24 +35,24 @@ const BasicConfig: React.FC = () => {
       prop: "folderName",
       type: "input",
     },
-    {
-      label: "单选按钮",
-      labelWidth: "120px",
-      vModel: "radioValue",
-      prop: "folderName",
-      type: "radio",
-      options: [
-        {
-          label: "难",
-          value: "1",
-        },
-        {
-          label: "简单",
-          value: "2",
-        },
-      ],
-      change: () => {},
-    },
+    // {
+    //   label: "单选按钮",
+    //   labelWidth: "120px",
+    //   vModel: "radioValue",
+    //   prop: "folderName",
+    //   type: "radio",
+    //   options: [
+    //     {
+    //       label: "难",
+    //       value: "1",
+    //     },
+    //     {
+    //       label: "简单",
+    //       value: "2",
+    //     },
+    //   ],
+    //   change: () => {},
+    // },
   ];
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", form, value);
@@ -72,7 +72,7 @@ const BasicConfig: React.FC = () => {
       form={formInstance}
       model={form}
       formItems={formItems}
-      hiddenAction={false}
+      hiddenAction={true}
       onSubmit={handleSubmit}
       onError={handleError}
       onReset={handleClear}
