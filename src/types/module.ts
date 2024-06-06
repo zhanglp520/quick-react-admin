@@ -8,7 +8,9 @@ export interface IModule {
   deleted?: number;
   createTime?: string;
   remark?: string;
+  config?: string;
 }
+
 export interface ISearchModule {
   keyword: string;
 }

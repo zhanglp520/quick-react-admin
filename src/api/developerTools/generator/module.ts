@@ -18,13 +18,7 @@ export const getModuleList = (
     params,
   });
 };
-// 生成模块
-export const buildModule = (projectId: number, id: number) => {
-  return request({
-    url: `${api}/build/${projectId}/${id}`,
-    method: "POST",
-  });
-};
+
 export const addModule = (data: IModule) => {
   return request({
     url: api,
@@ -44,5 +38,20 @@ export const deleteModule = (id: number) => {
   return request({
     url: `${api}/${id}`,
     method: "DELETE",
+  });
+};
+//保存配置
+export const saveConfig = (id: any, data: any) => {
+  return request({
+    url: `${api}/saveConfig/${id}`,
+    method: "PUT",
+    data,
+  });
+};
+// 生成代码
+export const buildCode = (id: number) => {
+  return request({
+    url: `${api}/buildCode/${id}`,
+    method: "get",
   });
 };

@@ -1,10 +1,11 @@
 import { downloadFileStream } from "@/api/system/user";
 import {
   getModuleList,
-  buildModule,
+  buildCode,
   addModule,
   updateModule,
   deleteModule,
+  saveConfig,
 } from "@/api/developerTools/generator/module";
 import { AppDispatch, RootState } from "@/store";
 
@@ -48,6 +49,7 @@ const Module: React.FC = () => {
   const { projectId } = useParams();
   const CodeConfigRef = useRef(null);
   const [form, setForm] = useState({});
+  const [moduleId, setModuleId] = useState(0);
   /**
    * 分页
    */
@@ -289,6 +291,7 @@ const Module: React.FC = () => {
         // hidden: !validatePermission(permissionBtn?.config),
         click(item: IModule, done: any) {
           setDialogConfigVisible(true);
+          setModuleId(item.id!);
           console.log("配置", item, done);
         },
         render() {
@@ -334,13 +337,12 @@ const Module: React.FC = () => {
       icon: "",
       content: `你真的确定生成【${item.moduleName}】模块吗？`,
       onOk() {
-        if (!item.projectId || !item.id) {
-          return;
+        if (item.id) {
+          buildCode(item.id).then(() => {
+            message.success("模块生成成功");
+            done();
+          });
         }
-        buildModule(item.projectId).then(() => {
-          message.success("模块生成成功");
-          done();
-        });
       },
     });
   };
@@ -462,10 +464,14 @@ const Module: React.FC = () => {
   const handleViewCancel = () => {
     setDialogViewVisible(false);
   };
-  const saveConfig = () => {
+  const handleSaveConfig = () => {
     if (CodeConfigRef.current) {
-      const ConfigData = CodeConfigRef.current.callChildMethod();
-      setForm({ ...ConfigData });
+      const configData = CodeConfigRef.current.callChildMethod();
+      if (configData || moduleId) {
+        saveConfig(moduleId, configData).then(() => {
+          message.success("配置保存成功");
+        });
+      }
     }
     setDialogConfigVisible(false);
   };
@@ -512,7 +518,7 @@ const Module: React.FC = () => {
             key="submit"
             type="primary"
             loading={loading}
-            onClick={saveConfig}
+            onClick={handleSaveConfig}
           >
             保存配置
           </Button>,
