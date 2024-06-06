@@ -12,21 +12,17 @@ import {
   IDialogTitle,
 } from "@ainiteam/quick-react-ui";
 import { validatePermission } from "@/utils";
+import { ISearchTemplate, ITemplate, ITemplatePermissionButton } from "@/types";
 import {
-  ISearchDataSource,
-  IDataSource,
-  IDataSourcePermissionButton,
-} from "@/types";
-import {
-  getDataSourcesList,
-  addDataSource,
-  updateDataSource,
-  deleteDataSource,
-} from "@/api/developerTools/generator/dataSource";
+  getTemplateList,
+  addTemplate,
+  updateTemplate,
+  deleteTemplate,
+} from "@/api/developerTools/generator/template";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
-const DataSource: React.FC = () => {
+const Template: React.FC = () => {
   /**
    * 属性
    */
@@ -34,10 +30,10 @@ const DataSource: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  const { permissionBtn }: { permissionBtn: IDataSourcePermissionButton } =
+  const { permissionBtn }: { permissionBtn: ITemplatePermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
-  const [tableDataList, setTableDataList] = useState<IDataSource[]>([]);
+  const [tableDataList, setTableDataList] = useState<ITemplate[]>([]);
 
   /**
    * 分页
@@ -52,19 +48,19 @@ const DataSource: React.FC = () => {
   /**
    * 搜索
    */
-  const searchForm: ISearchDataSource = {
+  const searchForm: ISearchTemplate = {
     keyword: "",
   };
   const searchFormItems: IFormItem[] = [
     {
-      label: "数据源",
+      label: "模板",
       vModel: "keyword",
-      placeholder: "数据源名称",
+      placeholder: "模板名称",
     },
     {
       label: "编号",
       vModel: "keyword",
-      placeholder: "数据源编号",
+      placeholder: "模板编号",
     },
   ];
 
@@ -85,57 +81,54 @@ const DataSource: React.FC = () => {
    * 表单
    */
   const dialogTitle: IDialogTitle = {
-    add: "添加数据源",
-    edit: "编辑数据源",
-    detail: "数据源详情",
+    add: "添加模板",
+    edit: "编辑模板",
+    detail: "模板详情",
   };
-  const formModel: IDataSource = {
+  const formModel: ITemplate = {
     id: undefined,
-    dsId: "",
-    dsName: "",
-    dbAddress: "",
-    dbPort: "",
-    dbName: "",
-    dbAccount: "",
-    dbPassword: "",
+    templateId: "",
+    templateName: "",
+    content: "",
+    type: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
     {
-      label: "数据源编码",
+      label: "模板编码",
       labelWidth: "80px",
-      vModel: "dsId",
+      vModel: "templateId",
       editReadonly: true,
-      placeholder: "请输入数据源编码",
-      prop: "dsId",
+      placeholder: "请输入模板编码",
+      prop: "templateId",
       rules: [
         {
           required: true,
-          message: "请输入数据源编码",
+          message: "请输入模板编码",
           trigger: "blur",
         },
       ],
     },
     {
-      label: "数据源名称",
+      label: "模板名称",
       labelWidth: "80px",
-      vModel: "dsName",
-      placeholder: "请输入数据源名称",
-      prop: "dsName",
+      vModel: "templateName",
+      placeholder: "请输入模板名称",
+      prop: "templateName",
       rules: [
         {
           required: true,
-          message: "请输入数据源名称",
+          message: "请输入模板名称",
           trigger: "blur",
         },
       ],
     },
     {
-      label: "数据库地址",
+      label: "模板内容",
       labelWidth: "80px",
-      vModel: "dbAddress",
-      placeholder: "请输入数据库地址",
-      prop: "dbAddress",
+      vModel: "content",
+      placeholder: "请输入模板内容",
+      prop: "content",
       rules: [
         {
           trigger: "blur",
@@ -143,48 +136,13 @@ const DataSource: React.FC = () => {
       ],
     },
     {
-      label: "数据库端口",
+      label: "模板类型",
       labelWidth: "80px",
-      vModel: "dbPort",
-      placeholder: "请输入数据库端口",
-      prop: "dbPort",
+      vModel: "type",
+      placeholder: "请输入模板类型",
+      prop: "type",
     },
-    {
-      label: "数据库名称",
-      labelWidth: "80px",
-      vModel: "dbName",
-      placeholder: "请输入数据库名称",
-      prop: "dbName",
-      rules: [
-        {
-          trigger: "blur",
-        },
-      ],
-    },
-    {
-      label: "数据库账号",
-      labelWidth: "80px",
-      vModel: "dbAccount",
-      placeholder: "请输入数据库账号",
-      prop: "dbAccount",
-      rules: [
-        {
-          trigger: "blur",
-        },
-      ],
-    },
-    {
-      label: "数据库密码",
-      labelWidth: "80px",
-      vModel: "dbPassword",
-      placeholder: "请输入数据库密码",
-      prop: "dbPassword",
-      rules: [
-        {
-          trigger: "blur",
-        },
-      ],
-    },
+
     {
       label: "创建时间",
       labelWidth: "80px",
@@ -205,19 +163,19 @@ const DataSource: React.FC = () => {
       prop: "remark",
     },
   ];
-  const handleFormSubmit = (form: IDataSource, done: any) => {
+  const handleFormSubmit = (form: ITemplate, done: any) => {
     const row = { ...form };
     if (row.id) {
-      console.log("updateDataSource", row);
-      updateDataSource(row).then(() => {
-        message.success("数据源修改成功");
+      console.log("updateTemplate", row);
+      updateTemplate(row).then(() => {
+        message.success("模板修改成功");
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addDataSource", row);
-      addDataSource(row).then(() => {
-        message.success("数据源创建成功");
+      console.log("addTemplate", row);
+      addTemplate(row).then(() => {
+        message.success("模板创建成功");
         done();
       });
     }
@@ -226,17 +184,17 @@ const DataSource: React.FC = () => {
   /**
    * 操作栏
    */
-  const handleDelete = (item: IDataSource, done: any) => {
+  const handleDelete = (item: ITemplate, done: any) => {
     confirm({
       title: "警告",
       icon: <ExclamationCircleFilled />,
-      content: `你真的删除【${item.dsName}】的数据源吗？`,
+      content: `你真的删除【${item.templateName}】的模板吗？`,
       onOk() {
         if (!item.id) {
           return;
         }
-        deleteDataSource(item.id).then(() => {
-          message.success("数据源删除成功");
+        deleteTemplate(item.id).then(() => {
+          message.success("模板删除成功");
           done();
         });
       },
@@ -255,34 +213,22 @@ const DataSource: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "数据源编号",
-      prop: "dsId",
+      label: "模板编号",
+      prop: "templateId",
     },
     {
-      label: "数据源名称",
-      prop: "dsName",
-      // edit: true,
+      label: "模板名称",
+      prop: "templateName",
     },
+    // {
+    //   label: "模板内容",
+    //   prop: "content",
+    // },
     {
-      label: "数据库地址",
-      prop: "dbAddress",
+      label: "模板类型",
+      prop: "type",
     },
-    {
-      label: "数据源端口",
-      prop: "dbPort",
-    },
-    {
-      label: "数据源名称",
-      prop: "dbName",
-    },
-    {
-      label: "数据源账号",
-      prop: "dbAccount",
-    },
-    {
-      label: "数据源密码",
-      prop: "dbPassword",
-    },
+
     {
       label: "创建时间",
       prop: "createTime",
@@ -299,7 +245,7 @@ const DataSource: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getDataSourcesList(parmas)
+    getTemplateList(parmas)
       .then((res) => {
         setLoading(false);
         const { data: userList, total } = res;
@@ -339,4 +285,4 @@ const DataSource: React.FC = () => {
   );
 };
 
-export default DataSource;
+export default Template;

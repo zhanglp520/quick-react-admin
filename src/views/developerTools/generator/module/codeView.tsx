@@ -1,5 +1,4 @@
 import { Tabs } from "antd";
-import type { TabsProps } from "antd";
 import { useState } from "react";
 import { CodeMirror } from "@ainiteam/quick-react-ui";
 import "./index.less";
@@ -31,7 +30,7 @@ export class UserController extends BaseController<UserVo> {
     `,
   };
 
-  const handleCodeChange = (value: any, viewUpdate: any) => {
+  const handleCodeChange = (value: any) => {
     setData1(value);
   };
   const arr = [
@@ -71,38 +70,7 @@ export class UserController extends BaseController<UserVo> {
       data: "console.log(222)",
     },
   ];
-  const items: TabsProps["items"] = [
-    {
-      key: "1",
-      label: "entity",
-      children: <CodeMirror value={data1} onChange={handleCodeChange} />,
-    },
-    {
-      key: "2",
-      label: "vo",
-      children: <CodeMirror value={data2} onChange={handleCodeChange} />,
-    },
-    {
-      key: "3",
-      label: "dto",
-      children: <CodeMirror value={data3} onChange={handleCodeChange} />,
-    },
-    {
-      key: "4",
-      label: "repository",
-      children: <CodeMirror value={data4} onChange={handleCodeChange} />,
-    },
-    {
-      key: "5",
-      label: "server",
-      children: <CodeMirror value={data5} onChange={handleCodeChange} />,
-    },
-    {
-      key: "6",
-      label: "controller",
-      children: <CodeMirror value={data6} onChange={handleCodeChange} />,
-    },
-  ];
+
   const handleChange = (key: string) => {
     console.log(key);
     switch (key) {

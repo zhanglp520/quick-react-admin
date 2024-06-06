@@ -20,7 +20,7 @@ const BasicConfig: React.FC = (props, ref) => {
   };
   const formItems: IFormItem[] = [
     // {
-    //   label: "前端框架",
+    //   label: "生成菜单",
     //   labelWidth: "120px",
     //   vModel: "radioValue",
     //   prop: "radioValue",
@@ -48,7 +48,6 @@ const BasicConfig: React.FC = (props, ref) => {
       prop: "author",
       type: "input",
       change: (e) => {
-        debugger;
         form.author = e.target.value;
       },
     },

@@ -13,3 +13,4 @@ export * from "./user";
 export * from "./projec";
 export * from "./dataSource";
 export * from "./module";
+export * from "./template";

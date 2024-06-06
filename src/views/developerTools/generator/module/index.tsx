@@ -91,24 +91,7 @@ const Module: React.FC = () => {
     edit: "编辑模块",
     detail: "模块详情",
   };
-  const validateModuleId = (rule: any, value: string, callback: any) => {
-    console.log("rule", rule);
-    const reg = /^MK_\d+$/;
-    if (!reg.test(value)) {
-      callback(new Error("模块编号必须是以MK_开头和数字组合"));
-    } else {
-      callback();
-    }
-  };
-  const validateModuleName = (rule: any, value: string, callback: any) => {
-    console.log("rule", rule);
-    const reg = /^[a-zA-Z0-9]{4,16}$/;
-    if (!reg.test(value)) {
-      callback(new Error("模块必须是4-16位的字母、数字"));
-    } else {
-      callback();
-    }
-  };
+
   const formModel: IModule = {
     id: undefined,
     projectId: undefined,
@@ -129,10 +112,6 @@ const Module: React.FC = () => {
           message: "请输入模块编号",
           trigger: "blur",
         },
-        // {
-        //   validator: validateModuleId,
-        //   trigger: "blur",
-        // },
       ],
     },
     {
@@ -147,10 +126,6 @@ const Module: React.FC = () => {
           message: "请输入模块名",
           trigger: "blur",
         },
-        // {
-        //   validator: validateModuleName,
-        //   trigger: "blur",
-        // },
       ],
     },
     {
@@ -165,10 +140,6 @@ const Module: React.FC = () => {
         {
           required: true,
           message: "请输入项目编号",
-          trigger: "blur",
-        },
-        {
-          validator: validateModuleId,
           trigger: "blur",
         },
       ],
@@ -475,19 +446,9 @@ const Module: React.FC = () => {
     }
     setDialogConfigVisible(false);
   };
-  // const handleGenerateOk = () => {
-  //   if (CodeConfigRef.current) {
-  //     const ConfigData = CodeConfigRef.current.callChildMethod();
-  //     setForm({ ...ConfigData });
-  //   }
-  // };
-
   useEffect(() => {
     console.log("ConfigData", form);
     console.log("ConfigDataString", JSON.stringify(form));
-
-    // dispatch(getPermissionBtns(activeTab));
-    // loadData();
   }, [form]);
   return (
     <>
@@ -522,14 +483,6 @@ const Module: React.FC = () => {
           >
             保存配置
           </Button>,
-          // <Button
-          //   key="submit"
-          //   type="primary"
-          //   loading={loading}
-          //   onClick={handleGenerateOk}
-          // >
-          //   生成
-          // </Button>,
         ]}
       >
         <CodeConfig ref={CodeConfigRef}></CodeConfig>

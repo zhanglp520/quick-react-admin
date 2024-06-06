@@ -10,3 +10,4 @@ export const generator = `${apiUrl}/generators`;
 export const dataSources = `${apiUrl}/dataSources`;
 export const modules = `${apiUrl}/modules`;
 export const projects = `${apiUrl}/projects`;
+export const templates = `${apiUrl}/templates`;

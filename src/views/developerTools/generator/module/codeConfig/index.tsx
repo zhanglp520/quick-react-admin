@@ -52,10 +52,6 @@ const CodeConfig: React.FC = (props: any, ref) => {
     if (backendRef.current) {
       form.backEndConfig = backendRef.current.form;
     }
-    // if (databaseRef.current) {
-    //   const dt4 = databaseRef.current.form;
-    //   setDBdata({ ...dt4 });
-    // }
 
     return form;
   };
@@ -80,11 +76,6 @@ const CodeConfig: React.FC = (props: any, ref) => {
       label: "后端配置",
       children: <Backend ref={backendRef} />,
     },
-    // {
-    //   key: "3",
-    //   label: "数据库配置",
-    //   children: <Database ref={databaseRef} />,
-    // },
   ];
   return (
     <>

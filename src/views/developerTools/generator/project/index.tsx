@@ -29,7 +29,7 @@ import {
 } from "@/api/developerTools/generator/project";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { addTab } from "@/store/modules/tab";
 
 const Project: React.FC = () => {
@@ -40,9 +40,6 @@ const Project: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  useEffect(() => {
-    dispatch(getPermissionBtns(activeTab));
-  }, []);
   const { permissionBtn }: { permissionBtn: IProjecPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
@@ -50,18 +47,10 @@ const Project: React.FC = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user);
   let menuList: IMenu[] = [];
+
   if (user) {
     menuList = user.permissionMenuList;
   }
-  /**
-   * 分页
-   */
-  // const [page] = useState<IPage>({
-  //   current: 1,
-  //   size: 10,
-  //   sizes: [10, 20, 30, 40, 50],
-  //   total: 0,
-  // });
 
   /**
    * 搜索
@@ -101,8 +90,6 @@ const Project: React.FC = () => {
     });
   };
   const tableToolbar: IToolbar = {
-    // importButtonName: "导入（默认后端方式）",
-    // exportButtonName: "导出（默认后端方式）",
     hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
     hiddenImportButton: true,
     hiddenExportButton: true,
@@ -141,10 +128,6 @@ const Project: React.FC = () => {
           message: "请输入项目编码",
           trigger: "blur",
         },
-        {
-          // validator: validateUserId,
-          trigger: "blur",
-        },
       ],
     },
     {
@@ -157,10 +140,6 @@ const Project: React.FC = () => {
         {
           required: true,
           message: "请输入项目名称",
-          trigger: "blur",
-        },
-        {
-          // validator: validateUserName,
           trigger: "blur",
         },
       ],
@@ -178,12 +157,7 @@ const Project: React.FC = () => {
       vModel: "author",
       placeholder: "请输入作者",
       prop: "author",
-      rules: [
-        {
-          // validator: validateFullName,
-          trigger: "blur",
-        },
-      ],
+      rules: [],
     },
 
     {
@@ -278,14 +252,6 @@ const Project: React.FC = () => {
         name: "模块管理",
         // hidden: !validatePermission(permissionBtn?.build),
         click(item: IProject) {
-          // return (
-          //   <Routes>
-          //     <Route
-          //       path="/developerTools/generator/module/:projectId"
-          //       element={<Module />}
-          //     />
-          //   </Routes>
-          // );
           const menu = menuList.find((x) => x.menuName == "模块管理");
           if (menu) {
             const { id, menuName, path } = menu;
@@ -358,7 +324,9 @@ const Project: React.FC = () => {
         setLoading(false);
       });
   };
-
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+  }, []);
   return (
     <div>
       <Crud
@@ -371,7 +339,6 @@ const Project: React.FC = () => {
         tableToolbar={tableToolbar}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
-        // pagebar={page}
         loading={loading}
         displayNumber={true}
         onLoad={loadData}
