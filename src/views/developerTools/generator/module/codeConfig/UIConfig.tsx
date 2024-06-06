@@ -1,6 +1,11 @@
 import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
-import React, { useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
 
@@ -12,17 +17,17 @@ interface IUIConfig {
   formType: string;
 }
 
-const UIConfig: React.FC = () => {
+const UIConfig: React.FC = (props, ref) => {
   const [formInstance] = Form.useForm();
   const [frameworkTemplateDic, setFrameworkTemplateDic] = useState(null);
   const [listTemplateDic, setListTemplateDic] = useState(null);
   const [formTemplateDic, setFormTemplateDic] = useState(null);
   const form: IUIConfig = {
     id: undefined,
-    frameworkType: "vue",
-    listType: "tree_table",
+    frameworkType: "react-ts",
+    listType: "table_list",
     isDialog: "0",
-    formType: "parant_child",
+    formType: "basic_form",
   };
   const frameworkData = [
     {
@@ -143,6 +148,11 @@ const UIConfig: React.FC = () => {
       },
     },
   ];
+  useImperativeHandle(ref, () => {
+    return {
+      form,
+    };
+  });
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", form, value);
   };
@@ -201,4 +211,4 @@ const UIConfig: React.FC = () => {
     ></QuickForm>
   );
 };
-export default UIConfig;
+export default forwardRef(UIConfig);

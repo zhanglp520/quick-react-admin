@@ -1,6 +1,11 @@
 import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
-import React, { useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
 
@@ -11,13 +16,13 @@ interface IBackend {
   designPattern: string;
 }
 
-const Backend: React.FC = () => {
+const Backend: React.FC = (props, ref) => {
   const [backendLangDic, setBackendLangDic] = useState(null);
   const [backendFrameworkDic, setBackendFrameworkDic] = useState(null);
   const form: IBackend = {
     id: undefined,
     framework: "springboot",
-    backendLang: "c#",
+    backendLang: "nodejs#",
     designPattern: "",
   };
   const dialogData = [
@@ -61,6 +66,11 @@ const Backend: React.FC = () => {
       },
     },
   ];
+  useImperativeHandle(ref, () => {
+    return {
+      form,
+    };
+  });
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", form, value);
   };
@@ -110,4 +120,4 @@ const Backend: React.FC = () => {
     ></QuickForm>
   );
 };
-export default Backend;
+export default forwardRef(Backend);

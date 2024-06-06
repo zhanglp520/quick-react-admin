@@ -26,7 +26,7 @@ import {
   ImportOutlined,
 } from "@ant-design/icons";
 import { Modal, message, Button } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CodeView from "./codeView";
 import { useParams } from "react-router-dom";
@@ -46,6 +46,8 @@ const Module: React.FC = () => {
   const { permissionBtn }: { permissionBtn: IModulePermissionButton } =
     useSelector((state: RootState) => state.user);
   const { projectId } = useParams();
+  const CodeConfigRef = useRef(null);
+  const [form, setForm] = useState({});
   /**
    * 分页
    */
@@ -460,13 +462,27 @@ const Module: React.FC = () => {
   const handleViewCancel = () => {
     setDialogViewVisible(false);
   };
-  const handlePreview = () => {};
-  const handleGenerateOk = () => {};
+  const saveConfig = () => {
+    if (CodeConfigRef.current) {
+      const ConfigData = CodeConfigRef.current.callChildMethod();
+      setForm({ ...ConfigData });
+    }
+    setDialogConfigVisible(false);
+  };
+  // const handleGenerateOk = () => {
+  //   if (CodeConfigRef.current) {
+  //     const ConfigData = CodeConfigRef.current.callChildMethod();
+  //     setForm({ ...ConfigData });
+  //   }
+  // };
 
-  //   useEffect(() => {
-  //     dispatch(getPermissionBtns(activeTab));
-  //     loadData();
-  //   }, []);
+  useEffect(() => {
+    console.log("ConfigData", form);
+    console.log("ConfigDataString", JSON.stringify(form));
+
+    // dispatch(getPermissionBtns(activeTab));
+    // loadData();
+  }, [form]);
   return (
     <>
       <Crud
@@ -491,20 +507,26 @@ const Module: React.FC = () => {
         onCancel={handleConfigCancel}
         width="45%"
         footer={[
-          <Button key="back" onClick={handlePreview}>
-            预览
-          </Button>,
           <Button
+            key="back"
             key="submit"
             type="primary"
             loading={loading}
-            onClick={handleGenerateOk}
+            onClick={saveConfig}
           >
-            生成
+            保存配置
           </Button>,
+          // <Button
+          //   key="submit"
+          //   type="primary"
+          //   loading={loading}
+          //   onClick={handleGenerateOk}
+          // >
+          //   生成
+          // </Button>,
         ]}
       >
-        <CodeConfig></CodeConfig>
+        <CodeConfig ref={CodeConfigRef}></CodeConfig>
       </Modal>
       <Modal
         title="预览"

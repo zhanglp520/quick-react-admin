@@ -1,6 +1,11 @@
 import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
-import React, { useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { getDictionaryList } from "@/api/system/dictionary";
 import { selectFormat } from "@/utils";
 
@@ -14,7 +19,7 @@ interface IDatabase {
   password?: string;
 }
 
-const Database: React.FC = () => {
+const Database: React.FC = (props, ref) => {
   const [databaseDic, setDatabaseDic] = useState(null);
 
   const form: IDatabase = {
@@ -99,6 +104,11 @@ const Database: React.FC = () => {
       },
     },
   ];
+  useImperativeHandle(ref, () => {
+    return {
+      form,
+    };
+  });
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", value);
     form.databaseType = value.databaseType;
@@ -145,4 +155,4 @@ const Database: React.FC = () => {
     ></QuickForm>
   );
 };
-export default Database;
+export default forwardRef(Database);

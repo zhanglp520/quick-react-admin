@@ -1,22 +1,44 @@
 import { IFormItem, Form as QuickForm } from "@ainiteam/quick-react-ui";
 import { Form } from "antd";
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 interface IBasicConfig {
   id?: number;
   author: string;
   folderName: string;
-  radioValue: string;
+  // radioValue: string;
 }
 
-const BasicConfig: React.FC = () => {
+const BasicConfig: React.FC = (props, ref) => {
+  const [formInstance] = Form.useForm();
+
   const form: IBasicConfig = {
     id: undefined,
-    author: "",
-    folderName: "",
-    radioValue: "1",
+    author: "土豆哥",
+    folderName: "tudouge",
+    //radioValue: "1",
   };
   const formItems: IFormItem[] = [
+    // {
+    //   label: "前端框架",
+    //   labelWidth: "120px",
+    //   vModel: "radioValue",
+    //   prop: "radioValue",
+    //   type: "radio",
+    //   options: [
+    //     {
+    //       label: "是",
+    //       value: "0",
+    //     },
+    //     {
+    //       label: "否",
+    //       value: "1",
+    //     },
+    //   ],
+    //   change: (e) => {
+    //     form.radioValue = e.target.value;
+    //   },
+    // },
     {
       label: "作者",
       labelWidth: "120px",
@@ -26,6 +48,7 @@ const BasicConfig: React.FC = () => {
       prop: "author",
       type: "input",
       change: (e) => {
+        debugger;
         form.author = e.target.value;
       },
     },
@@ -42,6 +65,12 @@ const BasicConfig: React.FC = () => {
       },
     },
   ];
+  useImperativeHandle(ref, () => {
+    return {
+      form,
+    };
+  });
+
   const handleSubmit = (value: any) => {
     console.log("handleSubmit", form, value);
   };
@@ -54,7 +83,6 @@ const BasicConfig: React.FC = () => {
   const handleError = (errInfo: any) => {
     console.log("handleError", errInfo);
   };
-  const [formInstance] = Form.useForm();
   return (
     <QuickForm
       form={formInstance}
@@ -67,4 +95,4 @@ const BasicConfig: React.FC = () => {
     ></QuickForm>
   );
 };
-export default BasicConfig;
+export default forwardRef(BasicConfig);
