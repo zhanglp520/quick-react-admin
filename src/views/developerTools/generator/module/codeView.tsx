@@ -2,6 +2,7 @@ import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { useState } from "react";
 import { CodeMirror } from "@ainiteam/quick-react-ui";
+import "./index.less";
 
 const CodeView: React.FC = () => {
   const [data1, setData1] = useState("");
@@ -33,6 +34,43 @@ export class UserController extends BaseController<UserVo> {
   const handleCodeChange = (value: any, viewUpdate: any) => {
     setData1(value);
   };
+  const arr = [
+    {
+      id: 0,
+      label: "index.tsx",
+      data: `  return (
+        <div>
+          <Crud
+            dialogTitle={dialogTitle}
+            formModel={formModel}
+            formItems={formItems}
+            tableData={tableDataList}
+            tableColumns={tableColumns}
+            tableActionbar={tableActionbar}
+            tableToolbar={tableToolbar}
+            searchFormItems={searchFormItems}
+            searchFormModel={searchForm}
+            pagebar={page}
+            loading={loading}
+            rowEdit={true}
+            displayNumber={true}
+            onLoad={loadData}
+            onFormSubmit={handleFormSubmit}
+            onDelete={handleDelete}
+            onBatchDelete={handleBatchDelete}
+            onImport={handleImport}
+            onExport={handleExport}
+            onPrint={handlePrint}
+          ></Crud>
+        </div>
+      );`,
+    },
+    {
+      id: 1,
+      label: "api.ts",
+      data: "console.log(222)",
+    },
+  ];
   const items: TabsProps["items"] = [
     {
       key: "1",
@@ -92,7 +130,18 @@ export class UserController extends BaseController<UserVo> {
   };
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} onChange={handleChange}></Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        onChange={handleChange}
+        items={arr.map((item) => {
+          const { id, label, data } = item;
+          return {
+            key: id,
+            label: label,
+            children: <CodeMirror value={data} onChange={handleCodeChange} />,
+          };
+        })}
+      ></Tabs>
     </>
   );
 };

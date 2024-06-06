@@ -539,7 +539,7 @@ const Module: React.FC = () => {
         open={dialogViewVisible}
         onOk={handleViewOk}
         onCancel={handleViewCancel}
-        width="30%"
+        width="80%"
       >
         <CodeView></CodeView>
       </Modal>
