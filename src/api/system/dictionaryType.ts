@@ -12,32 +12,40 @@ import { dictionaryType as api } from "./index";
  *@Date: 2022-11-28 11:55:37
  */
 export const getDictionaryTypeList = (): Promise<
-    IQuickResponseData<Array<IDictionaryType>>
+  IQuickResponseData<Array<IDictionaryType>>
 > => {
-    return request<IQuickResponseData<Array<IDictionaryType>>>({
-        url: api,
-        method: "GET"
-    });
+  return request<IQuickResponseData<Array<IDictionaryType>>>({
+    url: api,
+    method: "GET",
+  });
+};
+export const getDictionaryTypeListByPId = (
+  dicTypeId: any
+): Promise<IQuickResponseData<Array<IDictionaryType>>> => {
+  return request<IQuickResponseData<Array<IDictionaryType>>>({
+    url: `${api}/getDictionaryTypeListByPId/${dicTypeId}`,
+    method: "GET",
+  });
 };
 
 export const addDictionaryType = (data: IDictionaryType) => {
-    return request({
-        url: api,
-        method: "POST",
-        data
-    });
+  return request({
+    url: api,
+    method: "POST",
+    data,
+  });
 };
 export const updateDictionaryType = (data: IDictionaryType) => {
-    const { id } = data;
-    return request({
-        url: `${api}/${id}`,
-        method: "PUT",
-        data
-    });
+  const { id } = data;
+  return request({
+    url: `${api}/${id}`,
+    method: "PUT",
+    data,
+  });
 };
 export const deleteDictionaryType = (id: number) => {
-    return request({
-        url: `${api}/${id}`,
-        method: "DELETE"
-    });
+  return request({
+    url: `${api}/${id}`,
+    method: "DELETE",
+  });
 };

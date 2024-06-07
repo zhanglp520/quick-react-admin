@@ -229,10 +229,6 @@ const Tenant: React.FC = () => {
           message: "请输入租户ID",
           trigger: "blur",
         },
-        {
-          // validator: validateUserId,
-          trigger: "blur",
-        },
       ],
     },
     {

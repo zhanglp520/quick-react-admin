@@ -7,13 +7,14 @@ import {
   IColumn,
   IFormItem,
   IPage,
-  IToolbar,
   Crud,
   IDialogTitle,
+  IOptions,
 } from "@ainiteam/quick-react-ui";
 
-import { validatePermission } from "@/utils";
-import { IDictionaryType, IUserPermissionButton } from "@/types";
+// import "./index.less";
+import { listToSelectTree, listToTableTree, validatePermission } from "@/utils";
+import { IDictionaryType, IDictionaryTypePermissionButton } from "@/types";
 import {
   getDictionaryTypeList,
   addDictionaryType,
@@ -22,22 +23,23 @@ import {
 } from "@/api/system/dictionaryType";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
+import "@/assets/iconfont/quickIconFont.js";
 
 const DictionaryType: React.FC = () => {
   /**
    * 属性
    */
   const { confirm } = Modal;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));
   }, []);
-  const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
+  const { permissionBtn }: { permissionBtn: IDictionaryTypePermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
   const [tableDataList, setTableDataList] = useState<IDictionaryType[]>([]);
+  const [parentTreeData, setParentTreeData] = useState<Array<IOptions>>([]);
 
   /**
    * 分页
@@ -52,15 +54,12 @@ const DictionaryType: React.FC = () => {
   /**
    * 工具栏
    */
-  const tableToolbar: IToolbar = {
-    hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
-    hiddenImportButton: !validatePermission(permissionBtn?.import),
-    hiddenExportButton: !validatePermission(permissionBtn?.export),
+  const tableToolbar = {
+    hiddenBatchDeleteButton: true,
+    hiddenImportButton: true,
+    hiddenExportButton: true,
+    hiddenPrintButton: true,
     hiddenAddButton: !validatePermission(permissionBtn?.add),
-    hiddenPrintButton: !validatePermission(permissionBtn?.print),
-    position: "left",
-    // leftToolbarSlot: <div>lll</div>,
-    // rightToolbarSlot: <div>rrr</div>,
   };
 
   /**
@@ -73,6 +72,7 @@ const DictionaryType: React.FC = () => {
   };
   const formModel: IDictionaryType = {
     id: undefined,
+    pId: undefined,
     dicTypeId: "",
     dicTypeName: "",
     // fullName: "",
@@ -94,10 +94,6 @@ const DictionaryType: React.FC = () => {
           message: "请输入字典编号",
           trigger: "blur",
         },
-        {
-          // validator: validateUserId,
-          trigger: "blur",
-        },
       ],
     },
     {
@@ -106,22 +102,20 @@ const DictionaryType: React.FC = () => {
       vModel: "dicTypeName",
       placeholder: "请输入字典名称",
       prop: "dicTypeName",
-      rules: [
-        {
-          required: true,
-          message: "请输入字典名称",
-          trigger: "blur",
-        },
-        {
-          // validator: validateUserName,
-          trigger: "blur",
-        },
-      ],
+    },
+    {
+      label: "父级字典",
+      labelWidth: "80px",
+      vModel: "pId",
+      placeholder: "请选择父级字典",
+      type: "treeselect",
+      options: parentTreeData,
+      width: "400px",
+      prop: "pId",
     },
   ];
   const handleFormSubmit = (form: IDictionaryType, done: any) => {
     const row = { ...form };
-
     if (row.id) {
       console.log("updateDictionaryType", row);
       updateDictionaryType(row).then(() => {
@@ -157,7 +151,6 @@ const DictionaryType: React.FC = () => {
       },
     });
   };
-
   const tableActionbar: IActionbar = {
     width: 200,
     hiddenEditButton: !validatePermission(permissionBtn?.edit),
@@ -181,25 +174,35 @@ const DictionaryType: React.FC = () => {
   ];
 
   /**
+   * 加载父级字典分类下拉框
+   * @param data 字典分类数据
+   */
+  const loadParentDictionaryData = (data: IDictionaryType[]) => {
+    const parentTree = listToSelectTree(data, 0, {
+      value: "id",
+      label: "dicTypeName",
+    });
+    setParentTreeData([...parentTree]);
+    console.log("父级字典分类", parentTree);
+  };
+
+  /**
    * 加载数据
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getDictionaryTypeList(parmas)
-      .then((res) => {
-        setLoading(false);
-        const { data: userList, total } = res;
-        console.log("userList", userList);
-        if (userList) {
-          setTableDataList([...userList]);
-        }
-        page.total = total;
-      })
-      .catch(() => {
-        setLoading(false);
+    getDictionaryTypeList(parmas).then((res) => {
+      setLoading(false);
+      const { data: dictionaryTypeList } = res;
+      console.log("dictionaryTypeList", dictionaryTypeList);
+      loadParentDictionaryData(dictionaryTypeList);
+      const dictionaryTypeTree = listToTableTree(dictionaryTypeList, 0, {
+        pId: "pId",
       });
-  };
 
+      setTableDataList([...dictionaryTypeTree]);
+    });
+  };
   return (
     <div>
       <Crud
@@ -212,6 +215,8 @@ const DictionaryType: React.FC = () => {
         tableToolbar={tableToolbar}
         pagebar={page}
         loading={loading}
+        displayNumber={false}
+        // formLayout="inline"
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
