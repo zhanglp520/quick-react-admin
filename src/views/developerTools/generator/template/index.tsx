@@ -23,7 +23,7 @@ import {
 } from "@/api/developerTools/generator/template";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
-import { getDeptList } from "@/api/system/dept";
+import { getDictionaryTypeListByPId } from "@/api/system/dictionaryType";
 
 const Template: React.FC = () => {
   /**
@@ -38,7 +38,8 @@ const Template: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [templateData, setTemplateData] = useState<ITreeOptions[]>([]);
   const [tableDataList, setTableDataList] = useState<ITemplate[]>([]);
-  const [deptDdataListTemp, setDeptDdataListTemp] = useState<ITemplate[]>([]);
+  const [dictionaryTypeDdataListTemp, setDictionaryTypeDdataListTemp] =
+    useState<ITemplate[]>([]);
   const [currentTreeData, setCurrentTreeData] = useState({
     key: "",
     title: "",
@@ -89,18 +90,18 @@ const Template: React.FC = () => {
   /**
    * 左树
    */
-  const [leftTree, setLeftTree] = useState<ILeftTree>({
+  const [leftTree] = useState<ILeftTree>({
     treeData: [],
     treeSpan: 6,
   });
   const treeLoad = (done: any) => {
-    getDeptList().then((res) => {
-      const { data: deptList } = res;
-      console.log("deptList", deptList);
-      setDeptDdataListTemp([...deptList]);
-      const template = listToTree(deptList, 0, {
+    getDictionaryTypeListByPId("generator_code_template").then((res) => {
+      const { data: dictionaryTypeList } = res;
+      console.log("dictionaryTypeList", dictionaryTypeList);
+      setDictionaryTypeDdataListTemp([...dictionaryTypeList]);
+      const template = listToTree(dictionaryTypeList, 3, {
         id: "id",
-        label: "deptName",
+        label: "dicTypeName",
       });
       console.log("template", template);
       leftTree.treeData = template;
@@ -279,9 +280,9 @@ const Template: React.FC = () => {
    * 加载父级部门树下拉框
    */
   const loadSelectTreeData = () => {
-    const template = listToSelectTree(deptDdataListTemp, 0, {
+    const template = listToSelectTree(dictionaryTypeDdataListTemp, 0, {
       value: "id",
-      label: "deptName",
+      label: "dictionaryTypeName",
     });
     setTemplateData([...template]);
     console.log("templateData", templateData);
