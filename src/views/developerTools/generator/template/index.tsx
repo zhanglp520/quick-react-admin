@@ -10,8 +10,10 @@ import {
   IToolbar,
   Crud,
   IDialogTitle,
+  ILeftTree,
+  ITreeOptions,
 } from "@ainiteam/quick-react-ui";
-import { validatePermission } from "@/utils";
+import { listToSelectTree, listToTree, validatePermission } from "@/utils";
 import { ISearchTemplate, ITemplate, ITemplatePermissionButton } from "@/types";
 import {
   getTemplateList,
@@ -21,6 +23,7 @@ import {
 } from "@/api/developerTools/generator/template";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
+import { getDeptList } from "@/api/system/dept";
 
 const Template: React.FC = () => {
   /**
@@ -33,7 +36,14 @@ const Template: React.FC = () => {
   const { permissionBtn }: { permissionBtn: ITemplatePermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
+  const [templateData, setTemplateData] = useState<ITreeOptions[]>([]);
   const [tableDataList, setTableDataList] = useState<ITemplate[]>([]);
+  const [deptDdataListTemp, setDeptDdataListTemp] = useState<ITemplate[]>([]);
+  const [currentTreeData, setCurrentTreeData] = useState({
+    key: "",
+    title: "",
+    children: [],
+  });
 
   /**
    * 分页
@@ -76,7 +86,33 @@ const Template: React.FC = () => {
     hiddenPrintButton: true,
     position: "left",
   };
-
+  /**
+   * 左树
+   */
+  const [leftTree, setLeftTree] = useState<ILeftTree>({
+    treeData: [],
+    treeSpan: 6,
+  });
+  const treeLoad = (done: any) => {
+    getDeptList().then((res) => {
+      const { data: deptList } = res;
+      console.log("deptList", deptList);
+      setDeptDdataListTemp([...deptList]);
+      const template = listToTree(deptList, 0, {
+        id: "id",
+        label: "deptName",
+      });
+      console.log("template", template);
+      leftTree.treeData = template;
+      console.log("leftTree", leftTree.treeData);
+      setCurrentTreeData({ ...(template && template[0]) });
+      done(currentTreeData);
+    });
+  };
+  const handleTreeClick = (data: any, done: any) => {
+    setCurrentTreeData({ ...data });
+    done();
+  };
   /**
    * 表单
    */
@@ -239,7 +275,17 @@ const Template: React.FC = () => {
       prop: "remark",
     },
   ];
-
+  /**
+   * 加载父级部门树下拉框
+   */
+  const loadSelectTreeData = () => {
+    const template = listToSelectTree(deptDdataListTemp, 0, {
+      value: "id",
+      label: "deptName",
+    });
+    setTemplateData([...template]);
+    console.log("templateData", templateData);
+  };
   /**
    * 加载数据
    */
@@ -261,6 +307,7 @@ const Template: React.FC = () => {
   };
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));
+    loadSelectTreeData();
   }, []);
   return (
     <div>
@@ -272,12 +319,16 @@ const Template: React.FC = () => {
         tableColumns={tableColumns}
         tableActionbar={tableActionbar}
         tableToolbar={tableToolbar}
+        leftTree={leftTree}
+        leftTreeRefresh={true}
         searchFormItems={searchFormItems}
         searchFormModel={searchForm}
         pagebar={page}
         loading={loading}
         displayNumber={true}
         onLoad={loadData}
+        onTreeLoad={treeLoad}
+        onTreeClick={handleTreeClick}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
       ></Crud>
