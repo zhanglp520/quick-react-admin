@@ -55,7 +55,7 @@ const Dictionary: React.FC = () => {
    */
   const loadDicTypeSelect = (data: IDictionaryType[]) => {
     const dicTypeselect = selectFormat(data, {
-      value: "dicTypeId",
+      value: "dicTypeCode",
       label: "dicTypeName",
     });
     dicTypeSelectData.length = 0;
@@ -89,7 +89,7 @@ const Dictionary: React.FC = () => {
       const { data: dictionaryTypeList } = res;
       loadDicTypeSelect(dictionaryTypeList);
       const dicTree = treeFormat(dictionaryTypeList, {
-        id: "dicTypeId",
+        id: "dicTypeCode",
         label: "dicTypeName",
       });
       console.log("dictionaryTree", dictionaryTypeList);
@@ -121,12 +121,12 @@ const Dictionary: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "字典编号",
+      label: "字典编码",
       labelWidth: "80px",
-      vModel: "dicId",
-      placeholder: "字典编号",
+      vModel: "dicCode",
+      placeholder: "字典编码",
       editReadonly: true,
-      prop: "dicId",
+      prop: "dicCode",
       rules: [
         {
           required: true,
@@ -152,14 +152,14 @@ const Dictionary: React.FC = () => {
     {
       label: "字典类型",
       labelWidth: "80px",
-      vModel: "dicTypeId",
+      vModel: "dicTypeCode",
       placeholder: "字典类型",
       type: "select",
       addDisabled: true,
       editDisabled: true,
       detailDisabled: true,
       options: dicTypeSelectData,
-      prop: "dicTypeId",
+      prop: "dicTypeCode",
     },
   ];
   /**
@@ -211,8 +211,8 @@ const Dictionary: React.FC = () => {
       type: "selection",
     },
     {
-      label: "字典编号",
-      prop: "dicId",
+      label: "字典编码",
+      prop: "dicCode",
       width: "200",
     },
     {

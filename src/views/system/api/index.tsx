@@ -123,8 +123,8 @@ const Api: React.FC = () => {
     //   label: "序号",
     // },
     {
-      label: "接口编号",
-      prop: "apiId",
+      label: "接口编码",
+      prop: "apiCode",
       width: "200",
     },
     {
@@ -184,16 +184,16 @@ const Api: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "接口编号",
+      label: "接口编码",
       labelWidth: "80px",
-      vModel: "apiId",
+      vModel: "apiCode",
       editReadonly: true,
-      placeholder: "请输入接口编号",
-      prop: "apiId",
+      placeholder: "请输入接口编码",
+      prop: "apiCode",
       rules: [
         {
           required: true,
-          message: "请输入接口编号",
+          message: "请输入接口编码",
           trigger: "blur",
         },
       ],

@@ -135,7 +135,7 @@ const Database: React.FC = (props, ref) => {
       console.log("database_type-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setDatabaseDic([...dataList]);
     });

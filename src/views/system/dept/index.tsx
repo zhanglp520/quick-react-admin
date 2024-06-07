@@ -98,8 +98,8 @@ const Dept: React.FC = () => {
       type: "selection",
     },
     {
-      label: "部门编号",
-      prop: "deptId",
+      label: "部门编码",
+      prop: "deptCode",
       width: "200",
     },
     {
@@ -172,16 +172,16 @@ const Dept: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "部门编号",
+      label: "部门编码",
       labelWidth: "80px",
-      vModel: "deptId",
-      placeholder: "请输入部门编号",
+      vModel: "deptCode",
+      placeholder: "请输入部门编码",
       editReadonly: true,
-      prop: "deptId",
+      prop: "deptCode",
       rules: [
         {
           required: true,
-          message: "请输入部门编号",
+          message: "请输入部门编码",
           trigger: "blur",
         },
       ],

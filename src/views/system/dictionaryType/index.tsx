@@ -82,16 +82,16 @@ const DictionaryType: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "字典编号",
+      label: "字典编码",
       labelWidth: "80px",
-      vModel: "dicTypeId",
+      vModel: "dicTypeCode",
       editReadonly: true,
-      placeholder: "请输入字典编号",
-      prop: "dicTypeId",
+      placeholder: "请输入字典编码",
+      prop: "dicTypeCode",
       rules: [
         {
           required: true,
-          message: "请输入字典编号",
+          message: "请输入字典编码",
           trigger: "blur",
         },
         {
@@ -170,8 +170,8 @@ const DictionaryType: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "字典编号",
-      prop: "dicTypeId",
+      label: "字典编码",
+      prop: "dicTypeCode",
     },
     {
       label: "字典名称",

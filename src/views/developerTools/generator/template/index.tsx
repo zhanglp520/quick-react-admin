@@ -58,9 +58,9 @@ const Template: React.FC = () => {
       placeholder: "模板名称",
     },
     {
-      label: "编号",
+      label: "编码",
       vModel: "keyword",
-      placeholder: "模板编号",
+      placeholder: "模板编码",
     },
   ];
 
@@ -97,10 +97,10 @@ const Template: React.FC = () => {
     {
       label: "模板编码",
       labelWidth: "80px",
-      vModel: "templateId",
+      vModel: "templateCode",
       editReadonly: true,
       placeholder: "请输入模板编码",
-      prop: "templateId",
+      prop: "templateCode",
       rules: [
         {
           required: true,
@@ -213,8 +213,8 @@ const Template: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "模板编号",
-      prop: "templateId",
+      label: "模板编码",
+      prop: "templateCode",
     },
     {
       label: "模板名称",

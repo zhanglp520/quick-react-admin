@@ -106,7 +106,7 @@ const Operate: React.FC = () => {
     },
     {
       label: "操作人",
-      prop: "operateId",
+      prop: "operateCode",
       width: "200",
     },
     {
@@ -174,7 +174,7 @@ const Operate: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "编号",
+      label: "编码",
       labelWidth: "80px",
       vModel: "id",
     },
@@ -196,7 +196,7 @@ const Operate: React.FC = () => {
     {
       label: "操作人ID",
       labelWidth: "80px",
-      vModel: "operateId",
+      vModel: "operateCode",
     },
     {
       label: "操作人",

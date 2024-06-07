@@ -62,9 +62,9 @@ const DataSource: React.FC = () => {
       placeholder: "数据源名称",
     },
     {
-      label: "编号",
+      label: "编码",
       vModel: "keyword",
-      placeholder: "数据源编号",
+      placeholder: "数据源编码",
     },
   ];
 
@@ -104,10 +104,10 @@ const DataSource: React.FC = () => {
     {
       label: "数据源编码",
       labelWidth: "80px",
-      vModel: "dsId",
+      vModel: "dsCode",
       editReadonly: true,
       placeholder: "请输入数据源编码",
-      prop: "dsId",
+      prop: "dsCode",
       rules: [
         {
           required: true,
@@ -255,8 +255,8 @@ const DataSource: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "数据源编号",
-      prop: "dsId",
+      label: "数据源编码",
+      prop: "dsCode",
     },
     {
       label: "数据源名称",

@@ -65,9 +65,9 @@ const Project: React.FC = () => {
       placeholder: "项目名称",
     },
     {
-      label: "编号",
+      label: "编码",
       vModel: "keyword",
-      placeholder: "项目编号",
+      placeholder: "项目编码",
     },
   ];
 
@@ -118,10 +118,10 @@ const Project: React.FC = () => {
     {
       label: "项目编码",
       labelWidth: "80px",
-      vModel: "projectId",
+      vModel: "projectCode",
       editReadonly: true,
       placeholder: "请输入项目编码",
-      prop: "projectId",
+      prop: "projectCode",
       rules: [
         {
           required: true,
@@ -147,9 +147,9 @@ const Project: React.FC = () => {
     {
       label: "数据源编码",
       labelWidth: "80px",
-      vModel: "dbId",
+      vModel: "dbCode",
       placeholder: "请输入数据源编码",
-      prop: "dbId",
+      prop: "dbCode",
     },
     {
       label: "作者",
@@ -277,8 +277,8 @@ const Project: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "项目编号",
-      prop: "projectId",
+      label: "项目编码",
+      prop: "projectCode",
     },
     {
       label: "项目名称",
@@ -287,7 +287,7 @@ const Project: React.FC = () => {
     },
     {
       label: "数据源编码",
-      prop: "dbId",
+      prop: "dbCode",
     },
     {
       label: "作者",

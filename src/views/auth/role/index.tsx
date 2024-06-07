@@ -83,8 +83,8 @@ const Role: React.FC = () => {
       type: "selection",
     },
     {
-      label: "角色编号",
-      prop: "roleId",
+      label: "角色编码",
+      prop: "roleCode",
       width: "200",
     },
     {
@@ -135,12 +135,12 @@ const Role: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "角色编号",
+      label: "角色编码",
       labelWidth: "80px",
-      vModel: "roleId",
-      placeholder: "角色编号",
+      vModel: "roleCode",
+      placeholder: "角色编码",
       editReadonly: true,
-      prop: "roleId",
+      prop: "roleCode",
       rules: [
         {
           required: true,

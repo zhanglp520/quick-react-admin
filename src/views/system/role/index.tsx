@@ -66,16 +66,16 @@ const Role: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "角色编号",
+      label: "角色编码",
       labelWidth: "80px",
-      vModel: "roleId",
+      vModel: "roleCode",
       editReadonly: true,
-      placeholder: "请输入角色编号",
-      prop: "roleId",
+      placeholder: "请输入角色编码",
+      prop: "roleCode",
       rules: [
         {
           required: true,
-          message: "请输入角色编号",
+          message: "请输入角色编码",
           trigger: "blur",
         },
         {
@@ -100,10 +100,10 @@ const Role: React.FC = () => {
     {
       label: "所属部门",
       labelWidth: "80px",
-      vModel: "deptId",
+      vModel: "deptCode",
       placeholder: "请选择所属部门",
       type: "treeselect",
-      prop: "deptId",
+      prop: "deptCode",
       options: deptTreeData,
       rules: [
         {
@@ -175,8 +175,8 @@ const Role: React.FC = () => {
   const tableColumns: IColumn[] = [
     {
       width: "200",
-      label: "角色编号",
-      prop: "roleId",
+      label: "角色编码",
+      prop: "roleCode",
     },
     {
       width: "100",
@@ -187,7 +187,7 @@ const Role: React.FC = () => {
     {
       width: "200",
       label: "所属部门",
-      prop: "deptId",
+      prop: "deptCode",
       render(row: IRole) {
         console.log("拿到的所属部门", deptDataList);
         const dept = deptDataList?.find((x: IDept) => x.id === row.deptId);

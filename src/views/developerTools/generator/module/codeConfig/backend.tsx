@@ -91,7 +91,7 @@ const Backend: React.FC = (props, ref) => {
       console.log("list_template-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setBackendFrameworkDic([...dataList]);
     });
@@ -100,7 +100,7 @@ const Backend: React.FC = (props, ref) => {
       console.log("form_template-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setBackendLangDic([...dataList]);
     });

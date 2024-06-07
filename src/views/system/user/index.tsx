@@ -165,12 +165,12 @@ const User: React.FC = () => {
           // 导出的字段映射
           const columns = [
             {
-              label: "编号",
+              label: "编码",
               value: "id",
             },
             {
-              label: "用户编号",
-              value: "userId",
+              label: "用户编码",
+              value: "userCode",
             },
             {
               label: "用户名",
@@ -219,16 +219,16 @@ const User: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "用户编号",
+      label: "用户编码",
       labelWidth: "80px",
-      vModel: "userId",
+      vModel: "userCode",
       editReadonly: true,
-      placeholder: "请输入用户编号",
-      prop: "userId",
+      placeholder: "请输入用户编码",
+      prop: "userCode",
       rules: [
         {
           required: true,
-          message: "请输入用户编号",
+          message: "请输入用户编码",
           trigger: "blur",
         },
         {
@@ -437,8 +437,8 @@ const User: React.FC = () => {
   const tableColumns: IColumn[] = [
     {
       width: "100",
-      label: "用户编号",
-      prop: "userId",
+      label: "用户编码",
+      prop: "userCode",
     },
     {
       width: "100",

@@ -77,9 +77,9 @@ const Tenant: React.FC = () => {
       placeholder: "租户名称",
     },
     {
-      label: "编号",
+      label: "编码",
       vModel: "keyword",
-      placeholder: "租户编号",
+      placeholder: "租户编码",
     },
     {
       label: "联系人",
@@ -163,12 +163,12 @@ const Tenant: React.FC = () => {
           // 导出的字段映射
           // const columns = [
           //   {
-          //     label: "编号",
+          //     label: "编码",
           //     value: "id",
           //   },
           //   {
-          //     label: "租户编号",
-          //     value: "userId",
+          //     label: "租户编码",
+          //     value: "userCode",
           //   },
           //   {
           //     label: "租户名称",
@@ -219,10 +219,10 @@ const Tenant: React.FC = () => {
     {
       label: "租户ID",
       labelWidth: "80px",
-      vModel: "userId",
+      vModel: "userCode",
       editReadonly: true,
       placeholder: "请输入租户ID",
-      prop: "userId",
+      prop: "userCode",
       rules: [
         {
           required: true,
@@ -441,8 +441,8 @@ const Tenant: React.FC = () => {
    */
   const tableColumns: IColumn[] = [
     {
-      label: "租户编号",
-      prop: "userId",
+      label: "租户编码",
+      prop: "userCode",
     },
     {
       label: "租户名称",

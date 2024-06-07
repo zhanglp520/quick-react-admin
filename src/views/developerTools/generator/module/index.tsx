@@ -101,15 +101,15 @@ const Module: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "模块编号",
+      label: "模块编码",
       labelWidth: "80px",
-      vModel: "moduleId",
-      placeholder: "请输入模块编号",
-      prop: "moduleId",
+      vModel: "moduleCode",
+      placeholder: "请输入模块编码",
+      prop: "moduleCode",
       rules: [
         {
           required: true,
-          message: "请输入模块编号",
+          message: "请输入模块编码",
           trigger: "blur",
         },
       ],
@@ -129,17 +129,17 @@ const Module: React.FC = () => {
       ],
     },
     {
-      label: "项目编号",
+      label: "项目编码",
       labelWidth: "80px",
-      vModel: "projectId",
-      placeholder: "请输入项目编号",
-      prop: "projectId",
+      vModel: "projectCode",
+      placeholder: "请输入项目编码",
+      prop: "projectCode",
       addHidden: true,
       editHidden: true,
       rules: [
         {
           required: true,
-          message: "请输入项目编号",
+          message: "请输入项目编码",
           trigger: "blur",
         },
       ],
@@ -195,17 +195,17 @@ const Module: React.FC = () => {
     },
     {
       width: "100",
-      label: "模块编号",
-      prop: "moduleId",
+      label: "模块编码",
+      prop: "moduleCode",
     },
     {
       width: "100",
-      label: "项目编号",
-      prop: "projectId",
+      label: "项目编码",
+      prop: "projectCode",
     },
     {
       width: "100",
-      label: "模块编号",
+      label: "模块编码",
       prop: "moduleName",
     },
     {
@@ -370,12 +370,12 @@ const Module: React.FC = () => {
           // 导出的字段映射
           const columns = [
             {
-              label: "编号",
+              label: "编码",
               value: "id",
             },
             {
-              label: "模块编号",
-              value: "moduleId",
+              label: "模块编码",
+              value: "moduleCode",
             },
             {
               label: "模块名",

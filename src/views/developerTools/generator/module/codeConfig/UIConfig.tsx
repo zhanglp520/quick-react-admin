@@ -172,7 +172,7 @@ const UIConfig: React.FC = (props, ref) => {
       console.log("framework_template-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setFrameworkTemplateDic([...dataList]);
     });
@@ -181,7 +181,7 @@ const UIConfig: React.FC = (props, ref) => {
       console.log("list_template-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setListTemplateDic([...dataList]);
     });
@@ -190,7 +190,7 @@ const UIConfig: React.FC = (props, ref) => {
       console.log("form_template-dictionaryList", dictionaryList);
       const dataList = selectFormat(dictionaryList, {
         label: "dicName",
-        value: "dicId",
+        value: "dicCode",
       });
       setFormTemplateDic([...dataList]);
     });

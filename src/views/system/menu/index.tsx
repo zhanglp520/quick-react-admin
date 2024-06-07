@@ -107,17 +107,17 @@ const Menu: React.FC = () => {
   };
   const formItems: IFormItem[] = [
     {
-      label: "菜单编号",
+      label: "菜单编码",
       labelWidth: "80px",
-      vModel: "menuId",
-      placeholder: "请输入菜单编号",
+      vModel: "menuCode",
+      placeholder: "请输入菜单编码",
       editReadonly: true,
-      prop: "menuId",
+      prop: "menuCode",
       width: "400px",
       rules: [
         {
           required: true,
-          message: "请输入菜单编号",
+          message: "请输入菜单编码",
           trigger: "blur",
         },
       ],
@@ -326,8 +326,8 @@ const Menu: React.FC = () => {
       type: "selection",
     },
     {
-      label: "菜单编号",
-      prop: "menuId",
+      label: "菜单编码",
+      prop: "menuCode",
       width: "200",
     },
     {
