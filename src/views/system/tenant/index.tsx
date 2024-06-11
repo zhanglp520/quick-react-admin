@@ -4,10 +4,7 @@ import { Modal, message } from "antd";
 import {
   ApartmentOutlined,
   ContainerOutlined,
-  DownloadOutlined,
   ExclamationCircleFilled,
-  ExportOutlined,
-  ImportOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
 import {
@@ -21,20 +18,13 @@ import {
 } from "@ainiteam/quick-react-ui";
 import "./index.less";
 import { validatePermission } from "@/utils";
-import { downloadExcel, exportExcel } from "@/utils/download";
-import { ISearchUser, IUser, IUserPermissionButton } from "@/types";
+import { ISearchUser, ITenant, IUserPermissionButton } from "@/types";
 import {
-  exportUser,
-  getUserPageList,
-  addUser,
-  updateUser,
-  deleteUser,
-  batchDeleteUser,
-  resetUserPassword,
-  enableUser,
-  disableUser,
-  downloadFileStream,
-} from "@/api/system/user";
+  getTenantList,
+  addTenant,
+  updateTenant,
+  deleteTenant,
+} from "@/api/system/tenant";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 
@@ -52,7 +42,7 @@ const Tenant: React.FC = () => {
   const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
-  const [tableDataList, setTableDataList] = useState<IUser[]>([]);
+  const [tableDataList, setTableDataList] = useState<ITenant[]>([]);
 
   /**
    * 分页
@@ -92,20 +82,6 @@ const Tenant: React.FC = () => {
    * 工具栏
    */
 
-  const handleBatchDelete = (data: any, done: any) => {
-    const { ids } = data;
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: "你真的删除选择的租户吗？",
-      onOk() {
-        batchDeleteUser(ids).then(() => {
-          message.success("租户删除成功");
-          done();
-        });
-      },
-    });
-  };
   const tableToolbar: IToolbar = {
     // importButtonName: "导入（默认后端方式）",
     // exportButtonName: "导出（默认后端方式）",
@@ -160,37 +136,6 @@ const Tenant: React.FC = () => {
         type: "dashed",
         // hidden: !validatePermission(permissionBtn?.export),
         click() {
-          // 导出的字段映射
-          // const columns = [
-          //   {
-          //     label: "编码",
-          //     value: "id",
-          //   },
-          //   {
-          //     label: "租户编码",
-          //     value: "userCode",
-          //   },
-          //   {
-          //     label: "租户名称",
-          //     value: "userName",
-          //   },
-          //   {
-          //     label: "联系人",
-          //     value: "fullName",
-          //   },
-          //   {
-          //     label: "联系电话",
-          //     value: "phone",
-          //   },
-          //   {
-          //     label: "账号额度",
-          //     value: "email",
-          //   },
-          //   {
-          //     label: "绑定域名",
-          //     value: "address",
-          //   },
-          // ];
           // exportExcel(tableDataList, "租户列表", columns);
         },
       },
@@ -205,28 +150,34 @@ const Tenant: React.FC = () => {
     edit: "编辑租户",
     detail: "租户详情",
   };
-  const formModel: IUser = {
+  const formModel: ITenant = {
     id: undefined,
-    userId: "",
-    userName: "",
-    fullName: "",
+    tenantName: "",
+    contacts: "",
     phone: "",
-    email: "",
-    address: "",
+    balance: "",
+    expire: "",
+    dbHost: "",
+    dbPort: "",
+    dbName: "",
+    dbUsername: "",
+    dbPassword: "",
+    deleted: "",
+    createTime: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
     {
-      label: "租户ID",
+      label: "租户编号",
       labelWidth: "80px",
-      vModel: "userCode",
+      vModel: "id",
       editReadonly: true,
-      placeholder: "请输入租户ID",
-      prop: "userCode",
+      placeholder: "请输入租户编号",
+      prop: "id",
       rules: [
         {
           required: true,
-          message: "请输入租户ID",
+          message: "请输入租户编号",
           trigger: "blur",
         },
       ],
@@ -234,17 +185,13 @@ const Tenant: React.FC = () => {
     {
       label: "租户名称",
       labelWidth: "80px",
-      vModel: "userName",
+      vModel: "tenantName",
       placeholder: "请输入租户名称",
-      prop: "userName",
+      prop: "tenantName",
       rules: [
         {
           required: true,
           message: "请输入租户名称",
-          trigger: "blur",
-        },
-        {
-          // validator: validateUserName,
           trigger: "blur",
         },
       ],
@@ -252,15 +199,9 @@ const Tenant: React.FC = () => {
     {
       label: "联系人",
       labelWidth: "80px",
-      vModel: "fullName",
+      vModel: "contacts",
       placeholder: "请输入联系人",
-      prop: "fullName",
-      rules: [
-        {
-          // validator: validateFullName,
-          trigger: "blur",
-        },
-      ],
+      prop: "contacts",
     },
     {
       label: "联系电话",
@@ -268,40 +209,78 @@ const Tenant: React.FC = () => {
       vModel: "phone",
       placeholder: "请输入联系电话",
       prop: "phone",
-      rules: [
-        {
-          // validator: validatePhone,
-          trigger: "blur",
-        },
-      ],
     },
     {
       label: "账号额度",
       labelWidth: "80px",
-      vModel: "email",
+      vModel: "balance",
       placeholder: "请输入账号额度",
-      prop: "email",
-      rules: [
-        {
-          // validator: validateEmail,
-          trigger: "blur",
-        },
-      ],
+      prop: "balance",
     },
     {
-      label: "绑定域名",
+      label: "过期时间",
       labelWidth: "80px",
-      vModel: "address",
-      placeholder: "请输入绑定域名",
-      prop: "address",
+      vModel: "expire",
+      placeholder: "请输入过期时间",
+      prop: "expire",
     },
     {
-      label: "租户背景",
+      label: "数据服务器地址",
       labelWidth: "80px",
-      vModel: "address",
-      placeholder: "请输入租户背景",
-      prop: "address",
+      vModel: "dbHost",
+      placeholder: "请输入数据服务器地址",
+      prop: "dbHost",
     },
+    {
+      label: "数据库端口号",
+      labelWidth: "80px",
+      vModel: "dbPort",
+      placeholder: "请输入数据库端口号",
+      prop: "dbPort",
+    },
+    {
+      label: "数据库名称",
+      labelWidth: "80px",
+      vModel: "dbName",
+      placeholder: "请输入数据库名称",
+      prop: "dbName",
+    },
+    {
+      label: "数据库账号",
+      labelWidth: "80px",
+      vModel: "dbUsername",
+      placeholder: "请输入数据库账号",
+      prop: "dbUsername",
+    },
+    {
+      label: "数据库密码",
+      labelWidth: "80px",
+      vModel: "dbPassword",
+      placeholder: "请输入数据库密码",
+      prop: "dbPassword",
+    },
+    {
+      label: "删除",
+      labelWidth: "80px",
+      vModel: "deleted",
+      placeholder: "请输入删除",
+      prop: "deleted",
+    },
+    {
+      label: "创建时间",
+      labelWidth: "80px",
+      vModel: "createTime",
+      placeholder: "请输入创建时间",
+      prop: "createTime",
+    },
+    // {
+    //   label: "绑定域名",
+    //   labelWidth: "80px",
+    //   vModel: "address",
+    //   placeholder: "请输入绑定域名",
+    //   prop: "address",
+    // },
+
     {
       label: "备注",
       labelWidth: "80px",
@@ -311,18 +290,18 @@ const Tenant: React.FC = () => {
       prop: "remark",
     },
   ];
-  const handleFormSubmit = (form: IUser, done: any) => {
+  const handleFormSubmit = (form: ITenant, done: any) => {
     const row = { ...form };
     if (row.id) {
-      console.log("updateUser", row);
-      updateUser(row).then(() => {
+      console.log("updateTenant", row);
+      updateTenant(row).then(() => {
         message.success("租户修改成功");
         done();
       });
     } else {
       row.id = undefined;
-      console.log("addUser", row);
-      addUser(row).then(() => {
+      console.log("addTenant", row);
+      addTenant(row).then(() => {
         message.success("租户创建成功");
         done();
       });
@@ -332,65 +311,17 @@ const Tenant: React.FC = () => {
   /**
    * 操作栏
    */
-  const handleDelete = (item: IUser, done: any) => {
+  const handleDelete = (item: ITenant, done: any) => {
     confirm({
       title: "警告",
       icon: <ExclamationCircleFilled />,
-      content: `你真的删除【${item.userName}】的租户吗？`,
+      content: `你真的删除【${item.tenantName}】的租户吗？`,
       onOk() {
         if (!item.id) {
           return;
         }
-        deleteUser(item.id).then(() => {
+        deleteTenant(item.id).then(() => {
           message.success("租户删除成功");
-          done();
-        });
-      },
-    });
-  };
-  const handleResetPassword = (item: IUser, done: any) => {
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: `你真的重置【${item.userName}】租户的密码吗？`,
-      onOk() {
-        if (!item.id) {
-          return;
-        }
-        resetUserPassword(item.id).then(() => {
-          message.success("置租户密码重成功");
-          done();
-        });
-      },
-    });
-  };
-  const handleEnable = (item: IUser, done: any) => {
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: `你真的启用【${item.userName}】的租户吗？`,
-      onOk() {
-        if (!item.id) {
-          return;
-        }
-        enableUser(item.id).then(() => {
-          message.success("租户启用成功");
-          done();
-        });
-      },
-    });
-  };
-  const handleDisable = (item: IUser, done: any) => {
-    confirm({
-      title: "警告",
-      icon: <ExclamationCircleFilled />,
-      content: `你真的禁用【${item.userName}】的租户吗？`,
-      onOk() {
-        if (!item.id) {
-          return;
-        }
-        disableUser(item.id).then(() => {
-          message.success("租户启用成功");
           done();
         });
       },
@@ -401,35 +332,6 @@ const Tenant: React.FC = () => {
     hiddenEditButton: !validatePermission(permissionBtn?.edit),
     hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
     hiddenDetailButton: !validatePermission(permissionBtn?.detail),
-    btns: [
-      {
-        name: "重置密码",
-        hidden: !validatePermission(permissionBtn?.resetPassword),
-        click(item: IUser, done: any) {
-          handleResetPassword(item, done);
-        },
-      },
-      {
-        name: "启用",
-        hidden: !validatePermission(permissionBtn?.enabled),
-        click(item: IUser, done: any) {
-          handleEnable(item, done);
-        },
-        render(row: IUser) {
-          return row.enabled === 0;
-        },
-      },
-      {
-        name: "禁用",
-        hidden: !validatePermission(permissionBtn?.disabled),
-        click(item: IUser, done: any) {
-          handleDisable(item, done);
-        },
-        render(row: IUser) {
-          return row.enabled !== 0;
-        },
-      },
-    ],
   };
 
   /**
@@ -438,16 +340,16 @@ const Tenant: React.FC = () => {
   const tableColumns: IColumn[] = [
     {
       label: "租户编码",
-      prop: "userCode",
+      prop: "id",
     },
     {
       label: "租户名称",
-      prop: "userName",
+      prop: "tenantName",
       // edit: true,
     },
     {
       label: "联系人",
-      prop: "fullName",
+      prop: "contacts",
     },
     {
       label: "联系电话",
@@ -455,23 +357,45 @@ const Tenant: React.FC = () => {
     },
     {
       label: "账号额度",
-      prop: "email",
+      prop: "balance",
     },
-    // {
-    //   label: "启用",
-    //   prop: "enabled",
-    //   render: (value: number) => {
-    //     return value === 1 ? "启用" : "禁用";
-    //   },
-    // },
     {
       label: "过期时间",
-      prop: "createTime",
+      prop: "expire",
     },
     {
-      label: "绑定域名",
-      prop: "address",
+      label: "地址",
+      prop: "dbHost",
     },
+    {
+      label: "端口号",
+      prop: "dbPort",
+    },
+    {
+      label: "数据库名称",
+      prop: "dbName",
+    },
+    {
+      label: "数据库账号",
+      prop: "dbUsername",
+    },
+    // {
+    //   label: "数据库密码",
+    //   prop: "dbPassword",
+    // },
+    {
+      label: "删除",
+      prop: "deleted",
+    },
+
+    {
+      label: "创建时间",
+      prop: "createTime",
+    },
+    // {
+    //   label: "绑定域名",
+    //   prop: "address",
+    // },
     {
       label: "备注",
       prop: "remark",
@@ -483,7 +407,7 @@ const Tenant: React.FC = () => {
    */
   const loadData = (parmas: object) => {
     setLoading(true);
-    getUserPageList(parmas)
+    getTenantList(parmas)
       .then((res) => {
         setLoading(false);
         const { data: userList, total } = res;
@@ -516,7 +440,6 @@ const Tenant: React.FC = () => {
         onLoad={loadData}
         onFormSubmit={handleFormSubmit}
         onDelete={handleDelete}
-        onBatchDelete={handleBatchDelete}
       ></Crud>
     </div>
   );

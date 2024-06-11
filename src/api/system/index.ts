@@ -14,3 +14,4 @@ export const dictionary = `${apiUrl}/dictionaries`;
 export const dictionaryType = `${apiUrl}/dictionaryTypes`;
 export const log = `${apiUrl}/logs`;
 export const api = `${apiUrl}/apis`;
+export const tenant = `${apiUrl}/tenants`;
