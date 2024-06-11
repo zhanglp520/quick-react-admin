@@ -58,11 +58,16 @@ quickRequest.interceptors.request.use(
     // 登录请求
     if (config.url === loginApi) {
       console.info("request111", config);
+      config.headers["tenant-id"] = config.data.tenantId;
       return config;
     }
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { quickAccessToken: token, quickRefreshToken: refreshToken } =
-      store.getState().auth;
+
+    const {
+      quickAccessToken: token,
+      quickRefreshToken: refreshToken,
+      tenantId,
+    } = store.getState().auth;
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { dispatch } = store;
     // token过期
@@ -82,7 +87,9 @@ quickRequest.interceptors.request.use(
       const retry = new Promise((resolve) => {
         saveRequest((token: string) => {
           const cfg = config;
+
           if (cfg.headers) {
+            cfg.headers["tenant-id"] = tenantId;
             cfg.headers.authorization = `Bearer ${token}`;
           }
           resolve(cfg);
@@ -92,6 +99,7 @@ quickRequest.interceptors.request.use(
     }
     const cfg = config;
     if (cfg.headers) {
+      cfg.headers["tenant-id"] = tenantId;
       cfg.headers.authorization = `Bearer ${token}`;
     }
     console.info("request", cfg);
@@ -113,6 +121,7 @@ quickRequest.interceptors.response.use(
       return resultData;
     }
     const { data } = resultData as IQuickResponseData<any>;
+
     if (!data) {
       return Promise.resolve();
     }

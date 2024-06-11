@@ -2,7 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Card, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LockOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
 import { ILoginParams } from "@/types";
 import { AppDispatch } from "@/store";
 import { login } from "@/store/modules/auth";
@@ -18,9 +22,9 @@ const Login: React.FC = () => {
   const [title] = useState("quick-react18-admin");
   const [loadings, setLoadings] = useState<boolean>(false);
   const [form, setForm] = useState<ILoginParams>({
-    tenant: "",
-    username: "",
-    password: "",
+    tenantId: "100001",
+    username: "admin",
+    password: "123456",
   });
   const handleInputChanage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -54,8 +58,19 @@ const Login: React.FC = () => {
           </div>
           <div className="item">
             <Input
+              name="tenantId"
+              placeholder="租户编号"
+              value={form.tenantId}
+              prefix={<UsergroupAddOutlined className="site-form-item-icon" />}
+              size="large"
+              onChange={handleInputChanage}
+            />
+          </div>
+          <div className="item">
+            <Input
               name="username"
               placeholder="用户名"
+              value={form.username}
               prefix={<UserOutlined className="site-form-item-icon" />}
               size="large"
               onChange={handleInputChanage}
@@ -65,6 +80,7 @@ const Login: React.FC = () => {
             <Input.Password
               name="password"
               placeholder="密码"
+              value={form.password}
               prefix={<LockOutlined className="site-form-item-icon" />}
               size="large"
               onChange={handleInputChanage}
@@ -81,7 +97,7 @@ const Login: React.FC = () => {
               登录
             </Button>
           </div>
-          <div className="test">测试账号密码：admin/123456</div>
+          {/* <div className="test">测试账号密码：admin/123456</div> */}
         </Card>
       </div>
     </div>

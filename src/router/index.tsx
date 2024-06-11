@@ -21,6 +21,7 @@ const Router: React.FC = () => {
     let Component = null;
     if (menu.viewPath) {
       const viewPath = modules[`../views${menu.viewPath}.tsx`];
+
       if (!viewPath) {
         console.error(
           `IMenu view path configuration error or view does not exist ../views${menu.viewPath}.vue`
