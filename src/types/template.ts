@@ -2,7 +2,7 @@ import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
 export interface ITemplate {
   id?: number;
-  templateId: string;
+  templateCode: string;
   templateName: string;
   deleted?: number;
   content?: string;

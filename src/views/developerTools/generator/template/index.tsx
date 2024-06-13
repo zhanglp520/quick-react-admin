@@ -124,7 +124,7 @@ const Template: React.FC = () => {
   };
   const formModel: ITemplate = {
     id: undefined,
-    templateId: "",
+    templateCode: "",
     templateName: "",
     content: "",
     type: "",
@@ -166,11 +166,7 @@ const Template: React.FC = () => {
       vModel: "content",
       placeholder: "请输入模板内容",
       prop: "content",
-      rules: [
-        {
-          trigger: "blur",
-        },
-      ],
+      type: "code",
     },
     {
       label: "模板类型",

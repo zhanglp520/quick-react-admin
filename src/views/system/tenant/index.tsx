@@ -36,9 +36,9 @@ const Tenant: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
-  useEffect(() => {
-    dispatch(getPermissionBtns(activeTab));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getPermissionBtns(activeTab));
+  // }, []);
   const { permissionBtn }: { permissionBtn: IUserPermissionButton } =
     useSelector((state: RootState) => state.user);
   const [loading, setLoading] = useState(false);
@@ -83,12 +83,11 @@ const Tenant: React.FC = () => {
    */
 
   const tableToolbar: IToolbar = {
-    // importButtonName: "导入（默认后端方式）",
-    // exportButtonName: "导出（默认后端方式）",
     hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
     hiddenImportButton: true,
     hiddenExportButton: true,
-    hiddenAddButton: !validatePermission(permissionBtn?.add),
+    hiddenAddButton: false,
+    // hiddenAddButton: !validatePermission(permissionBtn?.add),
     hiddenPrintButton: true,
     position: "left",
     // leftToolbarSlot: <div>lll</div>,
@@ -150,18 +149,22 @@ const Tenant: React.FC = () => {
     edit: "编辑租户",
     detail: "租户详情",
   };
+
   const formModel: ITenant = {
     id: undefined,
-    tenantName: "",
-    contacts: "",
-    phone: "",
-    balance: "",
-    expire: "",
+    tenantCode: "1",
+    tenantName: "2",
+    contacts: "3",
+    phone: "4",
+    balance: "5",
+    // expire: "2024-06-03T16:00:00.000Z",
+    expire: 0,
     dbHost: "",
     dbPort: "",
     dbName: "",
     dbUsername: "",
     dbPassword: "",
+    dbType: 0,
     deleted: "",
     createTime: "",
     remark: "",
@@ -169,11 +172,10 @@ const Tenant: React.FC = () => {
   const formItems: IFormItem[] = [
     {
       label: "租户编号",
-      labelWidth: "80px",
-      vModel: "id",
+      vModel: "tenantCode",
       editReadonly: true,
       placeholder: "请输入租户编号",
-      prop: "id",
+      prop: "tenantCode",
       rules: [
         {
           required: true,
@@ -184,7 +186,6 @@ const Tenant: React.FC = () => {
     },
     {
       label: "租户名称",
-      labelWidth: "80px",
       vModel: "tenantName",
       placeholder: "请输入租户名称",
       prop: "tenantName",
@@ -198,92 +199,141 @@ const Tenant: React.FC = () => {
     },
     {
       label: "联系人",
-      labelWidth: "80px",
       vModel: "contacts",
       placeholder: "请输入联系人",
       prop: "contacts",
     },
     {
       label: "联系电话",
-      labelWidth: "80px",
+
       vModel: "phone",
       placeholder: "请输入联系电话",
       prop: "phone",
     },
     {
       label: "账号额度",
-      labelWidth: "80px",
       vModel: "balance",
       placeholder: "请输入账号额度",
       prop: "balance",
+      rules: [
+        {
+          required: true,
+          message: "请输入账号额度",
+          trigger: "blur",
+        },
+      ],
     },
     {
       label: "过期时间",
-      labelWidth: "80px",
       vModel: "expire",
       placeholder: "请输入过期时间",
       prop: "expire",
+      type: "datepicker",
+      rules: [
+        {
+          required: true,
+          message: "请输入过期时间",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "数据服务器地址",
-      labelWidth: "80px",
+      label: "地址",
       vModel: "dbHost",
       placeholder: "请输入数据服务器地址",
       prop: "dbHost",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据服务器地址",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "数据库端口号",
-      labelWidth: "80px",
+      label: "端口号",
       vModel: "dbPort",
       placeholder: "请输入数据库端口号",
       prop: "dbPort",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据库端口号",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "数据库名称",
-      labelWidth: "80px",
+      label: "名称",
       vModel: "dbName",
       placeholder: "请输入数据库名称",
       prop: "dbName",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据库名称",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "数据库账号",
-      labelWidth: "80px",
+      label: "账号",
       vModel: "dbUsername",
       placeholder: "请输入数据库账号",
       prop: "dbUsername",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据库账号",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "数据库密码",
-      labelWidth: "80px",
+      label: "密码",
       vModel: "dbPassword",
       placeholder: "请输入数据库密码",
       prop: "dbPassword",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据库密码",
+          trigger: "blur",
+        },
+      ],
     },
     {
-      label: "删除",
-      labelWidth: "80px",
-      vModel: "deleted",
-      placeholder: "请输入删除",
-      prop: "deleted",
-    },
-    {
-      label: "创建时间",
-      labelWidth: "80px",
-      vModel: "createTime",
-      placeholder: "请输入创建时间",
-      prop: "createTime",
+      label: "类型",
+      vModel: "dbType",
+      editReadonly: true,
+      placeholder: "请输入数据库类型",
+      prop: "dbType",
+      rules: [
+        {
+          required: true,
+          message: "请输入数据库类型",
+          trigger: "blur",
+        },
+      ],
     },
     // {
     //   label: "绑定域名",
-    //   labelWidth: "80px",
+    //
     //   vModel: "address",
     //   placeholder: "请输入绑定域名",
     //   prop: "address",
+    // rules: [
+    //   {
+    //     required: true,
+    //     message: "请输入绑定域名",
+    //     trigger: "blur",
+    //   },
+    // ],
     // },
 
     {
       label: "备注",
-      labelWidth: "80px",
+
       vModel: "remark",
       placeholder: "请输入备注",
       type: "textarea",
@@ -329,8 +379,8 @@ const Tenant: React.FC = () => {
   };
   const tableActionbar: IActionbar = {
     width: 300,
-    hiddenEditButton: !validatePermission(permissionBtn?.edit),
-    hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
+    // hiddenEditButton: !validatePermission(permissionBtn?.edit),
+    // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
     hiddenDetailButton: !validatePermission(permissionBtn?.detail),
   };
 
@@ -340,7 +390,7 @@ const Tenant: React.FC = () => {
   const tableColumns: IColumn[] = [
     {
       label: "租户编码",
-      prop: "id",
+      prop: "tenantCode",
     },
     {
       label: "租户名称",
@@ -379,10 +429,10 @@ const Tenant: React.FC = () => {
       label: "数据库账号",
       prop: "dbUsername",
     },
-    // {
-    //   label: "数据库密码",
-    //   prop: "dbPassword",
-    // },
+    {
+      label: "数据库类型",
+      prop: "dbType",
+    },
     {
       label: "删除",
       prop: "deleted",

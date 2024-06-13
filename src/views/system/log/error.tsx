@@ -77,7 +77,7 @@ const Error: React.FC = () => {
     width: 60,
     hiddenEditButton: true,
     hiddenDeleteButton: true,
-    hiddenDetailButton: !validatePermission(permissionBtn?.detail),
+    // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
   };
   /**
    * 表格
