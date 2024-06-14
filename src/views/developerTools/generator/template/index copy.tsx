@@ -1,104 +1,106 @@
-import { ITemplate, ITemplatePermissionButton } from "@/types";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Modal, message } from "antd";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  IActionbar,
+  IColumn,
+  IFormItem,
+  IPage,
+  IToolbar,
+  Crud,
+  IDialogTitle,
+  ILeftTree,
+  ITreeOptions,
+} from "@ainiteam/quick-react-ui";
+import { listToSelectTree, listToTree, validatePermission } from "@/utils";
+import { ISearchTemplate, ITemplate, ITemplatePermissionButton } from "@/types";
 import {
   getTemplateList,
   addTemplate,
   updateTemplate,
   deleteTemplate,
 } from "@/api/developerTools/generator/template";
-// import { getDictionaryTypeListByPId } from "@/api/system/dictionaryType";
-
-/**导入第三方库 */
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Modal, TreeDataNode, message } from "antd";
-import { ExclamationCircleFilled } from "@ant-design/icons";
-import {
-  Crud,
-  IColumn,
-  IActionbar,
-  IToolbar,
-  IFormItem,
-  IOptions,
-  ITree,
-  ILeftTree,
-  IDialogTitle,
-} from "@ainiteam/quick-react-ui";
-/**导入项目文件 */
-import {
-  listToSelectTree,
-  listToTree,
-  selectFormat,
-  treeFormat,
-  validatePermission,
-} from "@/utils";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
-import { getDictionaryTypeList } from "@/api/system/dictionary";
-import { IDictionaryType } from "@/types";
 import { getDictionaryTypeListByPId } from "@/api/system/dictionaryType";
 
 const Template: React.FC = () => {
+  /**
+   * 属性
+   */
   const { confirm } = Modal;
-  const [dicTypeSelectData] = useState<IOptions[]>([]);
-  const [treeDataList, setTreeDataList] = useState<ITree[]>([]);
-  const [dataList, setDataList] = useState<ITemplate[]>([]);
-  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const dispatch: AppDispatch = useDispatch();
   const { activeTab } = useSelector((state: RootState) => state.tab);
   const { permissionBtn }: { permissionBtn: ITemplatePermissionButton } =
     useSelector((state: RootState) => state.user);
+  const [loading, setLoading] = useState(false);
   const [templateData, setTemplateData] = useState<ITreeOptions[]>([]);
+  const [tableDataList, setTableDataList] = useState<ITemplate[]>([]);
   const [dictionaryTypeDdataListTemp, setDictionaryTypeDdataListTemp] =
     useState<ITemplate[]>([]);
-  const [currentTreeData, setCurrentTreeData] = useState<ITree>({
+  const [currentTreeData, setCurrentTreeData] = useState({
     key: "",
     title: "",
     children: [],
   });
 
   /**
-   * 加载父级部门树下拉框
+   * 分页
    */
-  const loadSelectTreeData = () => {
-    const template = listToSelectTree(dictionaryTypeDdataListTemp, 0, {
-      value: "id",
-      label: "dictionaryTypeName",
-    });
-    setTemplateData([...template]);
-    console.log("templateData", templateData);
-  };
-  /**
-   * 加载数据
-   */
-  const loadData = () => {
-    const { key } = currentTreeData;
-    if (!key) {
-      return;
-    }
-    setLoading(true);
-    getTemplateList(key).then((res) => {
-      setLoading(false);
-      const { data: dictionaryList } = res;
-      console.log("dictionaryList", dictionaryList);
+  const [page] = useState<IPage>({
+    current: 1,
+    size: 10,
+    sizes: [10, 20, 30, 40, 50],
+    total: 0,
+  });
 
-      setDataList([...dictionaryList]);
-    });
+  /**
+   * 搜索
+   */
+  const searchForm: ISearchTemplate = {
+    keyword: "",
+  };
+  const searchFormItems: IFormItem[] = [
+    {
+      label: "模板",
+      vModel: "keyword",
+      placeholder: "模板名称",
+    },
+    {
+      label: "编码",
+      vModel: "keyword",
+      placeholder: "模板编码",
+    },
+  ];
+
+  /**
+   * 工具栏
+   */
+
+  const tableToolbar: IToolbar = {
+    hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
+    hiddenImportButton: true,
+    hiddenExportButton: true,
+    // hiddenAddButton: !validatePermission(permissionBtn?.add),
+    hiddenPrintButton: true,
+    position: "left",
   };
   /**
    * 左树
    */
-
   const [leftTree] = useState<ILeftTree>({
     treeData: [],
     treeSpan: 6,
   });
-  const treeloadData = (done: any) => {
+  const treeLoad = (done: any) => {
     getDictionaryTypeListByPId("generator_code_template").then((res) => {
       const { data: dictionaryTypeList } = res;
       console.log("dictionaryTypeList", dictionaryTypeList);
       setDictionaryTypeDdataListTemp([...dictionaryTypeList]);
       const template = listToTree(dictionaryTypeList, 3, {
-        id: "dicTypeCode",
+        id: "id",
         label: "dicTypeName",
       });
       console.log("template", template);
@@ -108,7 +110,7 @@ const Template: React.FC = () => {
       done(currentTreeData);
     });
   };
-  const handleTreeClick = (data: ITree, done: any) => {
+  const handleTreeClick = (data: any, done: any) => {
     setCurrentTreeData({ ...data });
     done();
   };
@@ -194,6 +196,24 @@ const Template: React.FC = () => {
       prop: "remark",
     },
   ];
+  const handleFormSubmit = (form: ITemplate, done: any) => {
+    const row = { ...form };
+    if (row.id) {
+      console.log("updateTemplate", row);
+      updateTemplate(row).then(() => {
+        message.success("模板修改成功");
+        done();
+      });
+    } else {
+      row.id = undefined;
+      console.log("addTemplate", row);
+      addTemplate(row).then(() => {
+        message.success("模板创建成功");
+        done();
+      });
+    }
+  };
+
   /**
    * 操作栏
    */
@@ -213,27 +233,14 @@ const Template: React.FC = () => {
       },
     });
   };
+
   const tableActionbar: IActionbar = {
     width: 300,
     // hiddenEditButton: !validatePermission(permissionBtn?.edit),
     // hiddenDeleteButton: !validatePermission(permissionBtn?.delete),
     // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
   };
-  /**
-   * 工具栏
-   */
-  const handleAdd = (item: ITemplate, done: any) => {
-    const form = { ...item };
-    form.templateCode = currentTreeData.id;
-    done(form);
-  };
-  const tableToolbar: IToolbar = {
-    hiddenBatchDeleteButton: !validatePermission(permissionBtn?.batchDelete),
-    hiddenImportButton: true,
-    hiddenExportButton: true,
-    hiddenPrintButton: true,
-    position: "left",
-  };
+
   /**
    * 表格
    */
@@ -265,56 +272,67 @@ const Template: React.FC = () => {
       prop: "remark",
     },
   ];
-  const handleFormSubmit = (form: ITemplate, done: any) => {
-    const row = { ...form };
-    if (row.id) {
-      console.log("updateTemplate", row);
-      updateTemplate(row).then(() => {
-        message.success("模板修改成功");
-        done();
+  /**
+   * 加载父级部门树下拉框
+   */
+  const loadSelectTreeData = () => {
+    const template = listToSelectTree(dictionaryTypeDdataListTemp, 0, {
+      value: "id",
+      label: "dictionaryTypeName",
+    });
+    setTemplateData([...template]);
+    console.log("templateData", templateData);
+  };
+  /**
+   * 加载数据
+   */
+  const loadData = (parmas: object) => {
+    setLoading(true);
+    getTemplateList(parmas)
+      .then((res) => {
+        setLoading(false);
+        const { data: userList, total } = res;
+        console.log("userList", userList);
+        if (userList) {
+          setTableDataList([...userList]);
+        }
+        page.total = total;
+      })
+      .catch(() => {
+        setLoading(false);
       });
-    } else {
-      row.id = undefined;
-      console.log("addTemplate", row);
-      addTemplate(row).then(() => {
-        message.success("模板创建成功");
-        done();
-      });
-    }
   };
   useEffect(() => {
     loadData();
   }, [currentTreeData]);
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));
-  }, [activeTab, dispatch]);
-  useEffect(() => {
     loadSelectTreeData();
   }, []);
   return (
-    <>
-      <div className="dept_wrap">
-        <Crud
-          dialogTitle={dialogTitle}
-          formModel={formModel}
-          formItems={formItems}
-          tableData={dataList}
-          tableColumns={tableColumns}
-          tableActionbar={tableActionbar}
-          tableToolbar={tableToolbar}
-          // dialogTitles={dialogTitles}
-          leftTree={leftTree}
-          leftTree-refresh={true}
-          loading={loading}
-          // onLoad={loadData}
-          onTreeLoad={treeloadData}
-          onTreeClick={handleTreeClick}
-          onFormSubmit={handleFormSubmit}
-          onDelete={handleDelete}
-          onAdd={handleAdd}
-        ></Crud>
-      </div>
-    </>
+    <div>
+      <Crud
+        dialogTitle={dialogTitle}
+        formModel={formModel}
+        formItems={formItems}
+        tableData={tableDataList}
+        tableColumns={tableColumns}
+        tableActionbar={tableActionbar}
+        tableToolbar={tableToolbar}
+        leftTree={leftTree}
+        leftTreeRefresh={true}
+        searchFormItems={searchFormItems}
+        searchFormModel={searchForm}
+        pagebar={page}
+        loading={loading}
+        displayNumber={true}
+        // onLoad={loadData}
+        onTreeLoad={treeLoad}
+        onTreeClick={handleTreeClick}
+        onFormSubmit={handleFormSubmit}
+        onDelete={handleDelete}
+      ></Crud>
+    </div>
   );
 };
 
