@@ -6,7 +6,7 @@ export interface ITemplate {
   templateName: string;
   deleted?: number;
   content?: string;
-  type?: string;
+  dicTypeId?: string;
   createTime?: string;
   remark?: string;
 }

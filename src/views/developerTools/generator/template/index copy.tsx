@@ -13,7 +13,7 @@ import {
   ILeftTree,
   ITreeOptions,
 } from "@ainiteam/quick-react-ui";
-import { listToSelectTree, listToLeftTree, validatePermission } from "@/utils";
+import { listToSelectTree, listToTree, validatePermission } from "@/utils";
 import { ISearchTemplate, ITemplate, ITemplatePermissionButton } from "@/types";
 import {
   getTemplateList,
@@ -99,7 +99,7 @@ const Template: React.FC = () => {
       const { data: dictionaryTypeList } = res;
       console.log("dictionaryTypeList", dictionaryTypeList);
       setDictionaryTypeDdataListTemp([...dictionaryTypeList]);
-      const template = listToLeftTree(dictionaryTypeList, 3, {
+      const template = listToTree(dictionaryTypeList, 3, {
         id: "id",
         label: "dicTypeName",
       });
@@ -127,7 +127,7 @@ const Template: React.FC = () => {
     templateCode: "",
     templateName: "",
     content: "",
-    dicTypeId: "",
+    type: "",
     remark: "",
   };
   const formItems: IFormItem[] = [
@@ -161,13 +161,6 @@ const Template: React.FC = () => {
       ],
     },
     {
-      label: "模板类型",
-      labelWidth: "80px",
-      vModel: "dicTypeId",
-      placeholder: "请输入模板类型",
-      prop: "dicTypeId",
-    },
-    {
       label: "模板内容",
       labelWidth: "80px",
       vModel: "content",
@@ -175,6 +168,14 @@ const Template: React.FC = () => {
       prop: "content",
       type: "code",
     },
+    {
+      label: "模板类型",
+      labelWidth: "80px",
+      vModel: "type",
+      placeholder: "请输入模板类型",
+      prop: "type",
+    },
+
     {
       label: "创建时间",
       labelWidth: "80px",
@@ -258,7 +259,7 @@ const Template: React.FC = () => {
     // },
     {
       label: "模板类型",
-      prop: "dicTypeId",
+      prop: "type",
     },
 
     {
@@ -302,10 +303,7 @@ const Template: React.FC = () => {
       });
   };
   useEffect(() => {
-    debugger;
-    loadData({
-      dicTypeId: currentTreeData.key,
-    });
+    loadData();
   }, [currentTreeData]);
   useEffect(() => {
     dispatch(getPermissionBtns(activeTab));

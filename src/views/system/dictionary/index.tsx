@@ -65,15 +65,16 @@ const Dictionary: React.FC = () => {
       value: "dicTypeCode",
       label: "dicTypeName",
     });
-    dicTypeSelectData.length = 0;
-    dicTypeSelectData.push(...dicTypeselect);
+    setDicTypeSelectData([...dicTypeselect]);
   };
   /**
    * 加载数据
    */
   const loadData = () => {
     const { key } = currentTreeData;
-
+    if (!key) {
+      return;
+    }
     setLoading(true);
     getDictionaryList(key).then((res) => {
       setLoading(false);
@@ -254,9 +255,11 @@ const Dictionary: React.FC = () => {
     }
   };
   useEffect(() => {
-    dispatch(getPermissionBtns(activeTab));
     loadData();
-  }, [activeTab, currentTreeData, dispatch]);
+  }, [currentTreeData]);
+  useEffect(() => {
+    dispatch(getPermissionBtns(activeTab));
+  }, [activeTab, dispatch]);
   return (
     <>
       <div className="dept_wrap">
@@ -272,6 +275,7 @@ const Dictionary: React.FC = () => {
           leftTree={leftTree}
           leftTree-refresh={true}
           loading={loading}
+          // onLoad={loadData}
           onTreeLoad={treeloadData}
           onTreeClick={handleTreeClick}
           onFormSubmit={handleFormSubmit}

@@ -9,11 +9,12 @@ export { downloadFileStream } from "@/api/common";
  *@Date: 2022-11-28 11:57:43
  */
 
-export const getTemplateList = (): Promise<
-  IQuickResponseData<Array<ITemplate>>
-> => {
+export const getTemplateList = (
+  params: any
+): Promise<IQuickResponseData<Array<ITemplate>>> => {
+  const { dicTypeId } = params;
   return request<IQuickResponseData<Array<ITemplate>>>({
-    url: api,
+    url: `${api}/getByTypeId/${dicTypeId}`,
     method: "GET",
   });
 };

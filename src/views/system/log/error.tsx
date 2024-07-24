@@ -74,7 +74,7 @@ const Error: React.FC = () => {
     }
   };
   const tableActionbar: IActionbar = {
-    width: 60,
+    width: 100,
     hiddenEditButton: true,
     hiddenDeleteButton: true,
     // hiddenDetailButton: !validatePermission(permissionBtn?.detail),
