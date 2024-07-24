@@ -57,7 +57,7 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
   const homeMenuClick = () => {
     const menu: IMenubar = {
       id: "home",
-      menuId: "home",
+      menuCode: "home",
       menuName: "首页",
       icon: "",
       sort: 0,
@@ -83,7 +83,7 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
     menuList.forEach((menu: IMenubar) => {
       if (menu.status) {
         items.push({
-          key: menu.menuId,
+          key: menu.menuCode,
           icon: <AppstoreOutlined />,
           label: menu.menuName,
           onClick: ({ domEvent }) => {
@@ -96,23 +96,23 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
           children: menu.children.map((child: IMenubar) => {
             if (child.status) {
               return {
-                key: child.menuId,
+                key: child.menuCode,
                 icon: <AppstoreOutlined />,
                 label: child.menuName,
                 onClick: ({ domEvent }) => {
                   domEvent.stopPropagation();
-                  if (child.children.length > 0) {
+                  if (child.children?.length > 0) {
                     return;
                   }
                   menuClick(child);
                 },
                 children:
-                  child.children.length <= 0
+                  child.children?.length <= 0
                     ? undefined
-                    : child.children.map((child2: IMenubar) => {
+                    : child.children?.map((child2: IMenubar) => {
                         if (child2.status) {
                           return {
-                            key: child2.menuId,
+                            key: child2.menuCode,
                             icon: <AppstoreOutlined />,
                             label: child2.menuName,
                             onClick: ({ domEvent }) => {

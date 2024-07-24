@@ -2,7 +2,7 @@ import { IPermissionButton } from "@ainiteam/quick-react-ui";
 
 export interface IMenu {
   id?: number;
-  menuId: string;
+  menuCode: string;
   menuName: string;
   path: string;
   viewPath?: string;
