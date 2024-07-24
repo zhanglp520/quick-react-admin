@@ -199,7 +199,7 @@ const DictionaryType: React.FC = () => {
       const dictionaryTypeTree = listToTableTree(dictionaryTypeList, 0, {
         pId: "pId",
       });
-
+      console.log("dictionaryTypeTree", JSON.stringify(dictionaryTypeTree));
       setTableDataList([...dictionaryTypeTree]);
     });
   };

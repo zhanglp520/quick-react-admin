@@ -9,34 +9,34 @@ export { getDictionaryTypeList } from "@/api/system/dictionaryType";
  *@Date: 2022-11-28 11:55:37
  */
 export const getDictionaryList = (
-    typeId: string
+  typeCode: string
 ): Promise<IQuickResponseData<Array<IDictionary>>> => {
-    return request<IQuickResponseData<Array<IDictionary>>>({
-        url: api,
-        method: "GET",
-        params: {
-            typeId
-        }
-    });
+  return request<IQuickResponseData<Array<IDictionary>>>({
+    url: api + "/getDictionaryListByTypeId",
+    method: "GET",
+    params: {
+      typeCode,
+    },
+  });
 };
 export const addDictionary = (data: IDictionary) => {
-    return request({
-        url: api,
-        method: "POST",
-        data
-    });
+  return request({
+    url: api,
+    method: "POST",
+    data,
+  });
 };
 export const updateDictionary = (data: IDictionary) => {
-    const { id } = data;
-    return request({
-        url: `${api}/${id}`,
-        method: "PUT",
-        data
-    });
+  const { id } = data;
+  return request({
+    url: `${api}/${id}`,
+    method: "PUT",
+    data,
+  });
 };
 export const deleteDictionary = (id: number) => {
-    return request({
-        url: `${api}/${id}`,
-        method: "DELETE"
-    });
+  return request({
+    url: `${api}/${id}`,
+    method: "DELETE",
+  });
 };

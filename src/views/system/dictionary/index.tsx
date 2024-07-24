@@ -15,7 +15,12 @@ import {
   IDialogTitle,
 } from "@ainiteam/quick-react-ui";
 /**导入项目文件 */
-import { selectFormat, treeFormat, validatePermission } from "@/utils";
+import {
+  listToTree,
+  selectFormat,
+  treeFormat,
+  validatePermission,
+} from "@/utils";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
 import {
@@ -35,6 +40,8 @@ const Dictionary: React.FC = () => {
   const { confirm } = Modal;
   const [dicTypeSelectData, setDicTypeSelectData] = useState<IOptions[]>([]);
   const [treeDataList, setTreeDataList] = useState<ITree[]>([]);
+  const [dicTypeList, setDicTypeList] = useState<IDictionaryType[]>([]);
+
   const [dataList, setDataList] = useState<IDictionary[]>([]);
   const [loading, setLoading] = useState(false);
   const dispatch: AppDispatch = useDispatch();
@@ -53,8 +60,8 @@ const Dictionary: React.FC = () => {
    * 加载字典分类下拉框
    * @param data 字典分类数据
    */
-  const loadDicTypeSelect = (data: IDictionaryType[]) => {
-    const dicTypeselect = selectFormat(data, {
+  const loadDicTypeSelect = () => {
+    const dicTypeselect = selectFormat(dicTypeList, {
       value: "dicTypeCode",
       label: "dicTypeName",
     });
@@ -87,23 +94,32 @@ const Dictionary: React.FC = () => {
   const treeloadData = (done: any) => {
     getDictionaryTypeList().then((res) => {
       const { data: dictionaryTypeList } = res;
-      loadDicTypeSelect(dictionaryTypeList);
-      const dicTree = treeFormat(dictionaryTypeList, {
-        id: "dicTypeCode",
+      console.log("dictionaryTypeList", dictionaryTypeList);
+      setDicTypeList(dictionaryTypeList);
+      const dicTypeTree = listToTree(dictionaryTypeList, 0, {
+        id: "id",
         label: "dicTypeName",
       });
-      console.log("dictionaryTree", dictionaryTypeList);
-      setTreeDataList([...dicTree]);
-      leftTree.treeData = dicTree;
-      console.log("dicTree", dicTree);
-
+      console.log("dicTypeTree", dicTypeTree);
+      setTreeDataList([...dicTypeTree]);
+      leftTree.treeData = dicTypeTree;
       setCurrentTreeData({ ...(treeDataList && treeDataList[0]) });
       done(currentTreeData);
     });
   };
   const handleTreeClick = (data: ITree, done: any) => {
-    setCurrentTreeData({ ...data });
-    done();
+    const { key } = data;
+    const item = dicTypeList.find((x) => x.id?.toString() === key.toString());
+    if (item) {
+      const { dicTypeCode, dicTypeName } = item;
+      setCurrentTreeData({
+        key: dicTypeCode,
+        label: dicTypeName,
+        children: [],
+      });
+      loadDicTypeSelect();
+      done();
+    }
   };
   /**
    * 表单
