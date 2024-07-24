@@ -33,7 +33,10 @@ const LosssList: React.FC = () => (
     itemLayout="horizontal"
     dataSource={data}
     renderItem={(item, index) => (
-      <List.Item actions={[<a key="list-loadmore-edit">订单详情</a>]}>
+      <List.Item
+        key={index}
+        actions={[<a key="list-loadmore-edit">订单详情</a>]}
+      >
         <List.Item.Meta
           title={item.name}
           description={`订单编号：${item.code}`}

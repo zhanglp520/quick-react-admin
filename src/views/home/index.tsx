@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Avatar, Card, Flex } from "antd";
 import "./index.less";
 
