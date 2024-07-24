@@ -13,7 +13,7 @@ import {
   ILeftTree,
   ITreeOptions,
 } from "@ainiteam/quick-react-ui";
-import { listToSelectTree, listToTree, validatePermission } from "@/utils";
+import { listToSelectTree, listToLeftTree, validatePermission } from "@/utils";
 import { ISearchTemplate, ITemplate, ITemplatePermissionButton } from "@/types";
 import {
   getTemplateList,
@@ -99,7 +99,7 @@ const Template: React.FC = () => {
       const { data: dictionaryTypeList } = res;
       console.log("dictionaryTypeList", dictionaryTypeList);
       setDictionaryTypeDdataListTemp([...dictionaryTypeList]);
-      const template = listToTree(dictionaryTypeList, 3, {
+      const template = listToLeftTree(dictionaryTypeList, 3, {
         id: "id",
         label: "dicTypeName",
       });

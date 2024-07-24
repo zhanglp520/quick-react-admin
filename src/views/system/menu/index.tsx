@@ -91,7 +91,7 @@ const Menu: React.FC = () => {
   };
   const formModel: IMenu = {
     id: undefined,
-    menuId: "",
+    menuCode: "",
     menuName: "",
     path: "",
     viewPath: "",

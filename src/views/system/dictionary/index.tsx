@@ -16,7 +16,7 @@ import {
 } from "@ainiteam/quick-react-ui";
 /**导入项目文件 */
 import {
-  listToTree,
+  listToLeftTree,
   selectFormat,
   treeFormat,
   validatePermission,
@@ -96,7 +96,7 @@ const Dictionary: React.FC = () => {
       const { data: dictionaryTypeList } = res;
       console.log("dictionaryTypeList", dictionaryTypeList);
       setDicTypeList(dictionaryTypeList);
-      const dicTypeTree = listToTree(dictionaryTypeList, 0, {
+      const dicTypeTree = listToLeftTree(dictionaryTypeList, 0, {
         id: "id",
         label: "dicTypeName",
       });

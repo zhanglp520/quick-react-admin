@@ -104,8 +104,8 @@ export const listToSelectTree = (data: any, pId: any, options?: any) => {
   return arr;
 };
 
-//列表转树
-export const listToTree = (data: any, pId: any, options?: any) => {
+//列表转左树
+export const listToLeftTree = (data: any, pId: any, options?: any) => {
   const defaultOptions = {
     id: "id",
     label: "label",
@@ -119,7 +119,7 @@ export const listToTree = (data: any, pId: any, options?: any) => {
   let children = [];
   const nodeData = data.filter((x: any) => x[parentId] === pId);
   nodeData.forEach((element: any) => {
-    children = listToTree(data, element[id], options);
+    children = listToLeftTree(data, element[id], options);
     arr.push({
       key: element[id],
       title: element[label],
@@ -128,8 +128,29 @@ export const listToTree = (data: any, pId: any, options?: any) => {
   });
   return arr;
 };
-
-//列表转表格树
+//列表转菜单树
+export const listToTree = (data: any, pId: any, options?: any) => {
+  const defaultOptions = {
+    id: "id",
+    pId: "pId",
+    sort: "sort",
+  };
+  const value = options && options.id ? options.id : defaultOptions.id;
+  const parentId = options && options.pId ? options.pId : defaultOptions.pId;
+  const sort = options && options.sort ? options.sort : defaultOptions.sort;
+  const arr: any = [];
+  let children = [];
+  const nodeData = data.filter((x: any) => x[parentId] === pId);
+  const nodeSort = nodeData.sort((a: any, b: any) => {
+    return a[sort] - b[sort];
+  });
+  nodeSort.forEach((element: any) => {
+    children = listToTree(data, element[value], options);
+    arr.push({ ...element, children });
+  });
+  return arr;
+};
+//列表转表格树，由于使用antd表格，故此要处理chidren为空时，显示为树节点了。
 export const listToTableTree = (data: any, pId: any, options?: any) => {
   const defaultOptions = {
     id: "id",
@@ -147,7 +168,11 @@ export const listToTableTree = (data: any, pId: any, options?: any) => {
   });
   nodeSort.forEach((element: any) => {
     children = listToTableTree(data, element[value], options);
-    arr.push({ ...element, children });
+    if (children && children.length > 0) {
+      arr.push({ ...element, children });
+    } else {
+      arr.push({ ...element });
+    }
   });
   return arr;
 };

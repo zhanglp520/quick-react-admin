@@ -101,15 +101,15 @@ const AiniMenu: FC<PropType> = (props: PropType) => {
                 label: child.menuName,
                 onClick: ({ domEvent }) => {
                   domEvent.stopPropagation();
-                  if (child.children?.length > 0) {
+                  if (child.children.length > 0) {
                     return;
                   }
                   menuClick(child);
                 },
                 children:
-                  child.children?.length <= 0
+                  child.children.length <= 0
                     ? undefined
-                    : child.children?.map((child2: IMenubar) => {
+                    : child.children.map((child2: IMenubar) => {
                         if (child2.status) {
                           return {
                             key: child2.menuCode,

@@ -14,7 +14,7 @@ const AiniSideBar: FC = () => {
   const goHome = () => {
     const menu: IMenubar = {
       id: "home",
-      menuId: "home",
+      menuCode: "home",
       menuName: "首页",
       icon: "",
       sort: 0,

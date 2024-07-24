@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { listToTableTree } from "@/utils/index";
+import { listToTree } from "@/utils/index";
 import { ITab, IUser } from "@/types";
 import { IMenu, IMenubar } from "@/types";
 import { getUserByUserName } from "@/api/system/user";
@@ -62,7 +62,7 @@ export const userSlice = createSlice({
         );
         const permission = {};
         btns.forEach((element) => {
-          permission[element.menuId] = true;
+          permission[element.menuCode] = true;
         });
         state.permissionBtn = permission;
       }
@@ -76,7 +76,7 @@ export const userSlice = createSlice({
         const dt = JSON.parse(JSON.stringify(userPermissionMenuList));
         // const userMenuList = menuFormat(dt)
         const dtNew = dt.filter((x: any) => x.menuType !== 2);
-        const userMenuList = listToTableTree(dtNew, 0, {
+        const userMenuList = listToTree(dtNew, 0, {
           pId: "pId",
         });
         const m = JSON.parse(JSON.stringify(userMenuList));

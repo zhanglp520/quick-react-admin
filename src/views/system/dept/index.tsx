@@ -20,7 +20,7 @@ import {
   validatePermission,
   listToSelectTree,
   listToTableTree,
-  listToTree,
+  listToLeftTree,
 } from "@/utils";
 import { AppDispatch, RootState } from "@/store";
 import { getPermissionBtns } from "@/store/modules/user";
@@ -141,7 +141,7 @@ const Dept: React.FC = () => {
       const { data: deptList } = res;
       console.log("deptList", deptList);
       setDeptDdataListTemp([...deptList]);
-      const deptTree = listToTree(deptList, 0, {
+      const deptTree = listToLeftTree(deptList, 0, {
         id: "id",
         label: "deptName",
       });

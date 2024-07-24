@@ -6,7 +6,7 @@ import {
 import { getApiList } from "@/api/system/api";
 import { getMenuList } from "@/api/system/menu";
 import { IApi, IMenuTree } from "@/types";
-import { listToTableTree, listToTree } from "@/utils";
+import { listToTableTree, listToLeftTree } from "@/utils";
 import { Steps, Tree, message } from "antd";
 import {
   forwardRef,
@@ -111,7 +111,7 @@ const DialogProgress: React.FC<RoleProp> = forwardRef(
     const menuLoad = () => {
       getMenuList().then((res) => {
         const { data: menuList } = res;
-        const menuTree = listToTree(menuList, 0, {
+        const menuTree = listToLeftTree(menuList, 0, {
           pId: "pId",
           label: "menuName",
         });

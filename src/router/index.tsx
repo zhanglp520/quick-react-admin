@@ -40,11 +40,15 @@ const Router: React.FC = () => {
         Component = lazy(path);
       }
     }
-    return (
-      <>
-        <Suspense>{<Component></Component>}</Suspense>
-      </>
-    );
+    if (Component) {
+      return (
+        <>
+          <Suspense>{<Component></Component>}</Suspense>
+        </>
+      );
+    } else {
+      return <></>;
+    }
   };
   const renderDynamicElement = () => {
     {
