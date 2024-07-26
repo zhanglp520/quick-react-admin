@@ -25,10 +25,40 @@ const Backend: React.FC = (props, ref) => {
     backendLang: "nodejs#",
     designPattern: "",
   };
+  const frameworkOptions = [
+    {
+      label: "Express",
+      value: 0,
+    },
+    {
+      label: "NestJS",
+      value: 1,
+    },
+    {
+      label: "Egg",
+      value: 2,
+    },
+    {
+      label: "Koa",
+      value: 3,
+    },
+  ];
   const dialogData = [
     {
-      label: "开发中",
+      label: "无",
       value: 0,
+    },
+    {
+      label: "mvc",
+      value: 1,
+    },
+    {
+      label: "三层架构",
+      value: 2,
+    },
+    {
+      label: "仓储设计模式",
+      value: 3,
     },
   ];
   const formItems: IFormItem[] = [
@@ -43,13 +73,24 @@ const Backend: React.FC = (props, ref) => {
         form.backendLang = e.target.value;
       },
     },
+    // {
+    //   label: "后端框架",
+    //   labelWidth: "120px",
+    //   vModel: "framework",
+    //   prop: "framework",
+    //   type: "radio",
+    //   options: backendLangDic,
+    //   change: (e) => {
+    //     form.framework = e.target.value;
+    //   },
+    // },
     {
       label: "后端框架",
       labelWidth: "120px",
       vModel: "framework",
       prop: "framework",
       type: "radio",
-      options: backendLangDic,
+      options: frameworkOptions,
       change: (e) => {
         form.framework = e.target.value;
       },
